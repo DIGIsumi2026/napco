@@ -1,0 +1,9 @@
+{
+  "name": "presvila-clone",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "frontend": "npm --prefix frontend run dev",
+    "backend": "npm --prefix backend run dev"
+  }
+}
