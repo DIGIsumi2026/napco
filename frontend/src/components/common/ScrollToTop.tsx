@@ -31,10 +31,12 @@ export default function ScrollToTop() {
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    if (window.napcoLenis) {
+      window.napcoLenis.scrollTo(0, { duration: 1.15 });
+      return;
+    }
+
+    window.scrollTo({ top: 0 });
   };
 
   return (
