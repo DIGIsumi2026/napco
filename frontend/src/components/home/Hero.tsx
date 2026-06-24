@@ -1,40 +1,76 @@
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import ThreeOrb from './ThreeOrb';
+import { ArrowRight, ChevronDown } from 'lucide-react';
+import HeroCarousel from './HeroCarousel';
+import Hero3DScene from './Hero3DScene';
 
 export default function Hero() {
   return (
-    <section className="hero-section section-anchor" data-reveal>
-      <div className="hero-bg" />
-      <span className="floating-dot dot-one" />
-      <span className="floating-dot dot-two" />
-      <span className="floating-chevron">▶▶▶▶▶</span>
-      <ThreeOrb />
-      <div className="hero-content">
-        <motion.p
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="hero-kicker"
+    <section className="napco-hero" id="hero" data-reveal>
+
+      {/* ── Background carousel ── */}
+      <HeroCarousel />
+
+      {/* ── 3D interactive scene (above carousel, behind text) ── */}
+      <Hero3DScene />
+
+      {/* ── Overlay text content ── */}
+      <div className="napco-hero-overlay">
+        <div className="napco-hero-content">
+
+          <motion.span
+            className="napco-hero-tag"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.1 }}
+          >
+            Premium Printing Solutions
+          </motion.span>
+
+          <motion.h1
+            className="napco-hero-heading"
+            initial={{ opacity: 0, y: 36 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.22 }}
+          >
+            Your Impression is{' '}
+            <span className="napco-hero-accent">Our Responsibility</span>
+          </motion.h1>
+
+          <motion.p
+            className="napco-hero-desc"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.36 }}
+          >
+            From business cards to large-format prints, Napco delivers precision,
+            speed, and unmatched quality. Every project is crafted to leave a
+            lasting impression.
+          </motion.p>
+
+          <motion.div
+            className="napco-hero-actions"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <a href="#about" className="napco-btn-primary">
+              Learn More <ArrowRight size={17} />
+            </a>
+            <a href="#contact" className="napco-btn-outline">
+              Contact Us
+            </a>
+          </motion.div>
+        </div>
+
+        {/* Scroll hint */}
+        <motion.div
+          className="napco-scroll-hint"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
         >
-          Modern print design studio
-        </motion.p>
-        <motion.h1
-          initial={{ opacity: 0, y: 36 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-        >
-          Print Exactly <br /> What You Want
-        </motion.h1>
-        <motion.a
-          initial={{ opacity: 0, y: 34 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.24 }}
-          className="purple-button"
-          href="#services"
-        >
-          Let’s Get Started <ArrowRight size={19} />
-        </motion.a>
+          <ChevronDown size={22} />
+        </motion.div>
       </div>
     </section>
   );

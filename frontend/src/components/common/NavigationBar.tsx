@@ -1,65 +1,104 @@
-import { useState } from 'react';
-import { Grid2X2, Heart, MapPin, Search, ShoppingCart, UserRound } from 'lucide-react';
-import { navItems, pageDropdown, serviceDropdown } from '../../data/siteData';
-import Logo from './Logo';
-import SideDrawer from './SideDrawer';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Facebook, Instagram, Linkedin } from 'lucide-react';
+import { imageAssets } from '../../data/imageAssets';
 
-export default function Header() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+const navLinks = [
+  { label: 'Home', href: '#home' },
+  { label: 'About Us', href: '#about' },
+  { label: 'Services', href: '#services' },
+  { label: 'Contact Us', href: '#contact' },
+];
+
+const socialLinks = [
+  { Icon: Facebook, href: '#', label: 'Facebook' },
+  { Icon: Instagram, href: '#', label: 'Instagram' },
+  { Icon: Linkedin, href: '#', label: 'LinkedIn' },
+];
+
+export default function NavigationBar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
-    <header className="site-header" id="home">
-      <div className="top-strip">
-        <div className="top-left"><MapPin size={18} /> NT Road. North West</div>
-        <p>Free metro delivery* Sign Up for $30 off your order!</p>
-        <div className="top-socials" aria-label="social links">
-          <i className="fa-brands fa-facebook-f" />
-          <i className="fa-brands fa-dribbble" />
-          <i className="fa-brands fa-twitter" />
-          <i className="fa-brands fa-vimeo-v" />
-        </div>
-      </div>
+    <div className="napco-nav-root" id="home">
+      <AnimatePresence mode="wait">
+        {!scrolled ? (
+          /* ─── DEFAULT: Full-width glass bar ─── */
+          <motion.header
+            key="glass-nav"
+            className="napco-nav-glass"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            {/* Logo */}
+            <a href="#home" className="napco-nav-logo">
+              <img src={imageAssets.logo.main} alt="Napco" />
+            </a>
 
-      <div className="brand-row">
-        <label className="search-box" aria-label="Search products">
-          <input placeholder="Search..." />
-          <Search size={31} strokeWidth={2.2} />
-        </label>
-        <Logo />
-        <div className="header-actions">
-          <button aria-label="Account"><UserRound /></button>
-          <button aria-label="Cart"><ShoppingCart /></button>
-          <button aria-label="Wishlist"><Heart /></button>
-        </div>
-      </div>
+            {/* Center links */}
+            <nav className="napco-nav-links">
+              {navLinks.map(({ label, href }) => (
+                <a key={label} href={href} className="napco-nav-link">
+                  {label}
+                </a>
+              ))}
+            </nav>
 
-      <nav className="nav-row">
-        <ul>
-          {navItems.map((item) => (
-            <li key={item} className={item === 'Services' || item === 'Pages' ? 'has-dropdown' : ''}>
-              <a href={`#${item.toLowerCase()}`}>{item}</a>
-              {item === 'Services' && (
-                <div className="dropdown compact-dropdown">
-                  {serviceDropdown.map((label) => <a key={label}>{label}</a>)}
-                </div>
-              )}
-              {item === 'Pages' && (
-                <div className="dropdown pages-dropdown">
-                  {pageDropdown.map((label) => <a key={label}>{label}</a>)}
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-        <div className="nav-actions">
-          <a className="quote-button" href="#contact">Get a Quete</a>
-          <button className="grid-button" onClick={() => setDrawerOpen(true)} aria-label="Open menu">
-            <Grid2X2 size={30} />
-          </button>
-        </div>
-      </nav>
+            {/* Social icons */}
+            <div className="napco-nav-socials">
+              {socialLinks.map(({ Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="napco-social-icon"
+                >
+                  <Icon size={17} />
+                </a>
+              ))}
+            </div>
+          </motion.header>
+        ) : (
+          /* ─── SCROLLED: Floating pill ─── */
+          <motion.div
+            key="pill-nav"
+            className="napco-nav-pill-wrap"
+            initial={{ opacity: 0, scale: 0.85, y: -30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.85, y: -30 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 18 }}
+          >
+            <div className="napco-nav-pill">
+              {/* Logo */}
+              <a href="#home" className="napco-pill-logo">
+                <img src={imageAssets.logo.main} alt="Napco" />
+              </a>
 
-      <SideDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} />
-    </header>
+              {/* Center links */}
+              <nav className="napco-pill-links">
+                {navLinks.map(({ label, href }) => (
+                  <a key={label} href={href} className="napco-pill-link">
+                    {label}
+                  </a>
+                ))}
+              </nav>
+
+              {/* CTA */}
+              <a href="#contact" className="napco-pill-cta">
+                Get a Quote
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
