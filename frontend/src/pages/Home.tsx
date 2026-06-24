@@ -77,7 +77,7 @@ export default function Home() {
       />
 
       <Hero />
-      <IdeaCards />
+      {/* <IdeaCards /> */}
       <AboutPrinting />
       <PromoBanners />
       <WhyChoose />

@@ -2479,3 +2479,423 @@ body.is-hovering .cursor-ring {
   .napco-hero-heading { font-size: clamp(2.1rem, 9vw, 3.2rem); }
 }
 
+/* ================================
+   HOME - ABOUT NAPCO SECTION
+================================ */
+
+.napco-about--video {
+  position: relative;
+  min-height: clamp(780px, 100vh, 1040px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: #020814;
+}
+
+.napco-about__video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.napco-about__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(1, 7, 19, 0.92) 0%,
+      rgba(3, 12, 30, 0.84) 30%,
+      rgba(3, 12, 30, 0.58) 55%,
+      rgba(2, 9, 22, 0.72) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(2, 8, 18, 0.58) 0%,
+      rgba(2, 8, 18, 0.14) 42%,
+      rgba(2, 8, 18, 0.82) 100%
+    );
+}
+
+.napco-about__shade::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 240px;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 8, 18, 0) 0%,
+    rgba(2, 8, 18, 0.92) 100%
+  );
+}
+
+.napco-about__inner {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-top: clamp(130px, 11vw, 175px);
+  padding-right: clamp(22px, 6vw, 110px);
+  padding-bottom: clamp(90px, 8vw, 130px);
+  padding-left: clamp(28px, 8.5vw, 165px);
+}
+
+.napco-about__content {
+  width: 100%;
+  max-width: 760px;
+  margin: 0;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(42px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+}
+
+.napco-about__content--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  margin-bottom: 30px;
+  color: #d49aff;
+  font-size: 0.98rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1px solid rgba(190, 120, 255, 0.44);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(75, 42, 116, 0.76),
+      rgba(31, 19, 56, 0.84)
+    );
+  box-shadow:
+    0 14px 34px rgba(116, 65, 190, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.napco-about__content h2 {
+  margin: 0;
+  max-width: 720px;
+  color: #ffffff;
+  font-size: clamp(3.2rem, 6.2vw, 6.7rem);
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+  font-weight: 900;
+  text-align: left;
+  text-shadow: 0 12px 38px rgba(0, 0, 0, 0.38);
+}
+
+.napco-about__content h3 {
+  margin: 32px 0 0;
+  color: #45baff;
+  font-size: clamp(1.55rem, 2.25vw, 2.35rem);
+  line-height: 1.2;
+  font-weight: 900;
+  text-align: left;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.napco-about__content p {
+  max-width: 760px;
+  margin: 26px 0 42px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(1rem, 1.15vw, 1.17rem);
+  line-height: 1.95;
+  font-weight: 500;
+  text-align: left;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.napco-about__highlights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 0 38px;
+}
+
+.napco-about__card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 112px;
+  padding: 20px 22px;
+  text-align: left;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.06)
+    );
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.napco-about__card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(74, 190, 255, 0.5);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.22),
+      rgba(255, 255, 255, 0.09)
+    );
+  box-shadow:
+    0 26px 54px rgba(0, 120, 210, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.napco-about__card-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  color: #ffffff;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #0070c9, #00b8ff);
+  box-shadow:
+    0 16px 30px rgba(0, 140, 230, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.napco-about__card strong,
+.napco-about__card small {
+  display: block;
+  text-align: left;
+}
+
+.napco-about__card strong {
+  color: #ffffff;
+  font-size: 1.08rem;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.napco-about__card small {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.94rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.napco-about__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  padding: 0 32px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 900;
+  text-decoration: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0073d8, #00b7ff);
+  box-shadow: 0 20px 42px rgba(0, 130, 220, 0.34);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+}
+
+.napco-about__button:hover {
+  transform: translateY(-4px);
+  filter: brightness(1.05);
+  box-shadow: 0 26px 54px rgba(0, 130, 220, 0.46);
+}
+
+/* Small thumbnail replay card */
+.napco-about__thumbnail {
+  position: absolute;
+  right: clamp(22px, 6vw, 110px);
+  bottom: clamp(28px, 7vw, 90px);
+  z-index: 6;
+  width: clamp(230px, 24vw, 430px);
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 28px;
+  cursor: pointer;
+  overflow: hidden;
+  background: #020814;
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(0, 174, 239, 0.08);
+  animation: napcoThumbnailPop 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.napco-about__thumbnail img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transform: scale(1);
+  transition:
+    transform 0.55s ease,
+    filter 0.55s ease;
+}
+
+.napco-about__thumbnail::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 8, 18, 0.08) 0%,
+      rgba(2, 8, 18, 0.72) 100%
+    );
+}
+
+.napco-about__thumbnail:hover img {
+  transform: scale(1.055);
+  filter: brightness(1.1) saturate(1.14);
+}
+
+.napco-about__thumbnail-play {
+  position: absolute;
+  left: 18px;
+  bottom: 18px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 16px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 900;
+  border-radius: 999px;
+  background: rgba(0, 115, 216, 0.86);
+  box-shadow: 0 14px 30px rgba(0, 80, 160, 0.32);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.napco-about__thumbnail-play i {
+  font-size: 0.78rem;
+}
+
+@keyframes napcoThumbnailPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(16px);
+  }
+
+  62% {
+    opacity: 1;
+    transform: scale(1.035) translateY(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .napco-about--video {
+    min-height: auto;
+  }
+
+  .napco-about__inner {
+    padding: 110px 24px 120px;
+  }
+
+  .napco-about__content {
+    max-width: 100%;
+  }
+
+  .napco-about__content h2 {
+    max-width: 720px;
+    font-size: clamp(3rem, 10vw, 5rem);
+  }
+
+  .napco-about__highlights {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+  }
+
+  .napco-about__thumbnail {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    z-index: 6;
+    width: min(100%, 420px);
+    margin: 24px 24px 70px;
+  }
+}
+
+@media (max-width: 640px) {
+  .napco-about__inner {
+    padding: 96px 18px 54px;
+  }
+
+  .section-pill {
+    min-height: 40px;
+    padding: 0 16px;
+    font-size: 0.82rem;
+  }
+
+  .napco-about__content h2 {
+    font-size: clamp(2.8rem, 13vw, 4rem);
+  }
+
+  .napco-about__content h3 {
+    margin-top: 26px;
+  }
+
+  .napco-about__content p {
+    line-height: 1.78;
+  }
+
+  .napco-about__card {
+    min-height: 96px;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .napco-about__button {
+    min-height: 54px;
+    padding: 0 26px;
+  }
+
+  .napco-about__thumbnail {
+    width: calc(100% - 36px);
+    margin: 20px 18px 64px;
+    border-radius: 22px;
+  }
+}
