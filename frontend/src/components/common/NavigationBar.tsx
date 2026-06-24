@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import { Facebook, Instagram, Linkedin } from 'lucide-react';
 import { imageAssets } from '../../data/imageAssets';
 
 const navLinks = [
@@ -13,7 +13,6 @@ const navLinks = [
 const socialLinks = [
   { Icon: Facebook, href: '#', label: 'Facebook' },
   { Icon: Instagram, href: '#', label: 'Instagram' },
-  { Icon: Twitter, href: '#', label: 'Twitter' },
   { Icon: Linkedin, href: '#', label: 'LinkedIn' },
 ];
 
