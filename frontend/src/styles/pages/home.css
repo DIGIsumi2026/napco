@@ -1471,8 +1471,568 @@ body.is-hovering .cursor-ring {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   NAPCO — NEW NAVIGATION BAR
+   NAPCO V2 — NEW NAVIGATION BAR & CTA
    ═══════════════════════════════════════════════════════════════ */
+
+.napco-nav-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* ─── Glass nav (default / top) ─── */
+.napco-nav-glass {
+  pointer-events: all;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(24px, calc((100vw - 1400px) / 2));
+  height: 80px;
+  background: rgba(8, 6, 20, 0.38);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+}
+
+.napco-nav-logo img {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.napco-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.napco-nav-link {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.napco-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #a855f7, #7c3aed);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.napco-nav-link:hover { color: #fff; }
+.napco-nav-link:hover::after { width: 100%; }
+
+.napco-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.napco-nav-socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 10px;
+}
+
+.napco-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  transition: all 0.28s ease;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.napco-social-icon:hover {
+  transform: scale(1.16) translateY(-2px);
+  color: #c084fc;
+  border-color: #a855f7;
+  background: rgba(168, 85, 247, 0.15);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.3);
+}
+
+/* ─── Formula Track CTA ─── */
+.napco-cta-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px; /* acts as border width */
+  border-radius: 100px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.napco-cta-bg {
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(from 0deg, transparent 0 300deg, #c084fc 330deg, #a855f7 360deg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.napco-cta-bg.animate-spin-slow {
+  opacity: 1;
+  animation: napco-spin 2s linear infinite;
+}
+
+.napco-cta-inner {
+  position: relative;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  padding: 10px 24px;
+  border-radius: 100px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  z-index: 1;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+}
+
+.pill-cta .napco-cta-inner {
+  padding: 8px 20px;
+  font-size: 0.86rem;
+}
+
+@keyframes napco-spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* ─── Hamburger Toggle ─── */
+.napco-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1050;
+  gap: 6px;
+}
+
+.hamburger-line {
+  width: 26px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transform-origin: center;
+}
+
+/* ─── Pill nav (scrolled) ─── */
+.napco-nav-pill-wrap {
+  pointer-events: all;
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+}
+
+.napco-nav-pill {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 8px 14px 8px 24px;
+  background: rgba(10, 7, 28, 0.88);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border-radius: 100px;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.napco-pill-logo img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.napco-pill-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.napco-pill-link {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: color 0.22s ease;
+  white-space: nowrap;
+}
+
+.napco-pill-link:hover { color: #c084fc; }
+
+/* ═══════════════════════════════════════════════════════════════
+   NAPCO V2 — SIDEBAR
+   ═══════════════════════════════════════════════════════════════ */
+
+.napco-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1010;
+}
+
+.napco-sidebar-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 380px;
+  background: rgba(12, 10, 24, 0.95);
+  backdrop-filter: blur(24px);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 1020;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.napco-sidebar-close {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 60px;
+}
+
+.napco-sidebar-close button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  gap: 0;
+}
+
+.napco-sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.napco-sidebar-link {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAPCO V2 — HERO SECTION
+   ═══════════════════════════════════════════════════════════════ */
+
+.napco-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 680px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-carousel-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.04);
+  transition: transform 6s ease;
+}
+
+.swiper-slide-active .hero-slide-img {
+  transform: scale(1);
+}
+
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(to top, rgba(4, 2, 14, 0.9) 0%, rgba(4, 2, 14, 0.4) 50%, rgba(4, 2, 14, 0.7) 100%);
+}
+
+.napco-hero-overlay {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  pointer-events: none;
+}
+
+.napco-hero-content.center-align {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: all;
+  max-width: 760px;
+}
+
+.napco-hero-tag {
+  display: inline-block;
+  margin-bottom: 24px;
+  padding: 8px 20px;
+  border-radius: 100px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #c084fc;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.napco-hero-heading {
+  margin: 0 0 28px;
+  font-size: clamp(2.8rem, 6vw, 5.8rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+.napco-hero-accent {
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.napco-hero-desc {
+  margin: 0 0 44px;
+  max-width: 580px;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.napco-hero-actions.center-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Primary / Outline buttons */
+.napco-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  border-radius: 100px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 28px rgba(124, 58, 237, 0.45);
+}
+
+.napco-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(124, 58, 237, 0.6);
+}
+
+.napco-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 36px;
+  border-radius: 100px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.napco-btn-outline:hover {
+  border-color: #a855f7;
+  color: #fff;
+  background: rgba(168, 85, 247, 0.15);
+  transform: translateY(-3px);
+}
+
+.napco-scroll-hint {
+  position: absolute;
+  bottom: 80px;
+  color: rgba(255, 255, 255, 0.5);
+  animation: napcoScrollBounce 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes napcoScrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* ─── Hero Custom Pagination (Pill style) ─── */
+.hero-pagination-container {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-pagination-pill {
+  height: 8px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-pagination-pill.inactive {
+  width: 24px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.hero-pagination-pill.inactive:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.hero-pagination-pill.active {
+  width: 64px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.hero-pagination-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #7c3aed, #c084fc);
+  border-radius: 100px;
+  transform-origin: left;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAPCO V2 — SCROLL TO TOP
+   ═══════════════════════════════════════════════════════════════ */
+
+.napco-scroll-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  outline: none;
+}
+
+.scroll-progress-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scroll-progress-icon {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(10, 7, 28, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 50%;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.napco-scroll-to-top:hover .scroll-progress-icon {
+  background: #7c3aed;
+  transform: translateY(-2px);
+}
+
+/* ─── Responsive Adjustments ─── */
+@media (max-width: 1024px) {
+  .napco-nav-socials { display: none; }
+}
+
+@media (max-width: 768px) {
+  .napco-nav-links { display: none; }
+  .napco-pill-links { display: none; }
+}
+
+@media (max-width: 640px) {
+  .napco-hero-heading { font-size: clamp(2.2rem, 10vw, 3.4rem); }
+  .napco-sidebar-panel { max-width: 100%; }
+}
+
 
 .napco-nav-root {
   position: fixed;

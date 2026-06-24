@@ -11,7 +11,6 @@ import 'swiper/css/effect-fade';
 
 const AUTOPLAY_DELAY = 4500;
 
-// Removed the strict 'as string[]' cast so we can safely handle Next.js image objects
 const heroImages = Object.values(imageAssets.hero) as any[];
 
 export default function HeroCarousel() {
@@ -38,7 +37,6 @@ export default function HeroCarousel() {
         className="hero-swiper"
       >
         {heroImages.map((img, i) => {
-          // Dynamically handle both Vite (string) and Next.js (StaticImageData object) imports
           const imageSource = typeof img === 'string' ? img : img.src;
 
           return (
@@ -55,33 +53,34 @@ export default function HeroCarousel() {
         })}
       </Swiper>
 
-      {/* Gradient overlays */}
+      {/* Dark gradient overlay */}
       <div className="hero-gradient-overlay" />
 
-      {/* Bottom progress bar track */}
-      <div className="hero-progress-track">
-        {heroImages.map((_, i) => (
-          <div
-            key={i}
-            className={`hero-progress-segment ${
-              i === activeIndex ? 'active' : i < activeIndex ? 'done' : ''
-            }`}
-            onClick={() => swiperRef.current?.slideToLoop(i)}
-          >
-            <AnimatePresence>
-              {i === activeIndex && (
+      {/* Custom Pagination Container (Pill Style) */}
+      <div className="hero-pagination-container">
+        {heroImages.map((_, i) => {
+          const isActive = i === activeIndex;
+
+          return (
+            <div
+              key={i}
+              className={`hero-pagination-pill ${isActive ? 'active' : 'inactive'}`}
+              onClick={() => swiperRef.current?.slideToLoop(i)}
+            >
+              {isActive && (
                 <motion.div
                   key={progressKey}
-                  className="hero-progress-fill"
+                  layoutId="activePill"
+                  className="hero-pagination-fill"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ duration: AUTOPLAY_DELAY / 1000, ease: 'linear' }}
                   style={{ originX: 0 }}
                 />
               )}
-            </AnimatePresence>
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

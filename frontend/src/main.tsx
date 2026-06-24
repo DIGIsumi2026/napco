@@ -10,7 +10,8 @@ import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <ReactLenis root options={{ lerp: 0.08, duration: 1.2, smoothWheel: true }}>
+    {/* Snappier Lenis config: increased lerp to 0.12, duration to 1.0 */}
+    <ReactLenis root options={{ lerp: 0.12, duration: 1.0, smoothWheel: true }}>
       <App />
     </ReactLenis>
   </React.StrictMode>

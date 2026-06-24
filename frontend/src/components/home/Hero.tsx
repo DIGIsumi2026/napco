@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import HeroCarousel from './HeroCarousel';
-import Hero3DScene from './Hero3DScene';
 
 export default function Hero() {
   return (
@@ -10,12 +9,9 @@ export default function Hero() {
       {/* ── Background carousel ── */}
       <HeroCarousel />
 
-      {/* ── 3D interactive scene (above carousel, behind text) ── */}
-      <Hero3DScene />
-
       {/* ── Overlay text content ── */}
       <div className="napco-hero-overlay">
-        <div className="napco-hero-content">
+        <div className="napco-hero-content center-align">
 
           <motion.span
             className="napco-hero-tag"
@@ -48,7 +44,7 @@ export default function Hero() {
           </motion.p>
 
           <motion.div
-            className="napco-hero-actions"
+            className="napco-hero-actions center-actions"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}

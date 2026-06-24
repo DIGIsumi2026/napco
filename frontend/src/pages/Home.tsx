@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../styles/pages/home.css';
 import CustomCursor from '../components/common/CustomCursor';
-import FloatingButtons from '../components/common/FloatingButtons';
+// Removed FloatingButtons in favor of ScrollToTop
 import NavigationBar from '../components/common/NavigationBar';
+import Sidebar from '../components/common/Sidebar';
+import ScrollToTop from '../components/common/ScrollToTop';
 import Hero from '../components/home/Hero';
 import IdeaCards from '../components/home/IdeaCards';
 import AboutPrinting from '../components/home/AboutPrinting';
@@ -22,6 +24,8 @@ import Footer from '../components/common/Footer';
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((element) => {
@@ -62,7 +66,16 @@ export default function Home() {
   return (
     <main className="home-page">
       <CustomCursor />
-      <NavigationBar />
+      
+      <NavigationBar 
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+        isSidebarOpen={isSidebarOpen} 
+      />
+      <Sidebar 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+      />
+
       <Hero />
       <IdeaCards />
       <AboutPrinting />
@@ -76,7 +89,8 @@ export default function Home() {
       <ShippingSteps />
       <BlogSection />
       <Footer />
-      <FloatingButtons />
+      
+      <ScrollToTop />
     </main>
   );
 }
