@@ -10,9 +10,14 @@ type Particle = {
   baseY: number;
   vx: number;
   vy: number;
+  offsetX: number;
+  offsetY: number;
   size: number;
   color: string;
   alpha: number;
+  orbit: number;
+  speed: number;
+  seed: number;
 };
 
 const particleColors = ['#0053a0', '#00aeef', '#ec008c', '#fff200', '#111111'];
@@ -20,9 +25,12 @@ const particleColors = ['#0053a0', '#00aeef', '#ec008c', '#fff200', '#111111'];
 export default function ContactCta() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const mouseRef = useRef({
-    x: -9999,
-    y: -9999,
+
+  const cursorRef = useRef({
+    x: 0,
+    y: 0,
+    targetX: 0,
+    targetY: 0,
     active: false,
   });
 
@@ -39,20 +47,26 @@ export default function ContactCta() {
     let animationFrame = 0;
     let width = 0;
     let height = 0;
-    const particleCount = 620;
+
+    const isSmallScreen = window.matchMedia('(max-width: 680px)').matches;
+    const particleCount = isSmallScreen ? 260 : 620;
 
     const createParticles = () => {
       particles = [];
 
       for (let index = 0; index < particleCount; index += 1) {
         const angle = Math.random() * Math.PI * 2;
-        const radius = Math.sqrt(Math.random()) * Math.min(width, height) * 0.5;
+        const spread = Math.sqrt(Math.random());
+        const cursorRadius = 18 + spread * 185;
 
-        const centerX = width * 0.5;
-        const centerY = height * 0.55;
+        const offsetX = Math.cos(angle) * cursorRadius * (0.8 + Math.random() * 0.7);
+        const offsetY = Math.sin(angle) * cursorRadius * (0.45 + Math.random() * 0.75);
 
-        const baseX = centerX + Math.cos(angle) * radius * (0.9 + Math.random() * 0.8);
-        const baseY = centerY + Math.sin(angle) * radius * (0.55 + Math.random() * 0.65);
+        const baseAngle = Math.random() * Math.PI * 2;
+        const baseRadius = Math.sqrt(Math.random()) * Math.min(width, height) * 0.52;
+
+        const baseX = width * 0.5 + Math.cos(baseAngle) * baseRadius * 1.55;
+        const baseY = height * 0.54 + Math.sin(baseAngle) * baseRadius * 0.72;
 
         particles.push({
           x: baseX,
@@ -61,9 +75,14 @@ export default function ContactCta() {
           baseY,
           vx: 0,
           vy: 0,
-          size: Math.random() * 1.8 + 0.45,
+          offsetX,
+          offsetY,
+          size: Math.random() * 1.85 + 0.45,
           color: particleColors[index % particleColors.length],
-          alpha: Math.random() * 0.55 + 0.18,
+          alpha: Math.random() * 0.55 + 0.2,
+          orbit: Math.random() * 14 + 5,
+          speed: Math.random() * 1.15 + 0.55,
+          seed: Math.random() * Math.PI * 2,
         });
       }
     };
@@ -81,42 +100,50 @@ export default function ContactCta() {
       canvas.style.height = `${height}px`;
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      cursorRef.current.x = width * 0.5;
+      cursorRef.current.y = height * 0.5;
+      cursorRef.current.targetX = width * 0.5;
+      cursorRef.current.targetY = height * 0.5;
+
       createParticles();
     };
 
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
 
-      const mouse = mouseRef.current;
+      const cursor = cursorRef.current;
+      const time = performance.now() * 0.001;
+
+      cursor.x += (cursor.targetX - cursor.x) * 0.18;
+      cursor.y += (cursor.targetY - cursor.y) * 0.18;
 
       particles.forEach((particle) => {
-        const dx = particle.x - mouse.x;
-        const dy = particle.y - mouse.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const repelRadius = mouse.active ? 190 : 0;
+        const idleX = Math.cos(time * particle.speed + particle.seed) * particle.orbit;
+        const idleY = Math.sin(time * particle.speed + particle.seed) * particle.orbit;
 
-        if (distance < repelRadius) {
-          const force = (repelRadius - distance) / repelRadius;
-          const angle = Math.atan2(dy, dx);
+        const targetX = cursor.active
+          ? cursor.x + particle.offsetX + idleX
+          : particle.baseX + idleX * 0.45;
 
-          particle.vx += Math.cos(angle) * force * 3.2;
-          particle.vy += Math.sin(angle) * force * 3.2;
-        }
+        const targetY = cursor.active
+          ? cursor.y + particle.offsetY + idleY
+          : particle.baseY + idleY * 0.45;
 
-        const returnX = (particle.baseX - particle.x) * 0.025;
-        const returnY = (particle.baseY - particle.y) * 0.025;
+        particle.vx += (targetX - particle.x) * (cursor.active ? 0.06 : 0.025);
+        particle.vy += (targetY - particle.y) * (cursor.active ? 0.06 : 0.025);
 
-        particle.vx += returnX;
-        particle.vy += returnY;
-
-        particle.vx *= 0.88;
-        particle.vy *= 0.88;
+        particle.vx *= cursor.active ? 0.82 : 0.88;
+        particle.vy *= cursor.active ? 0.82 : 0.88;
 
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        ctx.globalAlpha = particle.alpha;
+        const activeAlpha = cursor.active ? particle.alpha : particle.alpha * 0.28;
+
+        ctx.globalAlpha = activeAlpha;
         ctx.fillStyle = particle.color;
+
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
@@ -126,31 +153,42 @@ export default function ContactCta() {
       animationFrame = window.requestAnimationFrame(draw);
     };
 
+    const handlePointerEnter = (event: PointerEvent) => {
+      const rect = section.getBoundingClientRect();
+
+      cursorRef.current.targetX = event.clientX - rect.left;
+      cursorRef.current.targetY = event.clientY - rect.top;
+      cursorRef.current.x = cursorRef.current.targetX;
+      cursorRef.current.y = cursorRef.current.targetY;
+      cursorRef.current.active = true;
+    };
+
     const handlePointerMove = (event: PointerEvent) => {
       const rect = section.getBoundingClientRect();
 
-      mouseRef.current.x = event.clientX - rect.left;
-      mouseRef.current.y = event.clientY - rect.top;
-      mouseRef.current.active = true;
+      cursorRef.current.targetX = event.clientX - rect.left;
+      cursorRef.current.targetY = event.clientY - rect.top;
+      cursorRef.current.active = true;
     };
 
     const handlePointerLeave = () => {
-      mouseRef.current.active = false;
-      mouseRef.current.x = -9999;
-      mouseRef.current.y = -9999;
+      cursorRef.current.active = false;
     };
 
     resize();
     draw();
 
     window.addEventListener('resize', resize);
+    section.addEventListener('pointerenter', handlePointerEnter);
     section.addEventListener('pointermove', handlePointerMove);
     section.addEventListener('pointerleave', handlePointerLeave);
 
     return () => {
       window.removeEventListener('resize', resize);
+      section.removeEventListener('pointerenter', handlePointerEnter);
       section.removeEventListener('pointermove', handlePointerMove);
       section.removeEventListener('pointerleave', handlePointerLeave);
+
       window.cancelAnimationFrame(animationFrame);
     };
   }, []);
@@ -198,7 +236,9 @@ export default function ContactCta() {
       />
 
       <div className="contact-cta__content">
-        <span className="contact-cta__eyebrow">Let’s Print Something Great</span>
+        <span className="contact-cta__eyebrow">
+          Let’s Print Something Great
+        </span>
 
         <h2>
           Ready to bring your
@@ -213,7 +253,11 @@ export default function ContactCta() {
         </p>
 
         <div className="contact-cta__actions">
-          <a href="/contact-us" className="contact-cta__button contact-cta__button--primary" data-cursor="Contact">
+          <a
+            href="/contact-us"
+            className="contact-cta__button contact-cta__button--primary"
+            data-cursor="Contact"
+          >
             <Send size={18} />
             Contact Us
           </a>
