@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import {
   BookOpen,
   CalendarDays,
@@ -54,6 +54,7 @@ export default function ServiceStats() {
 
   useEffect(() => {
     const section = sectionRef.current;
+
     if (!section) return;
 
     let rafId: number | null = null;
@@ -62,13 +63,10 @@ export default function ServiceStats() {
       const rect = section.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
 
-      // Calculate how far the section has progressed through the viewport
       const progress =
         (viewportHeight - rect.top) / (viewportHeight + rect.height);
 
       const clampedProgress = Math.min(Math.max(progress, 0), 1);
-      
-      // Base movement range (e.g. 180px total travel)
       const baseMove = (clampedProgress - 0.5) * 180;
 
       const floatingElements = section.querySelectorAll<HTMLElement>(
@@ -90,6 +88,7 @@ export default function ServiceStats() {
 
     const handleScroll = () => {
       if (rafId !== null) return;
+
       rafId = window.requestAnimationFrame(updateFloatingElements);
     };
 
@@ -158,9 +157,27 @@ export default function ServiceStats() {
         </div>
       </div>
 
+      <div
+        className="service-stats__float service-stats__float--cartridges-secondary"
+        data-float-speed="0.8"
+        data-direction="-1"
+        data-rotate="-10deg"
+        data-cursor="Ink"
+      >
+        <div className="service-stats__float-inner">
+          <img
+            src={imageAssets.services.floating.cartridges2}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+      </div>
+
       <div className="service-stats__inner">
         <div className="service-stats__heading">
-          <span className="service-stats__pill">Premium Printing Solutions</span>
+          <span className="service-stats__pill">
+            Premium Printing Solutions
+          </span>
 
           <h2>Services Built for Every Brand Impression</h2>
 
@@ -176,7 +193,7 @@ export default function ServiceStats() {
             <article
               className="service-stats__card"
               key={title}
-              style={{ '--card-index': index } as React.CSSProperties}
+              style={{ '--card-index': index } as CSSProperties}
             >
               <span className="service-stats__icon">
                 <Icon size={28} />
@@ -194,7 +211,11 @@ export default function ServiceStats() {
         </div>
 
         <div className="service-stats__action">
-          <a href="/services" className="service-stats__button" data-cursor="See More">
+          <a
+            href="/services"
+            className="service-stats__button"
+            data-cursor="See More"
+          >
             See More
           </a>
         </div>
