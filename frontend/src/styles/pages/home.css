@@ -3390,7 +3390,7 @@ body.is-hovering .cursor-ring {
 }
 
 /* ================================
-   home - visual service section 
+   HOME - VISUAL SERVICES SECTION
 ================================ */
 
 .services-visual {
@@ -3413,13 +3413,21 @@ body.is-hovering .cursor-ring {
   position: absolute;
   inset: 0;
   z-index: 1;
-  opacity: 0.16;
   pointer-events: none;
+  opacity: 0.15;
   background-image:
-    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.32), transparent 20%),
-    radial-gradient(circle at 70% 40%, rgba(255, 255, 255, 0.22), transparent 22%),
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    radial-gradient(
+      circle at 18% 24%,
+      rgba(255, 255, 255, 0.34),
+      transparent 21%
+    ),
+    radial-gradient(
+      circle at 72% 42%,
+      rgba(255, 255, 255, 0.24),
+      transparent 24%
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size:
     520px 520px,
     620px 620px,
@@ -3427,12 +3435,13 @@ body.is-hovering .cursor-ring {
     4px 4px;
 }
 
+/* Grid lines */
 .services-visual__line {
   position: absolute;
   z-index: 2;
   display: block;
   pointer-events: none;
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.64);
 }
 
 .services-visual__line--v {
@@ -3456,31 +3465,31 @@ body.is-hovering .cursor-ring {
 }
 
 .services-visual__line--h1 {
-  top: 30%;
+  top: 32%;
 }
 
 .services-visual__line--h2 {
-  top: 70%;
+  top: 72%;
 }
 
+/* Stage */
 .services-visual__stage {
   position: relative;
-  z-index: 4;
+  z-index: 5;
   width: 100%;
   height: 100vh;
   min-height: 760px;
-  display: grid;
-  place-items: center;
-  padding: clamp(80px, 8vw, 120px) clamp(22px, 5vw, 90px);
+  overflow: hidden;
   perspective: 1600px;
 }
 
+/* Intro */
 .services-visual__intro {
   position: absolute;
-  top: clamp(86px, 9vw, 130px);
+  top: clamp(112px, 12vh, 145px);
   left: 50%;
-  z-index: 8;
-  width: min(820px, calc(100% - 44px));
+  z-index: 40;
+  width: min(900px, calc(100% - 44px));
   text-align: center;
   transform: translateX(-50%);
   pointer-events: none;
@@ -3493,42 +3502,50 @@ body.is-hovering .cursor-ring {
   min-height: 42px;
   padding: 0 18px;
   margin-bottom: 20px;
-  color: #4b2a00;
+  color: #3e3108;
   font-size: 0.82rem;
   font-weight: 900;
   letter-spacing: 0.11em;
   text-transform: uppercase;
   border-radius: 999px;
   border: 1px solid rgba(30, 25, 10, 0.16);
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.66);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }
 
 .services-visual__intro h2 {
   margin: 0;
-  color: #1d1a14;
-  font-size: clamp(2.35rem, 4.5vw, 5.1rem);
-  line-height: 1.02;
-  letter-spacing: -0.065em;
+  color: #15110c;
+  font-size: clamp(2.45rem, 4.9vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.07em;
   font-weight: 900;
 }
 
-.services-visual__hero-card {
+/* Grid layer */
+.services-visual__grid {
   position: absolute;
-  z-index: 7;
-  width: min(720px, 68vw);
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-radius: 0;
-  background: #f4f0e4;
-  box-shadow:
-    0 34px 90px rgba(25, 20, 10, 0.18),
-    0 0 0 1px rgba(255, 255, 255, 0.58);
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
   transform-style: preserve-3d;
 }
 
-.services-visual__hero-card img,
+/* Image tiles */
+.services-visual__tile {
+  position: absolute;
+  width: min(34vw, 520px);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #f5efe2;
+  box-shadow:
+    0 26px 76px rgba(35, 27, 10, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.62);
+  transform-style: preserve-3d;
+}
+
 .services-visual__tile img,
 .services-visual__detail-image img {
   width: 100%;
@@ -3537,62 +3554,46 @@ body.is-hovering .cursor-ring {
   object-fit: cover;
 }
 
-.services-visual__grid {
-  position: absolute;
-  z-index: 6;
-  width: min(1280px, 94vw);
-  height: min(760px, 68vh);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: clamp(18px, 2vw, 28px);
-  transform-style: preserve-3d;
+.services-visual__tile img {
+  transform: scale(1.01);
 }
 
-.services-visual__tile {
-  position: relative;
-  overflow: hidden;
-  background: #f4f0e4;
-  box-shadow:
-    0 26px 70px rgba(35, 27, 10, 0.16),
-    0 0 0 1px rgba(255, 255, 255, 0.52);
-  transform-style: preserve-3d;
-}
-
+/* Grid positions */
 .services-visual__tile--1 {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
+  left: 50%;
+  top: 52%;
 }
 
 .services-visual__tile--2 {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
+  left: 22%;
+  top: 28%;
 }
 
 .services-visual__tile--3 {
-  grid-column: 3 / 4;
-  grid-row: 1 / 2;
+  left: 78%;
+  top: 29%;
 }
 
 .services-visual__tile--4 {
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
+  left: 20%;
+  top: 76%;
 }
 
 .services-visual__tile--5 {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
+  left: 50%;
+  top: 82%;
 }
 
 .services-visual__tile--6 {
-  grid-column: 3 / 4;
-  grid-row: 2 / 3;
+  left: 80%;
+  top: 74%;
 }
 
+/* Details */
 .services-visual__details {
   position: absolute;
   inset: 0;
-  z-index: 9;
+  z-index: 30;
   pointer-events: none;
 }
 
@@ -3600,7 +3601,7 @@ body.is-hovering .cursor-ring {
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: minmax(340px, 0.95fr) minmax(320px, 0.75fr);
+  grid-template-columns: minmax(420px, 0.98fr) minmax(330px, 0.68fr);
   align-items: center;
   gap: clamp(34px, 5vw, 78px);
   padding:
@@ -3615,23 +3616,24 @@ body.is-hovering .cursor-ring {
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: #f4f0e4;
+  border-radius: 30px;
+  background: #f5efe2;
   box-shadow:
-    0 36px 100px rgba(35, 27, 10, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.62);
+    0 36px 100px rgba(35, 27, 10, 0.22),
+    0 0 0 1px rgba(255, 255, 255, 0.68);
   transform-style: preserve-3d;
 }
 
 .services-visual__detail-copy {
-  max-width: 510px;
+  max-width: 520px;
   padding: clamp(30px, 4vw, 52px);
   color: #1d1a14;
   border-radius: 34px;
-  background: rgba(255, 250, 236, 0.68);
-  border: 1px solid rgba(255, 255, 255, 0.58);
+  background: rgba(255, 250, 236, 0.74);
+  border: 1px solid rgba(255, 255, 255, 0.66);
   box-shadow:
     0 26px 76px rgba(35, 27, 10, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    inset 0 1px 0 rgba(255, 255, 255, 0.76);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
@@ -3677,131 +3679,229 @@ body.is-hovering .cursor-ring {
   letter-spacing: 0.14em;
 }
 
-.services-visual__controls {
+/* Scroll hint */
+.services-visual__scroll-hint {
   position: absolute;
-  right: max(24px, calc((100vw - 1320px) / 2));
-  bottom: clamp(38px, 5vw, 74px);
-  z-index: 20;
+  right: clamp(18px, 3vw, 46px);
+  top: 50%;
+  z-index: 60;
   display: flex;
-  gap: 14px;
-  pointer-events: auto;
-}
-
-.services-visual__controls button {
-  width: 64px;
-  height: 64px;
-  display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  color: #111111;
-  border: 1px solid rgba(30, 25, 10, 0.16);
+  gap: 14px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.services-visual__scroll-line {
+  position: relative;
+  width: 1px;
+  height: clamp(86px, 16vh, 160px);
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.14);
+}
+
+.services-visual__scroll-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -45%;
+  width: 100%;
+  height: 45%;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(0, 83, 160, 0.92),
+    rgba(0, 174, 239, 0.95),
+    transparent
+  );
+  animation: servicesScrollLine 1.65s ease-in-out infinite;
+}
+
+.services-visual__scroll-text {
+  color: rgba(20, 20, 20, 0.58);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+.services-visual__scroll-dot {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.66);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  cursor: pointer;
-  transition:
-    transform 0.32s ease,
-    background 0.32s ease,
-    color 0.32s ease,
-    box-shadow 0.32s ease;
+  background: #0053a0;
+  box-shadow:
+    0 0 0 7px rgba(0, 83, 160, 0.12),
+    0 0 22px rgba(0, 174, 239, 0.52);
+  animation: servicesScrollDot 1.65s ease-in-out infinite;
 }
 
-.services-visual__controls button:hover {
-  transform: translateY(-5px);
-  color: #ffffff;
-  background: #111111;
-  box-shadow: 0 18px 36px rgba(30, 25, 10, 0.22);
+@keyframes servicesScrollLine {
+  0% {
+    top: -45%;
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
 }
 
+@keyframes servicesScrollDot {
+  0%,
+  100% {
+    transform: translateY(-5px) scale(0.86);
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: translateY(5px) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Tablet */
 @media (max-width: 1024px) {
   .services-visual__stage {
     min-height: 720px;
   }
 
-  .services-visual__grid {
-    width: min(920px, 92vw);
-    height: min(680px, 62vh);
+  .services-visual__tile {
+    width: min(42vw, 420px);
+    border-radius: 24px;
   }
 
   .services-visual__detail {
     grid-template-columns: 1fr;
     align-content: center;
+    gap: 28px;
+    padding: 112px 24px 92px;
   }
 
-  .services-visual__detail-image {
-    max-width: 760px;
-    margin: 0 auto;
-  }
-
+  .services-visual__detail-image,
   .services-visual__detail-copy {
     max-width: 760px;
     margin: 0 auto;
   }
 
-  .services-visual__controls {
-    right: 24px;
+  .services-visual__scroll-hint {
+    right: 18px;
+  }
+
+  .services-visual__scroll-line {
+    height: 110px;
   }
 }
 
+/* Mobile */
 @media (max-width: 760px) {
   .services-visual__stage {
-    min-height: 680px;
-    padding: 86px 18px;
+    min-height: 700px;
   }
 
   .services-visual__intro {
-    top: 76px;
+    top: 86px;
+  }
+
+  .services-visual__intro span {
+    min-height: 38px;
+    padding: 0 15px;
+    font-size: 0.68rem;
   }
 
   .services-visual__intro h2 {
     font-size: clamp(2.2rem, 11vw, 3.6rem);
   }
 
-  .services-visual__hero-card {
-    width: min(88vw, 520px);
+  .services-visual__tile {
+    width: min(56vw, 330px);
+    border-radius: 20px;
   }
 
-  .services-visual__grid {
-    width: 88vw;
-    height: 62vh;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 14px;
+  .services-visual__tile--1 {
+    left: 50%;
+    top: 52%;
   }
 
-  .services-visual__tile--1,
-  .services-visual__tile--2,
-  .services-visual__tile--3,
-  .services-visual__tile--4,
-  .services-visual__tile--5,
+  .services-visual__tile--2 {
+    left: 20%;
+    top: 30%;
+  }
+
+  .services-visual__tile--3 {
+    left: 80%;
+    top: 30%;
+  }
+
+  .services-visual__tile--4 {
+    left: 20%;
+    top: 74%;
+  }
+
+  .services-visual__tile--5 {
+    left: 50%;
+    top: 82%;
+  }
+
   .services-visual__tile--6 {
-    grid-column: auto;
-    grid-row: auto;
+    left: 80%;
+    top: 74%;
   }
 
   .services-visual__detail {
-    padding: 110px 18px 92px;
-    gap: 24px;
+    padding: 104px 18px 92px;
+    gap: 22px;
+  }
+
+  .services-visual__detail-image {
+    border-radius: 22px;
   }
 
   .services-visual__detail-copy {
-    padding: 26px;
-    border-radius: 26px;
+    padding: 24px;
+    border-radius: 24px;
   }
 
   .services-visual__detail-copy h3 {
-    font-size: clamp(2rem, 11vw, 3.3rem);
+    font-size: clamp(2rem, 11vw, 3.25rem);
   }
 
-  .services-visual__controls {
-    left: 18px;
-    right: auto;
-    bottom: 28px;
+  .services-visual__detail-copy p {
+    margin-top: 18px;
+    line-height: 1.68;
   }
 
-  .services-visual__controls button {
-    width: 56px;
-    height: 56px;
+  .services-visual__scroll-hint {
+    right: 14px;
+    top: auto;
+    bottom: 24px;
+    transform: none;
+    gap: 10px;
+  }
+
+  .services-visual__scroll-line {
+    height: 72px;
+  }
+
+  .services-visual__scroll-text {
+    font-size: 0.62rem;
+  }
+
+  .services-visual__scroll-dot {
+    width: 8px;
+    height: 8px;
   }
 }

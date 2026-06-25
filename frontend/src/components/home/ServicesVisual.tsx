@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
@@ -56,15 +55,12 @@ const visualServices = [
 export default function ServicesVisual() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
-  const labelProgressRef = useRef<number[]>([]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
     const section = sectionRef.current;
+    const canvas = canvasRef.current;
 
-    if (!canvas || !section) return;
+    if (!section || !canvas) return;
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -81,7 +77,6 @@ export default function ServicesVisual() {
       transparent: true,
       uniforms: {
         uTime: { value: 0 },
-        uResolution: { value: new THREE.Vector2(1, 1) },
       },
       vertexShader: `
         varying vec2 vUv;
@@ -96,7 +91,6 @@ export default function ServicesVisual() {
 
         varying vec2 vUv;
         uniform float uTime;
-        uniform vec2 uResolution;
 
         float blob(vec2 uv, vec2 p, float r) {
           float d = distance(uv, p);
@@ -106,26 +100,26 @@ export default function ServicesVisual() {
         void main() {
           vec2 uv = vUv;
 
-          vec3 yellow = vec3(1.0, 0.92, 0.05);
-          vec3 lime = vec3(0.52, 0.9, 0.25);
-          vec3 cyan = vec3(0.0, 0.65, 0.95);
-          vec3 blue = vec3(0.1, 0.45, 0.95);
-          vec3 pink = vec3(0.95, 0.1, 0.55);
-          vec3 cream = vec3(0.98, 0.96, 0.88);
+          vec3 cream = vec3(0.98, 0.95, 0.84);
+          vec3 yellow = vec3(1.0, 0.92, 0.02);
+          vec3 lime = vec3(0.52, 0.9, 0.28);
+          vec3 cyan = vec3(0.0, 0.68, 0.95);
+          vec3 blue = vec3(0.14, 0.48, 0.95);
+          vec3 peach = vec3(1.0, 0.78, 0.66);
 
-          vec2 p1 = vec2(0.18 + sin(uTime * 0.22) * 0.05, 0.62);
-          vec2 p2 = vec2(0.55 + cos(uTime * 0.18) * 0.08, 0.55 + sin(uTime * 0.2) * 0.04);
-          vec2 p3 = vec2(0.88, 0.72 + cos(uTime * 0.24) * 0.08);
-          vec2 p4 = vec2(0.75 + sin(uTime * 0.16) * 0.04, 0.18);
+          vec2 p1 = vec2(0.16 + sin(uTime * 0.18) * 0.04, 0.58);
+          vec2 p2 = vec2(0.48 + cos(uTime * 0.16) * 0.06, 0.48);
+          vec2 p3 = vec2(0.86, 0.67 + sin(uTime * 0.2) * 0.06);
+          vec2 p4 = vec2(0.62, 0.14 + cos(uTime * 0.18) * 0.04);
 
           vec3 color = cream;
-          color = mix(color, yellow, blob(uv, p1, 0.55) * 0.75);
-          color = mix(color, lime, blob(uv, p2, 0.48) * 0.55);
-          color = mix(color, cyan, blob(uv, p3, 0.52) * 0.72);
-          color = mix(color, blue, blob(uv, p4, 0.46) * 0.42);
-          color = mix(color, pink, blob(uv, vec2(0.35, 0.22), 0.35) * 0.12);
+          color = mix(color, yellow, blob(uv, p1, 0.55) * 0.78);
+          color = mix(color, lime, blob(uv, p2, 0.52) * 0.58);
+          color = mix(color, cyan, blob(uv, p3, 0.56) * 0.72);
+          color = mix(color, blue, blob(uv, p4, 0.42) * 0.34);
+          color = mix(color, peach, blob(uv, vec2(0.2, 0.12), 0.42) * 0.28);
 
-          gl_FragColor = vec4(color, 0.78);
+          gl_FragColor = vec4(color, 0.84);
         }
       `,
     });
@@ -133,21 +127,20 @@ export default function ServicesVisual() {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    let animationFrame = 0;
+    let frameId = 0;
 
     const resize = () => {
       const width = section.offsetWidth;
       const height = section.offsetHeight;
 
-      renderer.setSize(width, height, false);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-      material.uniforms.uResolution.value.set(width, height);
+      renderer.setSize(width, height, false);
     };
 
     const animate = () => {
       material.uniforms.uTime.value += 0.016;
       renderer.render(scene, camera);
-      animationFrame = window.requestAnimationFrame(animate);
+      frameId = window.requestAnimationFrame(animate);
     };
 
     resize();
@@ -157,7 +150,8 @@ export default function ServicesVisual() {
 
     return () => {
       window.removeEventListener('resize', resize);
-      window.cancelAnimationFrame(animationFrame);
+      window.cancelAnimationFrame(frameId);
+
       geometry.dispose();
       material.dispose();
       renderer.dispose();
@@ -170,42 +164,82 @@ export default function ServicesVisual() {
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      const hero = section.querySelector('.services-visual__hero-card');
-      const heroImage = section.querySelector('.services-visual__hero-card img');
-      const grid = section.querySelector('.services-visual__grid');
-      const tiles = gsap.utils.toArray<HTMLElement>('.services-visual__tile');
-      const details = gsap.utils.toArray<HTMLElement>('.services-visual__detail');
-      const detailImages = gsap.utils.toArray<HTMLElement>('.services-visual__detail-image');
-      const detailText = gsap.utils.toArray<HTMLElement>('.services-visual__detail-copy');
-      const controls = section.querySelector('.services-visual__controls');
-      const gridLines = gsap.utils.toArray<HTMLElement>('.services-visual__line');
+      const intro = section.querySelector<HTMLElement>('.services-visual__intro');
+      const introTitle = section.querySelector<HTMLElement>(
+        '.services-visual__intro h2'
+      );
+      const pill = section.querySelector<HTMLElement>(
+        '.services-visual__intro span'
+      );
 
-      gsap.set(hero, {
-        autoAlpha: 0,
-        scale: 0.64,
-        y: 70,
-        rotateX: 12,
-        transformOrigin: '50% 50%',
+      const tiles = Array.from(
+        section.querySelectorAll<HTMLElement>('.services-visual__tile')
+      );
+
+      const gridLines = Array.from(
+        section.querySelectorAll<HTMLElement>('.services-visual__line')
+      );
+
+      const details = Array.from(
+        section.querySelectorAll<HTMLElement>('.services-visual__detail')
+      );
+
+      const detailImages = Array.from(
+        section.querySelectorAll<HTMLElement>('.services-visual__detail-image')
+      );
+
+      const detailCopies = Array.from(
+        section.querySelectorAll<HTMLElement>('.services-visual__detail-copy')
+      );
+
+      const scrollHint = section.querySelector<HTMLElement>(
+        '.services-visual__scroll-hint'
+      );
+
+      const firstTile = tiles[0];
+      const otherTiles = tiles.slice(1);
+
+      gsap.set(intro, {
+        autoAlpha: 1,
       });
 
-      gsap.set(heroImage, {
-        scale: 1.18,
-        transformOrigin: '50% 50%',
+      gsap.set(pill, {
+        autoAlpha: 1,
+        y: 0,
       });
 
-      gsap.set(grid, {
+      gsap.set(introTitle, {
+        autoAlpha: 1,
+        y: 0,
+      });
+
+      gsap.set(gridLines, {
         autoAlpha: 0,
-        scale: 1.12,
+        scale: 0,
         transformOrigin: '50% 50%',
       });
 
       gsap.set(tiles, {
+        xPercent: -50,
+        yPercent: -50,
         autoAlpha: 0,
-        scale: 0.44,
-        x: 0,
-        y: 0,
+        scale: 0.86,
         rotate: 0,
         transformOrigin: '50% 50%',
+      });
+
+      gsap.set(firstTile, {
+        autoAlpha: 0,
+        scale: 1.58,
+        y: 56,
+        rotateX: 10,
+        zIndex: 12,
+      });
+
+      gsap.set(otherTiles, {
+        autoAlpha: 0,
+        scale: 0.82,
+        y: 34,
       });
 
       gsap.set(details, {
@@ -215,26 +249,18 @@ export default function ServicesVisual() {
 
       gsap.set(detailImages, {
         autoAlpha: 0,
-        scale: 1.14,
-        y: 80,
-        rotateX: 9,
-        transformOrigin: '50% 50%',
+        scale: 1.08,
+        y: 64,
+        rotateX: 7,
       });
 
-      gsap.set(detailText, {
+      gsap.set(detailCopies, {
         autoAlpha: 0,
         y: 36,
       });
 
-      gsap.set(controls, {
-        autoAlpha: 0,
-        y: 24,
-      });
-
-      gsap.set(gridLines, {
-        scale: 0,
-        autoAlpha: 0,
-        transformOrigin: '50% 50%',
+      gsap.set(scrollHint, {
+        autoAlpha: 1,
       });
 
       const tl = gsap.timeline({
@@ -244,146 +270,154 @@ export default function ServicesVisual() {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: `+=${window.innerHeight * 7}`,
-          scrub: 1.15,
+          end: () => `+=${window.innerHeight * 8}`,
+          scrub: 0.85,
           pin: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
-      timelineRef.current = tl;
-      scrollTriggerRef.current = tl.scrollTrigger || null;
-
-      tl.addLabel('intro');
+      tl.addLabel('start');
 
       tl.to(
         gridLines,
         {
-          autoAlpha: 0.65,
+          autoAlpha: 0.62,
           scale: 1,
-          duration: 0.65,
-          stagger: 0.04,
+          duration: 0.8,
+          stagger: 0.05,
         },
-        'intro'
+        'start'
       );
 
       tl.to(
-        hero,
+        firstTile,
+        {
+          autoAlpha: 1,
+          scale: 1.28,
+          y: 0,
+          rotateX: 0,
+          duration: 1.05,
+          ease: 'back.out(1.45)',
+        },
+        'start+=0.1'
+      );
+
+      tl.to(
+        introTitle,
+        {
+          autoAlpha: 0,
+          y: -34,
+          duration: 0.55,
+          ease: 'power2.out',
+        },
+        'start+=0.34'
+      );
+
+      tl.to(
+        pill,
+        {
+          y: -10,
+          duration: 0.5,
+          ease: 'power2.out',
+        },
+        'start+=0.42'
+      );
+
+      tl.addLabel('grid-build');
+
+      tl.to(
+        firstTile,
+        {
+          scale: 1,
+          y: 0,
+          duration: 0.88,
+          ease: 'power3.inOut',
+        },
+        'grid-build'
+      );
+
+      tl.to(
+        otherTiles,
         {
           autoAlpha: 1,
           scale: 1,
           y: 0,
-          rotateX: 0,
-          duration: 1,
-          ease: 'back.out(1.45)',
-        },
-        'intro+=0.08'
-      );
-
-      tl.to(
-        heroImage,
-        {
-          scale: 1,
-          duration: 1.1,
-          ease: 'power3.out',
-        },
-        'intro+=0.08'
-      );
-
-      tl.addLabel('grid');
-
-      tl.to(
-        hero,
-        {
-          autoAlpha: 0,
-          scale: 0.56,
-          y: -20,
-          duration: 0.75,
-          ease: 'power2.inOut',
-        },
-        'grid'
-      );
-
-      tl.to(
-        grid,
-        {
-          autoAlpha: 1,
-          scale: 1,
-          duration: 0.7,
-          ease: 'power2.inOut',
-        },
-        'grid+=0.08'
-      );
-
-      tl.to(
-        tiles,
-        {
-          autoAlpha: 1,
-          scale: 1,
-          duration: 0.8,
+          duration: 0.88,
           stagger: {
-            amount: 0.34,
+            amount: 0.36,
             from: 'center',
           },
-          ease: 'back.out(1.25)',
+          ease: 'back.out(1.18)',
         },
-        'grid+=0.14'
+        'grid-build+=0.16'
       );
 
       tl.to(
         tiles,
         {
-          y: (index) => {
-            const values = [-14, 18, -8, 22, -18, 10];
-            return values[index] || 0;
-          },
           x: (index) => {
-            const values = [-12, 16, 10, -16, 8, -8];
+            const values = [0, -10, 10, -14, 0, 14];
             return values[index] || 0;
           },
-          duration: 0.7,
-          stagger: 0.04,
+          y: (index) => {
+            const values = [0, -12, 10, 12, -10, 14];
+            return values[index] || 0;
+          },
+          duration: 0.65,
+          stagger: 0.03,
         },
-        'grid+=0.78'
+        'grid-build+=0.82'
       );
 
-      tl.addLabel('disperse');
+      tl.addLabel('grid-disperse');
+
+      tl.to(
+        pill,
+        {
+          autoAlpha: 0,
+          y: -24,
+          duration: 0.4,
+          ease: 'power2.out',
+        },
+        'grid-disperse'
+      );
 
       tl.to(
         tiles,
         {
           x: (index) => {
-            const values = [-520, 0, 520, -560, 0, 560];
+            const values = [0, -560, 560, -620, 0, 620];
             return values[index] || 0;
           },
           y: (index) => {
-            const values = [-240, -310, -240, 260, 330, 260];
+            const values = [0, -330, -310, 330, 380, 320];
             return values[index] || 0;
           },
+          scale: 0.78,
           rotate: (index) => {
-            const values = [-8, 4, 8, 6, -5, 10];
+            const values = [0, -6, 6, 8, -5, 7];
             return values[index] || 0;
           },
-          scale: 0.74,
           autoAlpha: 0,
           duration: 1,
           stagger: {
-            amount: 0.22,
+            amount: 0.2,
             from: 'edges',
           },
           ease: 'power3.inOut',
         },
-        'disperse'
+        'grid-disperse+=0.05'
       );
 
       tl.to(
         gridLines,
         {
-          autoAlpha: 0.42,
-          duration: 0.6,
+          autoAlpha: 0.44,
+          duration: 0.5,
         },
-        'disperse'
+        'grid-disperse+=0.2'
       );
 
       visualServices.forEach((_, index) => {
@@ -392,7 +426,7 @@ export default function ServicesVisual() {
 
         const detail = details[index];
         const image = detailImages[index];
-        const text = detailText[index];
+        const copy = detailCopies[index];
 
         tl.to(
           detail,
@@ -411,62 +445,47 @@ export default function ServicesVisual() {
             scale: 1,
             y: 0,
             rotateX: 0,
-            duration: 0.82,
+            duration: 0.85,
             ease: 'power3.out',
           },
           label
         );
 
         tl.to(
-            text,
-            {
-                autoAlpha: 1,
-                y: 0,
-                duration: 0.68,
-                ease: 'power3.out',
-            },
-            `${label}+=0.14`
-        );
-
-        tl.to(
-          controls,
+          copy,
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.45,
+            duration: 0.72,
+            ease: 'power3.out',
           },
-          label
+          `${label}+=0.12`
         );
 
-        tl.to(
-          {},
-          {
-            duration: 0.65,
-          }
-        );
+        tl.to({}, { duration: 0.74 });
 
         if (index < visualServices.length - 1) {
           tl.to(
             image,
             {
               autoAlpha: 0,
-              scale: 0.92,
-              y: -70,
-              duration: 0.55,
+              scale: 0.94,
+              y: -58,
+              duration: 0.52,
               ease: 'power2.inOut',
             },
-            `detail-${index}+=1.35`
+            `${label}+=1.32`
           );
 
           tl.to(
-            text,
+            copy,
             {
               autoAlpha: 0,
-              y: -34,
-              duration: 0.45,
+              y: -32,
+              duration: 0.44,
               ease: 'power2.inOut',
             },
-            `detail-${index}+=1.34`
+            `${label}+=1.3`
           );
 
           tl.to(
@@ -476,50 +495,14 @@ export default function ServicesVisual() {
               pointerEvents: 'none',
               duration: 0.01,
             },
-            `detail-${index}+=1.9`
+            `${label}+=1.86`
           );
         }
-      });
-
-      tl.addLabel('end');
-
-      labelProgressRef.current = visualServices.map((_, index) => {
-        const labelTime = tl.labels[`detail-${index}`] || 0;
-        return labelTime / tl.duration();
       });
     }, section);
 
     return () => ctx.revert();
   }, []);
-
-  const goToService = (direction: 'prev' | 'next') => {
-    const trigger = scrollTriggerRef.current;
-    const progressList = labelProgressRef.current;
-
-    if (!trigger || !progressList.length) return;
-
-    const currentProgress = trigger.progress;
-
-    let currentIndex = progressList.findIndex((progress, index) => {
-      const nextProgress = progressList[index + 1] ?? 1;
-      return currentProgress >= progress - 0.02 && currentProgress < nextProgress - 0.02;
-    });
-
-    if (currentIndex === -1) currentIndex = 0;
-
-    const nextIndex =
-      direction === 'next'
-        ? Math.min(currentIndex + 1, progressList.length - 1)
-        : Math.max(currentIndex - 1, 0);
-
-    const targetProgress = progressList[nextIndex];
-    const targetScroll = trigger.start + (trigger.end - trigger.start) * targetProgress;
-
-    window.scrollTo({
-      top: targetScroll,
-      behavior: 'smooth',
-    });
-  };
 
   return (
     <section className="services-visual" ref={sectionRef}>
@@ -538,14 +521,12 @@ export default function ServicesVisual() {
           <h2>Explore NAPCO’s Print Capabilities</h2>
         </div>
 
-        <article className="services-visual__hero-card">
-          <img src={visualServices[0].image} alt={visualServices[0].title} />
-        </article>
-
         <div className="services-visual__grid">
           {visualServices.map((service, index) => (
             <article
-              className={`services-visual__tile services-visual__tile--${index + 1}`}
+              className={`services-visual__tile services-visual__tile--${
+                index + 1
+              }`}
               key={service.title}
             >
               <img src={service.image} alt={service.title} />
@@ -570,24 +551,10 @@ export default function ServicesVisual() {
           ))}
         </div>
 
-        <div className="services-visual__controls">
-          <button
-            type="button"
-            onClick={() => goToService('prev')}
-            aria-label="Previous service"
-            data-cursor="Previous"
-          >
-            <ArrowLeft size={22} />
-          </button>
-
-          <button
-            type="button"
-            onClick={() => goToService('next')}
-            aria-label="Next service"
-            data-cursor="Next"
-          >
-            <ArrowRight size={22} />
-          </button>
+        <div className="services-visual__scroll-hint" aria-hidden="true">
+          <span className="services-visual__scroll-line" />
+          <span className="services-visual__scroll-text">Scroll</span>
+          <span className="services-visual__scroll-dot" />
         </div>
       </div>
     </section>
