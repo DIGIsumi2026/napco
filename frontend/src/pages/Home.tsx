@@ -3,11 +3,17 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import '../styles/pages/home.css';
 import CustomCursor from '../components/common/CustomCursor';
-// Removed FloatingButtons in favor of ScrollToTop
 import NavigationBar from '../components/common/NavigationBar';
 import Sidebar from '../components/common/Sidebar';
 import ScrollToTop from '../components/common/ScrollToTop';
 import Hero from '../components/home/Hero';
+import ServiceStats from '../components/home/ServiceStats';
+
+
+
+
+
+
 import IdeaCards from '../components/home/IdeaCards';
 import AboutPrinting from '../components/home/AboutPrinting';
 import PromoBanners from '../components/home/PromoBanners';
@@ -79,6 +85,7 @@ export default function Home() {
       <Hero />
       {/* <IdeaCards /> */}
       <AboutPrinting />
+      <ServiceStats/>
       <PromoBanners />
       <WhyChoose />
       <ProjectShowcase />

@@ -10,6 +10,13 @@ import building5 from '../assets/images/building-5.jpg';
 //about us 
 import napcoLogoRevealThumb from "../assets/images/napco-logo-reveal-thumb.png";
 
+//service stat
+import servicePrinter3d from "../assets/images/service-printer-3d.png";
+import servicePapers3d from "../assets/images/service-papers-3d.png";
+import serviceCartridges3d from "../assets/images/service-cartridges-3d.png";
+import serviceCartridges23d from "../assets/images/service-cartridges2-3d.png";
+
+
 
 export const imageAssets = {
   logo: {
@@ -25,5 +32,14 @@ export const imageAssets = {
 
   about:{
     logoRevealThumbnail: napcoLogoRevealThumb,
+  },
+
+  services:{
+    floating:{
+      printer: servicePrinter3d,
+      papers: servicePapers3d,
+      cartridges: serviceCartridges3d,
+      cartridges2: serviceCartridges23d,
+    },
   }
 } as const;
