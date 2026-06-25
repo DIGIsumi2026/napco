@@ -51,86 +51,111 @@ const services = [
 
 export default function ServiceStats() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
 
- useEffect(() => {
-  const section = sectionRef.current;
-  if (!section) return;
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
 
-  let rafId: number | null = null;
+    let rafId: number | null = null;
 
-  const updateFloatingElements = () => {
-    const rect = section.getBoundingClientRect();
-    const sectionTop = window.scrollY + rect.top;
-    const scrollInsideSection = window.scrollY - sectionTop;
+    const updateFloatingElements = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
 
-    const floatingElements = section.querySelectorAll<HTMLElement>(
-      '.service-stats__float'
-    );
+      // Calculate how far the section has progressed through the viewport
+      const progress =
+        (viewportHeight - rect.top) / (viewportHeight + rect.height);
 
-    floatingElements.forEach((element) => {
-      const speed = Number(element.dataset.floatSpeed || 0.2);
-      const y = scrollInsideSection * speed;
+      const clampedProgress = Math.min(Math.max(progress, 0), 1);
+      
+      // Base movement range (e.g. 180px total travel)
+      const baseMove = (clampedProgress - 0.5) * 180;
 
-      element.style.setProperty('--float-y', `${y}px`);
-    });
+      const floatingElements = section.querySelectorAll<HTMLElement>(
+        '.service-stats__float'
+      );
 
-    rafId = null;
-  };
+      floatingElements.forEach((element) => {
+        const speed = Number(element.dataset.floatSpeed || '1');
+        const rotate = element.dataset.rotate || '0deg';
+        const direction = Number(element.dataset.direction || '1');
 
-  const handleScroll = () => {
-    if (rafId) return;
-    rafId = window.requestAnimationFrame(updateFloatingElements);
-  };
+        const y = baseMove * speed * direction;
 
-  updateFloatingElements();
+        element.style.transform = `translate3d(0, ${y}px, 0) rotate(${rotate})`;
+      });
 
-  window.addEventListener('scroll', handleScroll, { passive: true });
-  window.addEventListener('resize', handleScroll);
+      rafId = null;
+    };
 
-  return () => {
-    window.removeEventListener('scroll', handleScroll);
-    window.removeEventListener('resize', handleScroll);
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(updateFloatingElements);
+    };
 
-    if (rafId) {
-      window.cancelAnimationFrame(rafId);
-    }
-  };
-}, []);
+    updateFloatingElements();
 
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
 
   return (
     <section className="service-stats" ref={sectionRef}>
-      <div className="service-stats__float service-stats__float--printer">
-        <img
-          src={imageAssets.services.floating.printer}
-          alt=""
-          aria-hidden="true"
-        />
+      <div
+        className="service-stats__float service-stats__float--printer"
+        data-float-speed="0.8"
+        data-direction="1"
+        data-rotate="-10deg"
+        data-cursor="Printer"
+      >
+        <div className="service-stats__float-inner">
+          <img
+            src={imageAssets.services.floating.printer}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
-      <div className="service-stats__float service-stats__float--papers">
-        <img
-          src={imageAssets.services.floating.papers}
-          alt=""
-          aria-hidden="true"
-        />
+      <div
+        className="service-stats__float service-stats__float--papers"
+        data-float-speed="1.05"
+        data-direction="-1"
+        data-rotate="12deg"
+        data-cursor="Papers"
+      >
+        <div className="service-stats__float-inner">
+          <img
+            src={imageAssets.services.floating.papers}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
-      <div className="service-stats__float service-stats__float--cartridges">
-        <img
-          src={imageAssets.services.floating.cartridges}
-          alt=""
-          aria-hidden="true"
-        />
-      </div>
-
-      <div className="service-stats__float service-stats__float--cartridges">
-        <img
-          src={imageAssets.services.floating.cartridges2}
-          alt=""
-          aria-hidden="true"
-        />
+      <div
+        className="service-stats__float service-stats__float--cartridges"
+        data-float-speed="0.9"
+        data-direction="1"
+        data-rotate="8deg"
+        data-cursor="Ink"
+      >
+        <div className="service-stats__float-inner">
+          <img
+            src={imageAssets.services.floating.cartridges}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
       <div className="service-stats__inner">
