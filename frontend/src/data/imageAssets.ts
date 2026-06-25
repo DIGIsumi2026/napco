@@ -16,6 +16,15 @@ import servicePapers3d from "../assets/images/service-papers-3d.png";
 import serviceCartridges3d from "../assets/images/service-cartridges-3d.png";
 import serviceCartridges23d from "../assets/images/service-cartridges2-3d.png";
 
+//visual gallery 
+import  newspaperPrintingWide from "../assets/images/newspaper-printing-wide.png";
+import  booksPublishingWide from "../assets/images/books-publishing-wide.png";
+import  commercialPrintingWide from "../assets/images/commercial-printing-wide.png";
+import  labelsCloseup from "../assets/images/labels-closeup.png";
+import  calendarsDiariesCloseup from "../assets/images/calendars-diaries-closeup.png";
+import  annualReportsCloseup from "../assets/images//annual-reports-closeup.png";
+
+
 
 
 export const imageAssets = {
@@ -41,5 +50,13 @@ export const imageAssets = {
       cartridges: serviceCartridges3d,
       cartridges2: serviceCartridges23d,
     },
+    visual:{
+      newspaperPrinting: newspaperPrintingWide,
+      booksPublishing: booksPublishingWide,
+      commercialPrinting: commercialPrintingWide,
+      labelsCloseup,
+      calendarsDiaries: calendarsDiariesCloseup,
+      annualReports: annualReportsCloseup,
+    }
   }
 } as const;

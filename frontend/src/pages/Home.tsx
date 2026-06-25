@@ -8,7 +8,7 @@ import Sidebar from '../components/common/Sidebar';
 import ScrollToTop from '../components/common/ScrollToTop';
 import Hero from '../components/home/Hero';
 import ServiceStats from '../components/home/ServiceStats';
-
+import ServicesVisual from '../components/home/ServicesVisual';
 
 
 
@@ -86,6 +86,12 @@ export default function Home() {
       {/* <IdeaCards /> */}
       <AboutPrinting />
       <ServiceStats/>
+      <ServicesVisual/>
+
+
+
+
+      
       <PromoBanners />
       <WhyChoose />
       <ProjectShowcase />
