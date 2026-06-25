@@ -24,6 +24,13 @@ import  labelsCloseup from "../assets/images/labels-closeup.png";
 import  calendarsDiariesCloseup from "../assets/images/calendars-diaries-closeup.png";
 import  annualReportsCloseup from "../assets/images//annual-reports-closeup.png";
 
+//contact cta
+import  ctaOpenBook from "../assets/images/cta-open-book.png";
+import   ctaTag from "../assets/images/cta-tag.png";
+import   ctaCmykStrip from "../assets/images/cta-cmyk-strip.png";
+import   ctaCalendar from "../assets/images/cta-calendar.png";
+import   ctaBookStack from "../assets/images/cta-book-stack.png";
+
 
 
 
@@ -58,5 +65,12 @@ export const imageAssets = {
       calendarsDiaries: calendarsDiariesCloseup,
       annualReports: annualReportsCloseup,
     }
+  },
+  contactCta:{
+     openBook: ctaOpenBook,
+    tag: ctaTag,
+    cmykStrip: ctaCmykStrip,
+    calendar: ctaCalendar,
+    bookStack: ctaBookStack,
   }
 } as const;

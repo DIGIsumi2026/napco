@@ -7,15 +7,19 @@ import NavigationBar from '../components/common/NavigationBar';
 import Sidebar from '../components/common/Sidebar';
 import ScrollToTop from '../components/common/ScrollToTop';
 import Hero from '../components/home/Hero';
+import AboutPrinting from '../components/home/AboutPrinting';
 import ServiceStats from '../components/home/ServiceStats';
 import ServicesVisual from '../components/home/ServicesVisual';
 
 
+import Footer from '../components/common/Footer';
+import ContactCta from '../components/home/ContactCta';
 
 
 
-import IdeaCards from '../components/home/IdeaCards';
-import AboutPrinting from '../components/home/AboutPrinting';
+
+{ /*import IdeaCards from '../components/home/IdeaCards';
+
 import PromoBanners from '../components/home/PromoBanners';
 import WhyChoose from '../components/home/WhyChoose';
 import ProjectShowcase from '../components/home/ProjectShowcase';
@@ -25,7 +29,7 @@ import TeamSection from '../components/home/TeamSection';
 import LogisticsSection from '../components/home/LogisticsSection';
 import ShippingSteps from '../components/home/ShippingSteps';
 import BlogSection from '../components/home/BlogSection';
-import Footer from '../components/common/Footer';
+ */}
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -87,11 +91,13 @@ export default function Home() {
       <AboutPrinting />
       <ServiceStats/>
       <ServicesVisual/>
+      <ContactCta/>
 
 
 
+  
+      {/* reamove later
 
-      
       <PromoBanners />
       <WhyChoose />
       <ProjectShowcase />
@@ -101,6 +107,7 @@ export default function Home() {
       <LogisticsSection />
       <ShippingSteps />
       <BlogSection />
+      */}
       <Footer />
       
       <ScrollToTop />

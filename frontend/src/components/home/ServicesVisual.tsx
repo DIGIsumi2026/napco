@@ -171,6 +171,9 @@ export default function ServicesVisual() {
       const pill = section.querySelector<HTMLElement>(
         '.services-visual__intro span'
       );
+      const scrollHint = section.querySelector<HTMLElement>(
+        '.services-visual__scroll-hint'
+      );
 
       const tiles = Array.from(
         section.querySelectorAll<HTMLElement>('.services-visual__tile')
@@ -192,12 +195,10 @@ export default function ServicesVisual() {
         section.querySelectorAll<HTMLElement>('.services-visual__detail-copy')
       );
 
-      const scrollHint = section.querySelector<HTMLElement>(
-        '.services-visual__scroll-hint'
-      );
-
       const firstTile = tiles[0];
       const otherTiles = tiles.slice(1);
+
+      if (!intro || !introTitle || !pill || !scrollHint || !firstTile) return;
 
       gsap.set(intro, {
         autoAlpha: 1,
@@ -206,11 +207,13 @@ export default function ServicesVisual() {
       gsap.set(pill, {
         autoAlpha: 1,
         y: 0,
+        scale: 1,
       });
 
       gsap.set(introTitle, {
         autoAlpha: 1,
-        y: 0,
+        y: 24,
+        scale: 0.96,
       });
 
       gsap.set(gridLines, {
@@ -292,6 +295,41 @@ export default function ServicesVisual() {
       );
 
       tl.to(
+        introTitle,
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.55,
+          ease: 'power3.out',
+        },
+        'start'
+      );
+
+      tl.to(
+        introTitle,
+        {
+          autoAlpha: 0,
+          y: -90,
+          scale: 0.96,
+          duration: 0.75,
+          ease: 'power3.inOut',
+        },
+        'start+=0.55'
+      );
+
+      tl.to(
+        pill,
+        {
+          y: -130,
+          scale: 0.94,
+          duration: 0.75,
+          ease: 'power3.inOut',
+        },
+        'start+=0.55'
+      );
+
+      tl.to(
         firstTile,
         {
           autoAlpha: 1,
@@ -301,28 +339,7 @@ export default function ServicesVisual() {
           duration: 1.05,
           ease: 'back.out(1.45)',
         },
-        'start+=0.1'
-      );
-
-      tl.to(
-        introTitle,
-        {
-          autoAlpha: 0,
-          y: -34,
-          duration: 0.55,
-          ease: 'power2.out',
-        },
-        'start+=0.34'
-      );
-
-      tl.to(
-        pill,
-        {
-          y: -10,
-          duration: 0.5,
-          ease: 'power2.out',
-        },
-        'start+=0.42'
+        'start+=0.92'
       );
 
       tl.addLabel('grid-build');
@@ -427,6 +444,8 @@ export default function ServicesVisual() {
         const detail = details[index];
         const image = detailImages[index];
         const copy = detailCopies[index];
+
+        if (!detail || !image || !copy) return;
 
         tl.to(
           detail,
