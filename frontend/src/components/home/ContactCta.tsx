@@ -10,19 +10,17 @@ type Particle = {
   baseY: number;
   vx: number;
   vy: number;
-  offsetX: number;
-  offsetY: number;
   size: number;
   color: string;
   alpha: number;
   group: number;
   phase: number;
-  radius: number;
   angle: number;
+  radius: number;
   wavePower: number;
 };
 
-const particleColors = ['#0053a0', '#00aeef', '#ec008c', '#fff200', '#111111'];
+const particleColors = ['#00aeef', '#ec008c', '#fff200', '#8b35ff', '#ffffff'];
 
 export default function ContactCta() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -54,9 +52,9 @@ export default function ContactCta() {
     let height = 0;
 
     const getParticleCount = () => {
-      if (window.innerWidth <= 680) return 240;
-      if (window.innerWidth <= 1024) return 420;
-      return 760;
+      if (window.innerWidth <= 680) return 260;
+      if (window.innerWidth <= 1024) return 460;
+      return 820;
     };
 
     const createParticles = () => {
@@ -64,36 +62,24 @@ export default function ContactCta() {
 
       const particleCount = getParticleCount();
       const centerX = width * 0.5;
-      const centerY = height * 0.52;
+      const centerY = height * 0.5;
 
       for (let index = 0; index < particleCount; index += 1) {
-        const group = index % 5;
+        const group = index % particleColors.length;
 
-        /*
-          Base field: dots are spread across the section.
-          Hover field: dots form a loose wave cloud around the cursor.
-        */
         const baseAngle = Math.random() * Math.PI * 2;
-        const baseRadius = Math.sqrt(Math.random()) * Math.min(width, height) * 0.58;
+        const baseRadius =
+          Math.sqrt(Math.random()) * Math.min(width, height) * 0.66;
 
         const baseX =
-          centerX + Math.cos(baseAngle) * baseRadius * (1.25 + Math.random() * 0.8);
+          centerX +
+          Math.cos(baseAngle) * baseRadius * (1.3 + Math.random() * 0.8);
+
         const baseY =
-          centerY + Math.sin(baseAngle) * baseRadius * (0.55 + Math.random() * 0.55);
+          centerY +
+          Math.sin(baseAngle) * baseRadius * (0.62 + Math.random() * 0.68);
 
         const angle = Math.random() * Math.PI * 2;
-
-        /*
-          Bigger radius creates better split around cursor.
-          This prevents dots from becoming one tight blob.
-        */
-        const radius =
-          46 +
-          Math.sqrt(Math.random()) * 270 +
-          group * 10;
-
-        const offsetX = Math.cos(angle) * radius * (1 + Math.random() * 0.38);
-        const offsetY = Math.sin(angle) * radius * (0.5 + Math.random() * 0.62);
 
         particles.push({
           x: baseX,
@@ -102,16 +88,14 @@ export default function ContactCta() {
           baseY,
           vx: 0,
           vy: 0,
-          offsetX,
-          offsetY,
-          size: Math.random() * 1.85 + 0.5,
+          size: Math.random() * 1.65 + 0.65,
           color: particleColors[group],
-          alpha: Math.random() * 0.52 + 0.22,
+          alpha: Math.random() * 0.5 + 0.34,
           group,
           phase: Math.random() * Math.PI * 2,
-          radius,
           angle,
-          wavePower: Math.random() * 0.75 + 0.55,
+          radius: 32 + Math.sqrt(Math.random()) * 150 + group * 5,
+          wavePower: Math.random() * 0.8 + 0.65,
         });
       }
     };
@@ -131,13 +115,33 @@ export default function ContactCta() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       cursorRef.current.x = width * 0.5;
-      cursorRef.current.y = height * 0.5;
+      cursorRef.current.y = height * 0.48;
       cursorRef.current.targetX = width * 0.5;
-      cursorRef.current.targetY = height * 0.5;
+      cursorRef.current.targetY = height * 0.48;
       cursorRef.current.previousX = width * 0.5;
-      cursorRef.current.previousY = height * 0.5;
+      cursorRef.current.previousY = height * 0.48;
 
       createParticles();
+    };
+
+    const drawCursorGlow = (x: number, y: number, strength: number) => {
+      const glowRadius = 145 + strength * 0.8;
+
+      const glow = ctx.createRadialGradient(x, y, 0, x, y, glowRadius);
+
+      glow.addColorStop(0, 'rgba(255, 255, 255, 0.32)');
+      glow.addColorStop(0.12, 'rgba(0, 174, 239, 0.34)');
+      glow.addColorStop(0.32, 'rgba(236, 0, 140, 0.26)');
+      glow.addColorStop(0.58, 'rgba(139, 53, 255, 0.18)');
+      glow.addColorStop(1, 'rgba(139, 53, 255, 0)');
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(x, y, glowRadius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
     };
 
     const draw = () => {
@@ -146,133 +150,159 @@ export default function ContactCta() {
       const cursor = cursorRef.current;
       const time = performance.now() * 0.001;
 
-      cursor.x += (cursor.targetX - cursor.x) * 0.14;
-      cursor.y += (cursor.targetY - cursor.y) * 0.14;
+      cursor.x += (cursor.targetX - cursor.x) * 0.16;
+      cursor.y += (cursor.targetY - cursor.y) * 0.16;
 
       const moveX = cursor.targetX - cursor.previousX;
       const moveY = cursor.targetY - cursor.previousY;
 
       cursor.speed +=
-        (Math.min(Math.sqrt(moveX * moveX + moveY * moveY), 90) - cursor.speed) *
-        0.1;
+        (Math.min(Math.sqrt(moveX * moveX + moveY * moveY), 80) -
+          cursor.speed) *
+        0.12;
 
       cursor.previousX = cursor.targetX;
       cursor.previousY = cursor.targetY;
 
+      if (cursor.active) {
+        drawCursorGlow(cursor.x, cursor.y, cursor.speed);
+      }
+
       particles.forEach((particle) => {
-        /*
-          Default wave field:
-          This keeps the dots moving even when the user is not hovering.
-        */
         const defaultWaveX =
-          Math.sin(particle.baseY * 0.012 + time * 1.15 + particle.phase) *
-            18 *
+          Math.sin(particle.baseY * 0.012 + time * 1.05 + particle.phase) *
+            16 *
             particle.wavePower +
-          Math.cos(time * 0.74 + particle.group) * 8;
+          Math.cos(time * 0.7 + particle.group) * 6;
 
         const defaultWaveY =
-          Math.cos(particle.baseX * 0.01 + time * 1.05 + particle.phase) *
-            14 *
+          Math.cos(particle.baseX * 0.01 + time * 1.02 + particle.phase) *
+            13 *
             particle.wavePower +
-          Math.sin(time * 0.82 + particle.group) * 7;
+          Math.sin(time * 0.84 + particle.group) * 6;
+
+        const distanceFromCursorBase = Math.hypot(
+          particle.baseX - cursor.x,
+          particle.baseY - cursor.y
+        );
 
         /*
-          Hover wave field:
-          Dots follow cursor, but each particle keeps a different offset.
-          This creates the split / anti-gravity effect from the demo.
+          This is the important part:
+          only nearby dots react to cursor.
+          The whole screen does not gather.
         */
-        const hoverWave =
-          Math.sin(time * 3.2 + particle.phase + particle.group * 0.75) *
-          (16 + cursor.speed * 0.14);
-
-        const hoverWave2 =
-          Math.cos(time * 2.7 + particle.phase) *
-          (12 + cursor.speed * 0.1);
-
-        const rotatedAngle =
-          particle.angle +
-          Math.sin(time * 0.9 + particle.phase) * 0.18 +
-          cursor.speed * 0.002;
-
-        const hoverOffsetX =
-          Math.cos(rotatedAngle) * particle.radius +
-          particle.offsetX * 0.38 +
-          hoverWave;
-
-        const hoverOffsetY =
-          Math.sin(rotatedAngle) * particle.radius * 0.62 +
-          particle.offsetY * 0.3 +
-          hoverWave2;
-
-        /*
-          Cursor split:
-          This creates a small empty center around the cursor,
-          so particles split away instead of sitting under the mouse.
-        */
-        const dx = particle.x - cursor.x;
-        const dy = particle.y - cursor.y;
-        const distance = Math.sqrt(dx * dx + dy * dy) || 1;
-
-        const splitRadius = 120 + cursor.speed * 0.7;
-        const splitPower = cursor.active
-          ? Math.max(0, (splitRadius - distance) / splitRadius)
+        const influenceRadius = 290 + cursor.speed * 0.9;
+        const influence = cursor.active
+          ? Math.max(0, 1 - distanceFromCursorBase / influenceRadius)
           : 0;
 
-        const splitX = (dx / distance) * splitPower * (90 + cursor.speed * 0.9);
-        const splitY = (dy / distance) * splitPower * (90 + cursor.speed * 0.9);
+        const softenedInfluence = influence * influence;
 
-        const targetX = cursor.active
-          ? cursor.x + hoverOffsetX + splitX
-          : particle.baseX + defaultWaveX;
+        const rotatingAngle =
+          particle.angle +
+          Math.sin(time * 1.25 + particle.phase) * 0.34 +
+          cursor.speed * 0.003;
 
-        const targetY = cursor.active
-          ? cursor.y + hoverOffsetY + splitY
-          : particle.baseY + defaultWaveY;
+        const clusterRadius =
+          particle.radius * (0.36 + softenedInfluence * 0.52);
+
+        const cursorClusterX =
+          cursor.x +
+          Math.cos(rotatingAngle) * clusterRadius +
+          Math.sin(time * 4.1 + particle.phase) *
+            (14 + cursor.speed * 0.12) *
+            softenedInfluence;
+
+        const cursorClusterY =
+          cursor.y +
+          Math.sin(rotatingAngle) * clusterRadius * 0.72 +
+          Math.cos(time * 3.4 + particle.phase) *
+            (12 + cursor.speed * 0.1) *
+            softenedInfluence;
 
         /*
-          Correlation:
-          Nearby particles share a similar wave direction through group phase.
-          This makes the dots feel connected and fluid.
+          Small empty center around cursor.
+          This creates the clean split, not a blob.
         */
-        const correlation =
-          cursor.active
-            ? 0.072 + particle.group * 0.002
-            : 0.026 + particle.group * 0.001;
+        const localDx = particle.x - cursor.x;
+        const localDy = particle.y - cursor.y;
+        const localDistance = Math.hypot(localDx, localDy) || 1;
 
-        particle.vx += (targetX - particle.x) * correlation;
-        particle.vy += (targetY - particle.y) * correlation;
+        const emptyCenterRadius = 42 + cursor.speed * 0.28;
+        const emptyCenterForce =
+          cursor.active && localDistance < emptyCenterRadius
+            ? (emptyCenterRadius - localDistance) / emptyCenterRadius
+            : 0;
 
-        particle.vx *= cursor.active ? 0.8 : 0.9;
-        particle.vy *= cursor.active ? 0.8 : 0.9;
+        const pushX =
+          (localDx / localDistance) * emptyCenterForce * (38 + cursor.speed * 0.35);
+        const pushY =
+          (localDy / localDistance) * emptyCenterForce * (38 + cursor.speed * 0.35);
+
+        const targetX =
+          particle.baseX +
+          defaultWaveX +
+          (cursorClusterX - particle.baseX) * softenedInfluence +
+          pushX;
+
+        const targetY =
+          particle.baseY +
+          defaultWaveY +
+          (cursorClusterY - particle.baseY) * softenedInfluence +
+          pushY;
+
+        const easeToTarget = 0.026 + softenedInfluence * 0.08;
+
+        particle.vx += (targetX - particle.x) * easeToTarget;
+        particle.vy += (targetY - particle.y) * easeToTarget;
+
+        particle.vx *= 0.9 - softenedInfluence * 0.08;
+        particle.vy *= 0.9 - softenedInfluence * 0.08;
 
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        const activeAlpha = cursor.active
-          ? Math.min(particle.alpha + 0.28, 0.95)
-          : particle.alpha * 0.46;
+        const dotAlpha = Math.min(
+          particle.alpha * (0.66 + softenedInfluence * 0.82),
+          1
+        );
 
-        const activeSize = cursor.active
-          ? particle.size * (1.05 + Math.min(cursor.speed, 60) * 0.004)
-          : particle.size;
+        const dotSize = particle.size * (1 + softenedInfluence * 0.42);
 
-        ctx.globalAlpha = activeAlpha;
+        ctx.save();
+
+        if (softenedInfluence > 0.08) {
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.shadowBlur = 10 + softenedInfluence * 18;
+          ctx.shadowColor = particle.color;
+        } else {
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.globalAlpha = dotAlpha;
         ctx.fillStyle = particle.color;
+
+        /*
+          Only draw the real dot.
+          No big secondary bubble circles.
+        */
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, activeSize, 0, Math.PI * 2);
+        ctx.arc(particle.x, particle.y, dotSize, 0, Math.PI * 2);
         ctx.fill();
+
+        if (softenedInfluence > 0.22) {
+          ctx.globalAlpha = softenedInfluence * 0.55;
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, dotSize * 0.42, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
       });
 
-      ctx.globalAlpha = 1;
       animationFrame = window.requestAnimationFrame(draw);
-    };
-
-    const updateCursor = (event: PointerEvent, activate: boolean) => {
-      const rect = section.getBoundingClientRect();
-
-      cursorRef.current.targetX = event.clientX - rect.left;
-      cursorRef.current.targetY = event.clientY - rect.top;
-      cursorRef.current.active = activate;
     };
 
     const handlePointerEnter = (event: PointerEvent) => {
@@ -290,7 +320,11 @@ export default function ContactCta() {
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      updateCursor(event, true);
+      const rect = section.getBoundingClientRect();
+
+      cursorRef.current.targetX = event.clientX - rect.left;
+      cursorRef.current.targetY = event.clientY - rect.top;
+      cursorRef.current.active = true;
     };
 
     const handlePointerLeave = () => {
@@ -322,6 +356,7 @@ export default function ContactCta() {
 
       <div className="contact-cta__glow contact-cta__glow--left" />
       <div className="contact-cta__glow contact-cta__glow--right" />
+      <div className="contact-cta__glow contact-cta__glow--center" />
 
       <img
         className="contact-cta__float contact-cta__float--book"
@@ -364,7 +399,9 @@ export default function ContactCta() {
         </span>
 
         <h2>
-          Ready to bring your
+          Ready to
+          <br />
+          bring your
           <br />
           next impression to life?
         </h2>
