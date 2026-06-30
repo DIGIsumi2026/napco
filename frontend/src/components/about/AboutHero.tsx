@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ArrowDown } from 'lucide-react';
+import { ArrowDown, RotateCcw } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -8,6 +8,15 @@ import { videoAssets } from '../../data/videoAssets';
 
 gsap.registerPlugin(ScrollTrigger);
 
+type LenisWindow = Window & {
+  napcoLenis?: {
+    scrollTo: (
+      target: number | string | HTMLElement,
+      options?: { duration?: number; offset?: number }
+    ) => void;
+  };
+};
+
 export default function AboutHero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -15,8 +24,9 @@ export default function AboutHero() {
   const thumbnailImageRef = useRef<HTMLImageElement | null>(null);
   const thumbnailContentRef = useRef<HTMLDivElement | null>(null);
   const scrollHintRef = useRef<HTMLDivElement | null>(null);
+  const replayRef = useRef<HTMLButtonElement | null>(null);
 
-  useEffect(() => {
+  const playVideo = () => {
     const video = videoRef.current;
 
     if (!video) return;
@@ -29,6 +39,32 @@ export default function AboutHero() {
     video.play().catch(() => {
       // Muted autoplay may still be blocked in rare browser cases.
     });
+  };
+
+  const handleReplay = () => {
+    const section = sectionRef.current;
+
+    playVideo();
+
+    if (!section) return;
+
+    const lenis = (window as LenisWindow).napcoLenis;
+
+    if (lenis) {
+      lenis.scrollTo(section, {
+        duration: 1.05,
+        offset: 0,
+      });
+    } else {
+      window.scrollTo({
+        top: section.offsetTop,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  useEffect(() => {
+    playVideo();
   }, []);
 
   useEffect(() => {
@@ -38,8 +74,17 @@ export default function AboutHero() {
     const thumbnailImage = thumbnailImageRef.current;
     const thumbnailContent = thumbnailContentRef.current;
     const scrollHint = scrollHintRef.current;
+    const replayButton = replayRef.current;
 
-    if (!section || !video || !thumbnail || !thumbnailImage || !thumbnailContent || !scrollHint) {
+    if (
+      !section ||
+      !video ||
+      !thumbnail ||
+      !thumbnailImage ||
+      !thumbnailContent ||
+      !scrollHint ||
+      !replayButton
+    ) {
       return;
     }
 
@@ -70,6 +115,12 @@ export default function AboutHero() {
       gsap.set(scrollHint, {
         autoAlpha: 1,
         y: 0,
+      });
+
+      gsap.set(replayButton, {
+        autoAlpha: 1,
+        y: 0,
+        pointerEvents: 'auto',
       });
 
       const timeline = gsap.timeline({
@@ -106,6 +157,18 @@ export default function AboutHero() {
           ease: 'power2.out',
         },
         0.05
+      );
+
+      timeline.to(
+        replayButton,
+        {
+          autoAlpha: 0,
+          y: 24,
+          pointerEvents: 'none',
+          duration: 0.35,
+          ease: 'power2.out',
+        },
+        0.18
       );
 
       timeline.to(
@@ -163,6 +226,18 @@ export default function AboutHero() {
       />
 
       <div className="about-hero__video-vignette" />
+
+      <button
+        ref={replayRef}
+        type="button"
+        className="about-hero__replay"
+        onClick={handleReplay}
+        aria-label="Replay video"
+        data-cursor="Replay"
+      >
+        <RotateCcw size={16} />
+        <span>Replay</span>
+      </button>
 
       <div className="about-hero__scroll" ref={scrollHintRef}>
         <div className="about-hero__scroll-line">
