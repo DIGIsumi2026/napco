@@ -500,3 +500,498 @@
     font-size: 0.96rem;
   }
 }
+
+/* ================================
+   ABOUT PAGE - PREMIUM 3D MODEL
+================================ */
+
+.about-machine-model {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(86px, 8vw, 140px) clamp(18px, 5vw, 96px);
+  background:
+    radial-gradient(circle at 8% 10%, rgba(0, 174, 239, 0.12), transparent 34%),
+    radial-gradient(circle at 92% 72%, rgba(124, 58, 237, 0.14), transparent 34%),
+    linear-gradient(180deg, #e2ebf5 0%, #c9d7e6 48%, #e8eef6 100%);
+}
+
+.about-machine-model__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(7, 23, 45, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(7, 23, 45, 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 72%);
+}
+
+.about-machine-model__header {
+  width: min(980px, 100%);
+  margin: 0 auto 46px;
+  text-align: center;
+}
+
+.about-machine-model__header span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 18px;
+  margin-bottom: 20px;
+  color: #0053a0;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  background: rgba(0, 174, 239, 0.14);
+  border: 1px solid rgba(0, 83, 160, 0.08);
+}
+
+.about-machine-model__header h2 {
+  margin: 0;
+  color: #07172d;
+  font-size: clamp(3.3rem, 6.8vw, 7.8rem);
+  line-height: 0.88;
+  letter-spacing: -0.09em;
+  font-weight: 950;
+}
+
+.about-machine-model__header p {
+  max-width: 720px;
+  margin: 24px auto 0;
+  color: #4f5e72;
+  font-size: clamp(1rem, 1.05vw, 1.16rem);
+  line-height: 1.75;
+  font-weight: 600;
+}
+
+/* 3D stage */
+
+.about-machine-model__stage {
+  position: relative;
+  width: min(1320px, 100%);
+  height: clamp(560px, 62vw, 860px);
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: clamp(30px, 3.4vw, 54px);
+  background:
+    radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.28), transparent 42%),
+    radial-gradient(circle at 16% 18%, rgba(0, 174, 239, 0.12), transparent 28%),
+    radial-gradient(circle at 84% 72%, rgba(124, 58, 237, 0.12), transparent 32%),
+    linear-gradient(135deg, #9fb4c8 0%, #bcc9d8 44%, #a8b3c8 100%);
+  border: 1px solid rgba(7, 23, 45, 0.14);
+  box-shadow:
+    0 46px 110px rgba(7, 23, 45, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.58);
+}
+
+.about-machine-model__stage::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+}
+
+.about-machine-model__stage::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -18%;
+  z-index: 1;
+  width: 92%;
+  height: 44%;
+  pointer-events: none;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.3), transparent 64%);
+  filter: blur(22px);
+}
+
+/* Canvas */
+
+.about-machine-model__canvas {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+.about-machine-model__canvas--hovering {
+  cursor: grab;
+}
+
+.about-machine-model__canvas--dragging {
+  cursor: grabbing;
+}
+
+.about-machine-model__canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/* User guide */
+
+.about-machine-model__guide {
+  position: absolute;
+  top: clamp(18px, 2vw, 28px);
+  right: clamp(18px, 2vw, 28px);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  color: #07172d;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(7, 23, 45, 0.12);
+  box-shadow: 0 18px 46px rgba(7, 23, 45, 0.16);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.about-machine-model__mouse {
+  position: relative;
+  width: 28px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  border: 2px solid rgba(0, 83, 160, 0.34);
+}
+
+.about-machine-model__mouse span {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 5px;
+  height: 8px;
+  border-radius: 999px;
+  background: #00aeef;
+  transform: translateX(-50%);
+  animation: modelMouseWheel 1.5s ease-in-out infinite;
+}
+
+.about-machine-model__guide strong {
+  display: block;
+  color: #07172d;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.about-machine-model__guide small {
+  display: block;
+  margin-top: 2px;
+  color: #637083;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+@keyframes modelMouseWheel {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0);
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 14px);
+  }
+}
+
+/* Rendering overlay */
+
+.about-machine-model__rendering {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  color: #07172d;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.76), rgba(181, 197, 216, 0.72)),
+    rgba(156, 172, 191, 0.45);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  pointer-events: none;
+}
+
+.about-machine-model__render-ring {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 83, 160, 0.14);
+}
+
+.about-machine-model__render-ring::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 3px solid transparent;
+  border-top-color: #00aeef;
+  border-right-color: #7c3aed;
+  animation: modelRenderRing 0.9s linear infinite;
+}
+
+.about-machine-model__render-ring span {
+  position: absolute;
+  inset: 19px;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 35% 35%, #ffffff, rgba(0, 174, 239, 0.18)),
+    #ffffff;
+  box-shadow: 0 0 28px rgba(0, 174, 239, 0.26);
+}
+
+.about-machine-model__rendering strong {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.about-machine-model__rendering small {
+  display: block;
+  color: #637083;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.about-machine-model__rendering--error strong {
+  color: #b91c1c;
+}
+
+@keyframes modelRenderRing {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Description */
+
+.about-machine-model__description {
+  width: min(1080px, 100%);
+  margin: clamp(34px, 4vw, 54px) auto 0;
+  padding: clamp(28px, 4vw, 46px);
+  text-align: center;
+  border-radius: clamp(24px, 3vw, 40px);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.64));
+  border: 1px solid rgba(7, 23, 45, 0.08);
+  box-shadow: 0 24px 70px rgba(7, 23, 45, 0.12);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.about-machine-model__description > span {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  padding: 0 15px;
+  margin-bottom: 18px;
+  color: #0053a0;
+  font-size: 0.72rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  background: rgba(0, 174, 239, 0.12);
+}
+
+.about-machine-model__description p {
+  max-width: 890px;
+  margin: 0 auto;
+  color: #465467;
+  font-size: clamp(1rem, 1.1vw, 1.18rem);
+  line-height: 1.85;
+  font-weight: 600;
+}
+
+.about-machine-model__facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.about-machine-model__facts div {
+  min-height: 112px;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(7, 23, 45, 0.07);
+  box-shadow: 0 18px 42px rgba(7, 23, 45, 0.07);
+}
+
+.about-machine-model__facts strong {
+  display: block;
+  color: #07172d;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.about-machine-model__facts small {
+  display: block;
+  margin-top: 7px;
+  color: #697588;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* Tablet */
+
+@media (max-width: 1024px) {
+  .about-machine-model {
+    padding: 80px 20px;
+  }
+
+  .about-machine-model__header {
+    margin-bottom: 38px;
+  }
+
+  .about-machine-model__stage {
+    height: 590px;
+    border-radius: 34px;
+  }
+
+  .about-machine-model__facts {
+    grid-template-columns: 1fr;
+  }
+
+  .about-machine-model__facts div {
+    min-height: 100px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 760px) {
+  .about-machine-model {
+    padding: 72px 16px;
+  }
+
+  .about-machine-model__header {
+    margin-bottom: 32px;
+  }
+
+  .about-machine-model__header span {
+    min-height: 36px;
+    padding: 0 15px;
+    font-size: 0.66rem;
+  }
+
+  .about-machine-model__header h2 {
+    font-size: clamp(3rem, 14vw, 5rem);
+    letter-spacing: -0.08em;
+  }
+
+  .about-machine-model__header p {
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+
+  .about-machine-model__stage {
+    height: 470px;
+    border-radius: 26px;
+  }
+
+  .about-machine-model__stage::before {
+    inset: 10px;
+  }
+
+  .about-machine-model__guide {
+    left: 16px;
+    right: 16px;
+    top: 16px;
+    justify-content: center;
+    border-radius: 22px;
+    padding: 10px 12px;
+  }
+
+  .about-machine-model__guide strong {
+    font-size: 0.74rem;
+  }
+
+  .about-machine-model__guide small {
+    font-size: 0.68rem;
+  }
+
+  .about-machine-model__mouse {
+    width: 24px;
+    height: 36px;
+  }
+
+  .about-machine-model__description {
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+
+  .about-machine-model__description p {
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .about-machine-model__facts {
+    margin-top: 24px;
+  }
+
+  .about-machine-model__facts div {
+    min-height: 96px;
+    border-radius: 20px;
+  }
+}
+
+/* Small mobile */
+
+@media (max-width: 420px) {
+  .about-machine-model {
+    padding: 66px 12px;
+  }
+
+  .about-machine-model__stage {
+    height: 420px;
+    border-radius: 22px;
+  }
+
+  .about-machine-model__guide {
+    left: 12px;
+    right: 12px;
+    top: 12px;
+  }
+
+  .about-machine-model__guide small {
+    display: none;
+  }
+
+  .about-machine-model__render-ring {
+    width: 62px;
+    height: 62px;
+  }
+
+  .about-machine-model__render-ring span {
+    inset: 16px;
+  }
+}

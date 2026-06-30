@@ -10,7 +10,7 @@ import Sidebar from '../components/common/Sidebar';
 import ScrollToTop from '../components/common/ScrollToTop';
 
 import AboutHero from '../components/about/AboutHero';
-import AboutModelPreview from '../components/about/AboutModelPreview';
+import AboutMachineModel from '../components/about/AboutMachineModel';
 
 import Footer from '../components/common/Footer';
 
@@ -71,7 +71,7 @@ export default function AboutUs() {
       />
 
       <AboutHero />
-      <AboutModelPreview/>
+      <AboutMachineModel/>
 
       <Footer />
 
