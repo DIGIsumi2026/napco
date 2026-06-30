@@ -35,7 +35,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <p className="copyright">Copyright © 2024 <strong>Presvila</strong>. All Rights Reserved</p>
+      <p className="copyright">Copyright © 2026 <strong>Napco</strong>. All Rights Reserved</p>
     </footer>
   );
 }
