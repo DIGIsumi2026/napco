@@ -10,10 +10,12 @@ import Hero from '../components/home/Hero';
 import AboutPrinting from '../components/home/AboutPrinting';
 import ServiceStats from '../components/home/ServiceStats';
 import ServicesVisual from '../components/home/ServicesVisual';
+import ContactCta from '../components/home/ContactCta';
+import ClientLogos from '../components/home/ClientLogos';
 
 
 import Footer from '../components/common/Footer';
-import ContactCta from '../components/home/ContactCta';
+
 
 
 
@@ -92,6 +94,7 @@ export default function Home() {
       <ServiceStats/>
       <ServicesVisual/>
       <ContactCta/>
+      <ClientLogos/>
 
 
 
