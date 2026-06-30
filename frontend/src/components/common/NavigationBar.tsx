@@ -4,10 +4,10 @@ import { Facebook, Instagram, Linkedin } from 'lucide-react';
 import { imageAssets } from '../../data/imageAssets';
 
 const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About Us', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Contact Us', href: '#contact' },
+  { label: 'Home', href: '/home' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Contact Us', href: '/contact' },
 ];
 
 const socialLinks = [
@@ -45,7 +45,7 @@ export default function NavigationBar({ onToggleSidebar, isSidebarOpen }: Naviga
             transition={{ duration: 0.35, ease: 'easeOut' }}
           >
             {/* Logo */}
-            <a href="#home" className="napco-nav-logo">
+            <a href="/home" className="napco-nav-logo">
               <img src={imageAssets.logo.main} alt="Napco" />
             </a>
 
@@ -70,7 +70,7 @@ export default function NavigationBar({ onToggleSidebar, isSidebarOpen }: Naviga
 
               {/* CTA */}
               <a
-                href="#contact"
+                href="/contact"
                 className="napco-cta-wrapper"
                 onMouseEnter={() => setIsHoveringCTA(true)}
                 onMouseLeave={() => setIsHoveringCTA(false)}
@@ -108,7 +108,7 @@ export default function NavigationBar({ onToggleSidebar, isSidebarOpen }: Naviga
           >
             <div className="napco-nav-pill">
               {/* Logo */}
-              <a href="#home" className="napco-pill-logo">
+              <a href="/home" className="napco-pill-logo">
                 <img src={imageAssets.logo.main} alt="Napco" />
               </a>
 
@@ -124,7 +124,7 @@ export default function NavigationBar({ onToggleSidebar, isSidebarOpen }: Naviga
               <div className="napco-nav-actions">
                 {/* CTA */}
                 <a
-                  href="#contact"
+                  href="/contact"
                   className="napco-cta-wrapper pill-cta"
                   onMouseEnter={() => setIsHoveringCTA(true)}
                   onMouseLeave={() => setIsHoveringCTA(false)}

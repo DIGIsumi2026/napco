@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { Factory, Layers, ShieldCheck } from 'lucide-react';
+import { useEffect, useRef } from 'react';
+import { ArrowDown } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -11,10 +11,10 @@ gsap.registerPlugin(ScrollTrigger);
 export default function AboutHero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const thumbnailRef = useRef<HTMLElement | null>(null);
-  const contentRef = useRef<HTMLDivElement | null>(null);
-
-  const [videoEnded, setVideoEnded] = useState(false);
+  const thumbnailRef = useRef<HTMLDivElement | null>(null);
+  const thumbnailImageRef = useRef<HTMLImageElement | null>(null);
+  const thumbnailContentRef = useRef<HTMLDivElement | null>(null);
+  const scrollHintRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -27,7 +27,7 @@ export default function AboutHero() {
     video.loop = false;
 
     video.play().catch(() => {
-      // Autoplay can be blocked in rare browser cases.
+      // Muted autoplay may still be blocked in rare browser cases.
     });
   }, []);
 
@@ -35,9 +35,13 @@ export default function AboutHero() {
     const section = sectionRef.current;
     const video = videoRef.current;
     const thumbnail = thumbnailRef.current;
-    const content = contentRef.current;
+    const thumbnailImage = thumbnailImageRef.current;
+    const thumbnailContent = thumbnailContentRef.current;
+    const scrollHint = scrollHintRef.current;
 
-    if (!section || !video || !thumbnail || !content) return;
+    if (!section || !video || !thumbnail || !thumbnailImage || !thumbnailContent || !scrollHint) {
+      return;
+    }
 
     const ctx = gsap.context(() => {
       gsap.set(video, {
@@ -47,15 +51,25 @@ export default function AboutHero() {
 
       gsap.set(thumbnail, {
         autoAlpha: 0,
-        scale: 0.72,
-        y: 80,
-        rotateX: 10,
+        scale: 1.08,
+        clipPath: 'inset(46% 46% 46% 46% round 40px)',
         transformOrigin: '50% 50%',
       });
 
-      gsap.set(content, {
-        y: 0,
+      gsap.set(thumbnailImage, {
+        scale: 1.12,
+        transformOrigin: '50% 50%',
+      });
+
+      gsap.set(thumbnailContent, {
+        autoAlpha: 0,
+        y: 70,
+        scale: 0.96,
+      });
+
+      gsap.set(scrollHint, {
         autoAlpha: 1,
+        y: 0,
       });
 
       const timeline = gsap.timeline({
@@ -65,7 +79,7 @@ export default function AboutHero() {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=1100',
+          end: '+=1300',
           scrub: 0.9,
           pin: true,
           anticipatePin: 1,
@@ -76,22 +90,22 @@ export default function AboutHero() {
       timeline.to(
         video,
         {
-          scale: 1.22,
-          duration: 1.2,
+          scale: 1.28,
+          duration: 1.4,
           ease: 'power2.inOut',
         },
         0
       );
 
       timeline.to(
-        content,
+        scrollHint,
         {
-          y: -46,
-          autoAlpha: 0.82,
-          duration: 0.75,
+          autoAlpha: 0,
+          y: 40,
+          duration: 0.35,
           ease: 'power2.out',
         },
-        0.1
+        0.05
       );
 
       timeline.to(
@@ -99,22 +113,33 @@ export default function AboutHero() {
         {
           autoAlpha: 1,
           scale: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 0.9,
-          ease: 'back.out(1.35)',
+          clipPath: 'inset(0% 0% 0% 0% round 0px)',
+          duration: 1,
+          ease: 'power4.inOut',
+        },
+        0.28
+      );
+
+      timeline.to(
+        thumbnailImage,
+        {
+          scale: 1,
+          duration: 1,
+          ease: 'power3.out',
         },
         0.32
       );
 
       timeline.to(
-        thumbnail,
+        thumbnailContent,
         {
-          scale: 1.04,
-          duration: 0.7,
-          ease: 'power2.inOut',
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.65,
+          ease: 'power3.out',
         },
-        1.02
+        0.88
       );
 
       window.setTimeout(() => {
@@ -134,68 +159,49 @@ export default function AboutHero() {
         muted
         playsInline
         preload="auto"
-        onEnded={() => setVideoEnded(true)}
+        onLoadedData={() => ScrollTrigger.refresh()}
       />
 
-      <div className="about-hero__overlay" />
+      <div className="about-hero__video-vignette" />
 
-      <div className="about-hero__content" ref={contentRef}>
-        <span className="about-hero__eyebrow">About NAPCO</span>
-
-        <h1>
-          Printing excellence
-          <br />
-          with responsibility
-        </h1>
-
-        <p>
-          NAPCO Printers is a trusted Sri Lankan printing and publishing company
-          delivering reliable, high-quality solutions for corporate,
-          institutional and commercial clients.
-        </p>
-
-        <div className="about-hero__stats">
-          <div>
-            <Factory size={24} />
-            <strong>Since 2003</strong>
-            <span>Established</span>
-          </div>
-
-          <div>
-            <Layers size={24} />
-            <strong>Full Service</strong>
-            <span>Print &amp; Publishing</span>
-          </div>
-
-          <div>
-            <ShieldCheck size={24} />
-            <strong>Reliable</strong>
-            <span>Quality Standards</span>
-          </div>
+      <div className="about-hero__scroll" ref={scrollHintRef}>
+        <div className="about-hero__scroll-line">
+          <span />
         </div>
+
+        <div className="about-hero__scroll-icon">
+          <ArrowDown size={18} />
+        </div>
+
+        <small>Scroll Down</small>
       </div>
 
-      <figure
-        className={`about-hero__thumbnail ${
-          videoEnded ? 'about-hero__thumbnail--ready' : ''
-        }`}
-        ref={thumbnailRef}
-      >
+      <div className="about-hero__thumbnail-full" ref={thumbnailRef}>
         <img
+          ref={thumbnailImageRef}
           src={imageAssets.about.thubnail}
-          alt="NAPCO printing services and Sri Lankan staff"
+          alt="NAPCO printing services with Sri Lankan company staff"
           onLoad={() => ScrollTrigger.refresh()}
         />
 
-        <figcaption>
-          <span>Our Capabilities</span>
-          <strong>From newspapers to labels, books and reports.</strong>
-        </figcaption>
-      </figure>
+        <div className="about-hero__thumbnail-overlay" />
 
-      <div className="about-hero__scroll">
-        <span />
-        <small>Scroll</small>
+        <div className="about-hero__thumbnail-content" ref={thumbnailContentRef}>
+          <span>About NAPCO</span>
+
+          <h1>
+            Printing excellence
+            <br />
+            powered by people
+          </h1>
+
+          <p>
+            NAPCO Printers combines advanced printing technology, skilled Sri
+            Lankan professionals and reliable production standards to deliver
+            newspapers, books, catalogues, labels, calendars, diaries, annual
+            reports and complete commercial printing solutions.
+          </p>
+        </div>
       </div>
     </section>
   );

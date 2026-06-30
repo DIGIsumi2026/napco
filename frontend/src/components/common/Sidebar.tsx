@@ -1,10 +1,11 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About Us', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Contact Us', href: '#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'About Us', href: '/about-us' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Contact Us', href: '/#contact' },
 ];
 
 interface SidebarProps {
@@ -13,61 +14,113 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleEscape);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            className="napco-sidebar-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-          />
-          <motion.div
-            className="napco-sidebar-panel"
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-          >
-            <div className="napco-sidebar-close">
-              <button onClick={onClose} aria-label="Close menu">
-                <motion.div className="hamburger-line" style={{ rotate: 45, y: 8 }} />
-                <motion.div className="hamburger-line" style={{ opacity: 0 }} />
-                <motion.div className="hamburger-line" style={{ rotate: -45, y: -8 }} />
-              </button>
-            </div>
-            <motion.nav
-              className="napco-sidebar-links"
-              initial="closed"
-              animate="open"
-              exit="closed"
+    <div
+      className={`napco-sidebar ${isOpen ? 'napco-sidebar--open' : ''}`}
+      aria-hidden={!isOpen}
+    >
+      <motion.div
+        className="napco-sidebar-overlay"
+        initial={false}
+        animate={{
+          opacity: isOpen ? 1 : 0,
+          pointerEvents: isOpen ? 'auto' : 'none',
+        }}
+        transition={{ duration: 0.28, ease: 'easeOut' }}
+        onClick={onClose}
+      />
+
+      <motion.aside
+        className="napco-sidebar-panel"
+        initial={false}
+        animate={{
+          x: isOpen ? '0%' : '105%',
+        }}
+        transition={{
+          type: 'spring',
+          damping: 28,
+          stiffness: 220,
+        }}
+        aria-label="Site navigation"
+      >
+        <div className="napco-sidebar-close">
+          <button type="button" onClick={onClose} aria-label="Close menu">
+            <span className="hamburger-line hamburger-line--close-1" />
+            <span className="hamburger-line hamburger-line--close-2" />
+            <span className="hamburger-line hamburger-line--close-3" />
+          </button>
+        </div>
+
+        <motion.nav
+          className="napco-sidebar-links"
+          initial={false}
+          animate={isOpen ? 'open' : 'closed'}
+          variants={{
+            open: {
+              transition: {
+                staggerChildren: 0.07,
+                delayChildren: 0.16,
+              },
+            },
+            closed: {
+              transition: {
+                staggerChildren: 0.04,
+                staggerDirection: -1,
+              },
+            },
+          }}
+        >
+          {navLinks.map(({ label, href }) => (
+            <motion.a
+              key={label}
+              href={href}
+              className="napco-sidebar-link"
+              onClick={onClose}
               variants={{
-                open: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
-                closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+                closed: {
+                  x: 24,
+                  opacity: 0,
+                },
+                open: {
+                  x: 0,
+                  opacity: 1,
+                },
+              }}
+              whileHover={{
+                x: 8,
+                color: '#a855f7',
+              }}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 22,
               }}
             >
-              {navLinks.map(({ label, href }) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  className="napco-sidebar-link"
-                  onClick={onClose}
-                  variants={{
-                    closed: { x: 24, opacity: 0 },
-                    open: { x: 0, opacity: 1 },
-                  }}
-                  whileHover={{ x: 8, color: '#a855f7' }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                >
-                  {label}
-                </motion.a>
-              ))}
-            </motion.nav>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+              {label}
+            </motion.a>
+          ))}
+        </motion.nav>
+      </motion.aside>
+    </div>
   );
 }
