@@ -18,21 +18,6 @@ import Footer from '../components/common/Footer';
 
 
 
-
-
-{ /*import IdeaCards from '../components/home/IdeaCards';
-
-import PromoBanners from '../components/home/PromoBanners';
-import WhyChoose from '../components/home/WhyChoose';
-import ProjectShowcase from '../components/home/ProjectShowcase';
-import ProductSlider from '../components/home/ProductSlider';
-import GradientCTA from '../components/home/GradientCTA';
-import TeamSection from '../components/home/TeamSection';
-import LogisticsSection from '../components/home/LogisticsSection';
-import ShippingSteps from '../components/home/ShippingSteps';
-import BlogSection from '../components/home/BlogSection';
- */}
-
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
@@ -96,21 +81,6 @@ export default function Home() {
       <ContactCta/>
       <ClientLogos/>
 
-
-
-  
-      {/* reamove later
-
-      <PromoBanners />
-      <WhyChoose />
-      <ProjectShowcase />
-      <ProductSlider />
-      <GradientCTA />
-      <TeamSection />
-      <LogisticsSection />
-      <ShippingSteps />
-      <BlogSection />
-      */}
       <Footer />
       
       <ScrollToTop />

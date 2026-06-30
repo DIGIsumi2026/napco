@@ -138,7 +138,7 @@ export default function AboutPrinting() {
             ))}
           </div>
 
-          <a href="/about" className="napco-about__button" data-cursor="Read More">
+          <a href="/about-us" className="napco-about__button" data-cursor="Read More">
             Read More
           </a>
         </div>

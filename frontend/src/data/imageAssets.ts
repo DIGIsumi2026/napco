@@ -47,7 +47,9 @@ import client12 from "../assets/images/clients/client-12.png";
 import client13 from "../assets/images/clients/client-13.png";
 import client14 from "../assets/images/clients/client-14.png";
 
-
+// about us page 
+//hero
+import aboutThumbnail from "../assets/images/about/about-thumbnail.png";
 
 
 
@@ -65,6 +67,7 @@ export const imageAssets = {
 
   about:{
     logoRevealThumbnail: napcoLogoRevealThumb,
+    thubnail: aboutThumbnail,
   },
 
   services:{
@@ -105,5 +108,6 @@ export const imageAssets = {
     client12,
     client13,
     client14,
-  }
+  },
+
 } as const;
