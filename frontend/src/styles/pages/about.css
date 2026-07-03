@@ -509,7 +509,7 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  padding: clamp(86px, 8vw, 140px) clamp(18px, 5vw, 96px);
+  padding: clamp(108px, 11vw, 160px) clamp(18px, 5vw, 96px) clamp(92px, 9vw, 150px);
   background:
     radial-gradient(circle at 12% 12%, rgba(0, 83, 160, 0.07), transparent 32%),
     radial-gradient(circle at 88% 74%, rgba(7, 23, 45, 0.08), transparent 34%),
@@ -529,29 +529,55 @@
   -webkit-mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 72%);
 }
 
-.about-machine-model__sticky {
-  position: relative;
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .about-machine-model__header {
   width: min(980px, 100%);
-  margin: 0 auto 46px;
+  margin: 0 auto clamp(38px, 5vw, 70px);
   text-align: center;
+  overflow: hidden;
+}
+
+.about-machine-model__header span,
+.about-machine-model__header h2,
+.about-machine-model__header p {
+  opacity: 0;
+  transform: translateY(58px);
+  clip-path: inset(100% 0 0 0);
+}
+
+.about-machine-model__header--ready span {
+  animation: aboutModelWipeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.about-machine-model__header--ready h2 {
+  animation: aboutModelWipeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+.about-machine-model__header--ready p {
+  animation: aboutModelWipeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.22s forwards;
+}
+
+@keyframes aboutModelWipeUp {
+  from {
+    opacity: 0;
+    transform: translateY(58px);
+    clip-path: inset(100% 0 0 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 .about-machine-model__header span {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
-  padding: 0 18px;
-  margin-bottom: 20px;
+  min-height: 38px;
+  padding: 0 17px;
+  margin-bottom: 18px;
   color: #0053a0;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -563,7 +589,7 @@
 .about-machine-model__header h2 {
   margin: 0;
   color: #07172d;
-  font-size: clamp(3.3rem, 6.8vw, 7.8rem);
+  font-size: clamp(3.6rem, 7.2vw, 8.2rem);
   line-height: 0.88;
   letter-spacing: -0.09em;
   font-weight: 950;
@@ -573,34 +599,44 @@
   max-width: 720px;
   margin: 24px auto 0;
   color: #4f5e72;
-  font-size: clamp(1rem, 1.05vw, 1.16rem);
-  line-height: 1.75;
+  font-size: clamp(1rem, 1.1vw, 1.16rem);
+  line-height: 1.7;
   font-weight: 600;
+}
+
+.about-machine-model__sticky {
+  position: relative;
+  min-height: 100svh;
+  height: 100svh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 3vh, 34px) 0;
 }
 
 .about-machine-model__stage {
   position: relative;
-  width: min(1360px, 100%);
-  height: clamp(430px, calc(100vh - 260px), 760px);
+  width: min(1520px, 100%);
+  height: clamp(760px, 86svh, 980px);
   margin: 0 auto;
   overflow: hidden;
-  border-radius: clamp(28px, 3.2vw, 48px);
+  border-radius: clamp(26px, 3vw, 46px);
   background:
-    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.22), transparent 40%),
-    linear-gradient(135deg, #8998aa 0%, #aebcca 48%, #8c9aac 100%);
+    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.12), transparent 40%),
+    linear-gradient(135deg, #758497 0%, #95a3b1 48%, #77869a 100%);
   border: 1px solid rgba(7, 23, 45, 0.16);
   box-shadow:
-    0 44px 105px rgba(7, 23, 45, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.44);
+    0 38px 96px rgba(7, 23, 45, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .about-machine-model__stage::before {
   content: '';
   position: absolute;
-  inset: 18px;
+  inset: 14px;
   z-index: 1;
   border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   pointer-events: none;
 }
 
@@ -614,7 +650,7 @@
   height: 40%;
   pointer-events: none;
   transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.24), transparent 66%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.22), transparent 66%);
   filter: blur(22px);
 }
 
@@ -650,7 +686,7 @@
 .about-machine-model__scroll-story {
   position: absolute;
   left: 50%;
-  bottom: clamp(30px, 4vw, 52px);
+  bottom: clamp(26px, 4vw, 50px);
   z-index: 7;
   display: grid;
   justify-items: center;
@@ -664,7 +700,7 @@
 .about-machine-model__scroll-line {
   position: relative;
   width: 2px;
-  height: 76px;
+  height: 70px;
   overflow: hidden;
   border-radius: 999px;
   background: rgba(7, 23, 45, 0.18);
@@ -682,7 +718,7 @@
 }
 
 .about-machine-model__scroll-story strong {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 950;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -690,7 +726,7 @@
 
 .about-machine-model__scroll-story small {
   color: #596579;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 800;
 }
 
@@ -710,6 +746,10 @@
   }
 }
 
+/* ------------------------------
+   HOTSPOTS - DESKTOP / TABLET
+------------------------------ */
+
 .about-machine-model__hotspots {
   position: absolute;
   inset: 0;
@@ -719,25 +759,24 @@
 
 .about-machine-model__fact {
   position: absolute;
-  display: flex;
-  align-items: center;
+  inset: 0;
   pointer-events: none;
 }
 
 .about-machine-model__fact-dot {
-  width: 13px;
-  height: 13px;
-  flex: 0 0 auto;
+  position: absolute;
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
   background: #0053a0;
   border: 3px solid #ffffff;
   box-shadow: 0 5px 16px rgba(7, 23, 45, 0.18);
+  transform: translate(-50%, -50%);
 }
 
 .about-machine-model__fact-line {
-  width: clamp(60px, 6vw, 104px);
+  position: absolute;
   height: 1px;
-  flex: 0 0 auto;
   background-image: repeating-linear-gradient(
     90deg,
     rgba(7, 23, 45, 0.65) 0 6px,
@@ -747,8 +786,9 @@
 }
 
 .about-machine-model__fact article {
-  width: min(322px, 25vw);
-  padding: 16px 17px;
+  position: absolute;
+  width: min(328px, 23vw);
+  padding: 15px 16px;
   border-radius: 8px;
   background: #ffffff;
   border: 1px solid rgba(7, 23, 45, 0.11);
@@ -757,9 +797,9 @@
 
 .about-machine-model__fact article span {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 6px;
   color: #0053a0;
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   font-weight: 950;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -768,54 +808,95 @@
 .about-machine-model__fact article h3 {
   margin: 0;
   color: #07172d;
-  font-size: clamp(1.02rem, 1.22vw, 1.25rem);
+  font-size: clamp(1rem, 1.12vw, 1.18rem);
   line-height: 1.13;
   letter-spacing: -0.035em;
   font-weight: 950;
 }
 
 .about-machine-model__fact article p {
-  margin: 9px 0 0;
+  margin: 8px 0 0;
   color: #4f5e72;
-  font-size: 0.8rem;
-  line-height: 1.52;
+  font-size: 0.78rem;
+  line-height: 1.5;
   font-weight: 650;
 }
 
-.about-machine-model__fact--1 {
-  left: 5%;
-  top: 22%;
-  flex-direction: row-reverse;
+/* Fact 1 - upper left -> points to first print unit */
+.about-machine-model__fact--1 article {
+  left: 4%;
+  top: 18%;
 }
 
-.about-machine-model__fact--1 .about-machine-model__fact-line,
+.about-machine-model__fact--1 .about-machine-model__fact-dot {
+  left: 35.5%;
+  top: 38%;
+}
+
+.about-machine-model__fact--1 .about-machine-model__fact-line {
+  left: 24.6%;
+  top: 38%;
+  width: 10.9%;
+}
+
+/* Fact 2 - upper right -> points to delivery / right side */
+.about-machine-model__fact--2 article {
+  right: 4%;
+  top: 19%;
+}
+
+.about-machine-model__fact--2 .about-machine-model__fact-dot {
+  left: 74.2%;
+  top: 37%;
+}
+
+.about-machine-model__fact--2 .about-machine-model__fact-line {
+  left: 74.2%;
+  top: 37%;
+  width: 8.4%;
+}
+
+/* Fact 3 - lower left -> points to finishing / paper path */
+.about-machine-model__fact--3 article {
+  left: 4%;
+  bottom: 19%;
+}
+
+.about-machine-model__fact--3 .about-machine-model__fact-dot {
+  left: 41.2%;
+  top: 61.8%;
+}
+
 .about-machine-model__fact--3 .about-machine-model__fact-line {
-  transform-origin: right center;
+  left: 24.6%;
+  top: 61.8%;
+  width: 16.6%;
 }
 
-.about-machine-model__fact--2 {
-  right: 5%;
-  top: 24%;
+/* Fact 4 - lower right -> points to right output component */
+.about-machine-model__fact--4 article {
+  right: 4%;
+  bottom: 20%;
 }
 
-.about-machine-model__fact--3 {
-  left: 5%;
-  bottom: 17%;
-  flex-direction: row-reverse;
+.about-machine-model__fact--4 .about-machine-model__fact-dot {
+  left: 60.4%;
+  top: 63.8%;
 }
 
-.about-machine-model__fact--4 {
-  right: 5%;
-  bottom: 17%;
+.about-machine-model__fact--4 .about-machine-model__fact-line {
+  left: 60.4%;
+  top: 63.8%;
+  width: 12.5%;
 }
 
 .about-machine-model__observer-mode {
   position: absolute;
   left: 50%;
-  bottom: clamp(28px, 4vw, 48px);
+  bottom: clamp(24px, 4vw, 46px);
   z-index: 7;
   min-width: min(360px, calc(100% - 36px));
-  padding: 14px 18px;
+  padding: 12px 16px;
   color: #07172d;
   text-align: center;
   border-radius: 999px;
@@ -828,7 +909,7 @@
 
 .about-machine-model__observer-mode strong {
   display: block;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 950;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -838,19 +919,19 @@
   display: block;
   margin-top: 3px;
   color: #637083;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 800;
 }
 
 .about-machine-model__guide {
   position: absolute;
-  top: clamp(18px, 2vw, 28px);
-  right: clamp(18px, 2vw, 28px);
+  top: clamp(16px, 2vw, 26px);
+  right: clamp(16px, 2vw, 26px);
   z-index: 7;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 15px;
+  gap: 11px;
+  padding: 10px 13px;
   color: #07172d;
   border-radius: 999px;
   background: #ffffff;
@@ -861,8 +942,8 @@
 
 .about-machine-model__mouse {
   position: relative;
-  width: 28px;
-  height: 42px;
+  width: 25px;
+  height: 38px;
   flex: 0 0 auto;
   border-radius: 999px;
   border: 2px solid rgba(0, 83, 160, 0.34);
@@ -883,7 +964,7 @@
 .about-machine-model__guide strong {
   display: block;
   color: #07172d;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 950;
 }
 
@@ -891,7 +972,7 @@
   display: block;
   margin-top: 2px;
   color: #637083;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
 }
 
@@ -927,8 +1008,8 @@
 
 .about-machine-model__render-ring {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   border-radius: 999px;
   border: 2px solid rgba(0, 83, 160, 0.18);
 }
@@ -945,14 +1026,14 @@
 
 .about-machine-model__render-ring span {
   position: absolute;
-  inset: 19px;
+  inset: 18px;
   border-radius: inherit;
   background: #ffffff;
 }
 
 .about-machine-model__rendering strong {
   display: block;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 950;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -961,7 +1042,7 @@
 .about-machine-model__rendering small {
   display: block;
   color: #637083;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
 }
 
@@ -975,271 +1056,279 @@
   }
 }
 
-.about-machine-model__description {
-  width: min(1080px, 100%);
-  margin: clamp(34px, 4vw, 54px) auto 0;
-  padding: clamp(28px, 4vw, 46px);
-  text-align: center;
-  border-radius: clamp(22px, 2.8vw, 34px);
-  background: #ffffff;
-  border: 1px solid rgba(7, 23, 45, 0.08);
-  box-shadow: 0 20px 60px rgba(7, 23, 45, 0.1);
-}
-
-.about-machine-model__description > span {
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  padding: 0 15px;
-  margin-bottom: 18px;
-  color: #0053a0;
-  font-size: 0.72rem;
-  font-weight: 950;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  border-radius: 999px;
-  background: rgba(0, 174, 239, 0.1);
-}
-
-.about-machine-model__description p {
-  max-width: 890px;
-  margin: 0 auto;
-  color: #465467;
-  font-size: clamp(1rem, 1.1vw, 1.18rem);
-  line-height: 1.85;
-  font-weight: 600;
-}
-
-.about-machine-model__facts {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-top: 30px;
-}
-
-.about-machine-model__facts div {
-  min-height: 112px;
-  display: grid;
-  place-items: center;
-  padding: 18px;
-  border-radius: 8px;
-  background: #f6f9fc;
-  border: 1px solid rgba(7, 23, 45, 0.07);
-}
-
-.about-machine-model__facts strong {
-  display: block;
-  color: #07172d;
-  font-size: 1rem;
-  font-weight: 950;
-}
-
-.about-machine-model__facts small {
-  display: block;
-  margin-top: 7px;
-  color: #697588;
-  font-size: 0.82rem;
-  font-weight: 700;
-  line-height: 1.45;
-}
-
+/* Tablet */
 @media (max-width: 1024px) {
   .about-machine-model {
-    padding: 80px 20px;
+    padding: 96px 20px 100px;
   }
 
   .about-machine-model__header {
-    margin-bottom: 38px;
-  }
-
-  .about-machine-model__stage {
-    height: clamp(430px, calc(100vh - 240px), 620px);
-    border-radius: 32px;
-  }
-
-  .about-machine-model__fact article {
-    width: min(286px, 33vw);
-    padding: 15px 16px;
-  }
-
-  .about-machine-model__fact-line {
-    width: 58px;
-  }
-
-  .about-machine-model__facts {
-    grid-template-columns: 1fr;
-  }
-
-  .about-machine-model__facts div {
-    min-height: 100px;
-  }
-}
-
-@media (max-width: 760px) {
-  .about-machine-model {
-    padding: 48px 16px 72px;
-  }
-
-  .about-machine-model__header {
-    margin-bottom: 22px;
-  }
-
-  .about-machine-model__header span {
-    min-height: 36px;
-    padding: 0 15px;
-    font-size: 0.66rem;
+    margin-bottom: 42px;
   }
 
   .about-machine-model__header h2 {
-    font-size: clamp(2.45rem, 11vw, 3.7rem);
-    letter-spacing: -0.08em;
+    font-size: clamp(3rem, 7.5vw, 5.4rem);
+  }
+
+  .about-machine-model__header p {
+    max-width: 620px;
+    margin-top: 18px;
+    font-size: 0.95rem;
+  }
+
+  .about-machine-model__stage {
+    width: min(100%, 1180px);
+    height: clamp(700px, 82svh, 860px);
+    border-radius: 30px;
+  }
+
+  .about-machine-model__fact article {
+    width: min(260px, 30vw);
+    padding: 14px 15px;
+  }
+
+  .about-machine-model__fact--1 article {
+    left: 3.2%;
+    top: 17%;
+  }
+
+  .about-machine-model__fact--1 .about-machine-model__fact-dot {
+    left: 37%;
+    top: 39%;
+  }
+
+  .about-machine-model__fact--1 .about-machine-model__fact-line {
+    left: 24.6%;
+    top: 39%;
+    width: 12.4%;
+  }
+
+  .about-machine-model__fact--2 article {
+    right: 3.2%;
+    top: 18%;
+  }
+
+  .about-machine-model__fact--2 .about-machine-model__fact-dot {
+    left: 71.8%;
+    top: 38%;
+  }
+
+  .about-machine-model__fact--2 .about-machine-model__fact-line {
+    left: 71.8%;
+    top: 38%;
+    width: 10.1%;
+  }
+
+  .about-machine-model__fact--3 article {
+    left: 3.2%;
+    bottom: 18%;
+  }
+
+  .about-machine-model__fact--3 .about-machine-model__fact-dot {
+    left: 42.5%;
+    top: 62%;
+  }
+
+  .about-machine-model__fact--3 .about-machine-model__fact-line {
+    left: 24.6%;
+    top: 62%;
+    width: 17.9%;
+  }
+
+  .about-machine-model__fact--4 article {
+    right: 3.2%;
+    bottom: 18%;
+  }
+
+  .about-machine-model__fact--4 .about-machine-model__fact-dot {
+    left: 58.5%;
+    top: 63.5%;
+  }
+
+  .about-machine-model__fact--4 .about-machine-model__fact-line {
+    left: 58.5%;
+    top: 63.5%;
+    width: 14.1%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .about-machine-model {
+    padding: 84px 16px 80px;
+  }
+
+  .about-machine-model__header {
+    margin-bottom: 28px;
+  }
+
+  .about-machine-model__header span {
+    min-height: 32px;
+    padding: 0 13px;
+    margin-bottom: 10px;
+    font-size: 0.62rem;
+  }
+
+  .about-machine-model__header h2 {
+    font-size: clamp(2.25rem, 10vw, 3.35rem);
+    letter-spacing: -0.075em;
   }
 
   .about-machine-model__header p {
     display: none;
   }
 
+  .about-machine-model__sticky {
+    height: 100svh;
+    min-height: 100svh;
+    padding: 12px 0;
+  }
+
   .about-machine-model__stage {
-    height: clamp(430px, calc(100vh - 230px), 520px);
-    border-radius: 24px;
+    width: 100%;
+    height: clamp(600px, 84svh, 740px);
+    border-radius: 22px;
   }
 
   .about-machine-model__stage::before {
-    inset: 10px;
+    inset: 9px;
   }
 
   .about-machine-model__fact {
-    left: 14px !important;
-    right: 14px !important;
-    bottom: 18px !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 16px !important;
     top: auto !important;
     width: auto;
-    flex-direction: row !important;
+    display: block;
   }
 
   .about-machine-model__fact-dot {
+    position: absolute;
+    left: 50% !important;
+    top: auto !important;
+    bottom: calc(100% + 112px);
     width: 10px;
     height: 10px;
     border-width: 2px;
+    transform: translateX(-50%);
   }
 
   .about-machine-model__fact-line {
-    width: 28px;
-    transform-origin: left center !important;
+    position: absolute;
+    left: calc(50% - 28px) !important;
+    top: auto !important;
+    bottom: calc(100% + 104px);
+    width: 56px !important;
+    height: 1px;
+    transform-origin: center center !important;
   }
 
   .about-machine-model__fact article {
+    position: relative;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
     width: 100%;
-    max-height: 150px;
-    padding: 13px 14px;
+    max-height: 142px;
+    padding: 12px 13px;
     overflow: hidden;
     border-radius: 8px;
   }
 
   .about-machine-model__fact article span {
     margin-bottom: 5px;
-    font-size: 0.58rem;
+    font-size: 0.56rem;
   }
 
   .about-machine-model__fact article h3 {
-    font-size: 0.98rem;
+    font-size: 0.94rem;
     line-height: 1.14;
   }
 
   .about-machine-model__fact article p {
-    margin-top: 7px;
-    font-size: 0.72rem;
-    line-height: 1.4;
+    margin-top: 6px;
+    font-size: 0.68rem;
+    line-height: 1.38;
   }
 
   .about-machine-model__scroll-story {
-    bottom: 30px;
+    bottom: 24px;
   }
 
   .about-machine-model__guide {
-    left: 16px;
-    right: 16px;
-    top: 16px;
+    left: 14px;
+    right: 14px;
+    top: 14px;
     justify-content: center;
     border-radius: 8px;
-    padding: 10px 12px;
+    padding: 9px 11px;
   }
 
   .about-machine-model__guide strong {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
   }
 
   .about-machine-model__guide small {
-    font-size: 0.68rem;
+    font-size: 0.66rem;
   }
 
   .about-machine-model__mouse {
-    width: 24px;
-    height: 36px;
+    width: 23px;
+    height: 34px;
   }
 
   .about-machine-model__observer-mode {
-    bottom: 18px;
-    border-radius: 8px;
-  }
-
-  .about-machine-model__description {
-    padding: 24px 18px;
-    border-radius: 20px;
-  }
-
-  .about-machine-model__description p {
-    font-size: 0.96rem;
-    line-height: 1.7;
-  }
-
-  .about-machine-model__facts {
-    margin-top: 24px;
-  }
-
-  .about-machine-model__facts div {
-    min-height: 96px;
+    bottom: 16px;
     border-radius: 8px;
   }
 }
 
+/* Small mobile */
 @media (max-width: 420px) {
   .about-machine-model {
-    padding: 42px 12px 66px;
+    padding: 76px 12px 70px;
   }
 
   .about-machine-model__stage {
-    height: clamp(410px, calc(100vh - 220px), 470px);
-    border-radius: 20px;
+    height: clamp(560px, 84svh, 680px);
+    border-radius: 18px;
   }
 
   .about-machine-model__fact {
     left: 10px !important;
     right: 10px !important;
-    bottom: 14px !important;
+    bottom: 12px !important;
+  }
+
+  .about-machine-model__fact-dot {
+    bottom: calc(100% + 96px);
   }
 
   .about-machine-model__fact-line {
-    width: 22px;
+    left: calc(50% - 22px) !important;
+    bottom: calc(100% + 89px);
+    width: 44px !important;
   }
 
   .about-machine-model__fact article {
-    max-height: 142px;
-    padding: 12px;
+    max-height: 132px;
+    padding: 11px;
   }
 
   .about-machine-model__fact article h3 {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
 
   .about-machine-model__fact article p {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
   }
 
   .about-machine-model__guide {
-    left: 12px;
-    right: 12px;
-    top: 12px;
+    left: 10px;
+    right: 10px;
+    top: 10px;
   }
 
   .about-machine-model__guide small {
@@ -1247,8 +1336,8 @@
   }
 
   .about-machine-model__render-ring {
-    width: 58px;
-    height: 58px;
+    width: 56px;
+    height: 56px;
   }
 
   .about-machine-model__render-ring span {

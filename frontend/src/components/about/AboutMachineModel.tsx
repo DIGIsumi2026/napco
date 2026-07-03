@@ -7,13 +7,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const MODEL_PATH = '/models/industrial-offset-printer-polished-animated.glb';
-const FALLBACK_MODEL_PATH = '/models/industrial-offset-printer.glb';
+const MODEL_PATH = '/models/industrial-offset-printer.glb';
 
 const qualityFacts = [
   {
     eyebrow: 'Technology',
-    title: 'State-of-the-art machinery',
+    title: 'State of the art machinery',
     description:
       'Modern machinery, technology, accessories and qualified press personnel support demanding print requirements.',
     rotationY: -0.72,
@@ -23,7 +22,7 @@ const qualityFacts = [
     title: 'Web, sheet-fed and finishing strength',
     description:
       'NAPCO is equipped for web printing, sheet-fed offset printing and finishing workflows at large production scale.',
-    rotationY: 0.1,
+    rotationY: 0.06,
   },
   {
     eyebrow: 'Finishing',
@@ -37,16 +36,16 @@ const qualityFacts = [
     title: '35,000 A4 books per day',
     description:
       'The production setup can deliver 35,000 A4 perfect-bound or wire-stitched books per day with finishing options.',
-    rotationY: 1.58,
+    rotationY: 1.5,
   },
 ];
 
 type ResponsiveSettings = {
   cameraPosition: THREE.Vector3;
-  modelSize: number;
   minDistance: number;
   maxDistance: number;
   polarAngle: number;
+  viewportFill: number;
 };
 
 type StoryState = {
@@ -54,7 +53,10 @@ type StoryState = {
   isObserverMode: boolean;
 };
 
-const INTRO_ROTATION_Y = -0.95;
+const INTRO_ROTATION_Y = -0.92;
+const FACT_PULSE_ZOOM = 1.62;
+const FACT_SETTLE_ZOOM = 1.44;
+const OBSERVER_ZOOM = 1.1;
 
 function disposeMaterial(material: THREE.Material | THREE.Material[]) {
   if (Array.isArray(material)) {
@@ -77,6 +79,83 @@ function disposeModel(root: THREE.Object3D) {
   });
 }
 
+function isStageLikeName(name: string) {
+  const lower = name.toLowerCase();
+
+  return (
+    lower.includes('floor') ||
+    lower.includes('stage') ||
+    lower.includes('studio') ||
+    lower.includes('platform') ||
+    lower.includes('ground') ||
+    lower.includes('white_studio_floor')
+  );
+}
+
+function getRelevantBounds(root: THREE.Object3D) {
+  const bounds = new THREE.Box3();
+  let hasRelevantMesh = false;
+
+  root.traverse((child) => {
+    if (!(child instanceof THREE.Mesh)) return;
+
+    const meshName = child.name.toLowerCase();
+
+    let skip = isStageLikeName(meshName);
+
+    if (!skip) {
+      const materials = Array.isArray(child.material)
+        ? child.material
+        : child.material
+          ? [child.material]
+          : [];
+
+      skip = materials.some((material) => isStageLikeName(material.name || ''));
+    }
+
+    if (skip) return;
+
+    child.geometry.computeBoundingBox();
+
+    const geometryBox = child.geometry.boundingBox?.clone();
+    if (!geometryBox) return;
+
+    const worldBox = geometryBox.applyMatrix4(child.matrixWorld);
+
+    if (!hasRelevantMesh) {
+      bounds.copy(worldBox);
+      hasRelevantMesh = true;
+    } else {
+      bounds.union(worldBox);
+    }
+  });
+
+  if (!hasRelevantMesh) {
+    bounds.setFromObject(root);
+  }
+
+  return bounds;
+}
+
+function computeFitScale(
+  boundsSize: THREE.Vector3,
+  camera: THREE.PerspectiveCamera,
+  target: THREE.Vector3,
+  viewportFill: number
+) {
+  const distance = camera.position.distanceTo(target);
+  const vFov = THREE.MathUtils.degToRad(camera.fov);
+
+  const visibleHeight = 2 * Math.tan(vFov / 2) * distance;
+  const visibleWidth = visibleHeight * camera.aspect;
+
+  const widthScale = (visibleWidth * viewportFill) / boundsSize.x;
+  const heightScale = (visibleHeight * (viewportFill * 0.68)) / boundsSize.y;
+  const depthScale = (visibleWidth * (viewportFill * 0.58)) / boundsSize.z;
+
+  return Math.min(widthScale, heightScale, depthScale);
+}
+
 export default function AboutMachineModel() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const stickyRef = useRef<HTMLDivElement | null>(null);
@@ -92,6 +171,8 @@ export default function AboutMachineModel() {
   const [isLoading, setIsLoading] = useState(true);
   const [showRendering, setShowRendering] = useState(true);
   const [hasError, setHasError] = useState(false);
+
+  const isHeaderReady = hasError || (!isLoading && !showRendering);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -113,34 +194,35 @@ export default function AboutMachineModel() {
 
       if (width <= 560) {
         return {
-          cameraPosition: new THREE.Vector3(6.5, 3.35, 7.3),
-          modelSize: 10.3,
-          minDistance: 4.8,
-          maxDistance: 13.5,
-          polarAngle: 64,
+          cameraPosition: new THREE.Vector3(8.2, 4.4, 10.4),
+          minDistance: 5.1,
+          maxDistance: 14,
+          polarAngle: 63,
+          viewportFill: 0.64,
         };
       }
 
       if (width <= 1024) {
         return {
-          cameraPosition: new THREE.Vector3(7.2, 3.8, 8.1),
-          modelSize: 11.1,
-          minDistance: 5.2,
-          maxDistance: 15,
-          polarAngle: 63,
+          cameraPosition: new THREE.Vector3(9.8, 5.2, 12),
+          minDistance: 5.6,
+          maxDistance: 15.5,
+          polarAngle: 62,
+          viewportFill: 0.69,
         };
       }
 
       return {
-        cameraPosition: new THREE.Vector3(7.6, 3.9, 8.4),
-        modelSize: 12.1,
-        minDistance: 5,
-        maxDistance: 16,
-        polarAngle: 62,
+        cameraPosition: new THREE.Vector3(11.8, 6.2, 14),
+        minDistance: 6.2,
+        maxDistance: 18,
+        polarAngle: 61,
+        viewportFill: 0.7,
       };
     };
 
-    const responsive = getResponsiveSettings();
+    let responsive = getResponsiveSettings();
+
     const camera = new THREE.PerspectiveCamera(
       32,
       container.clientWidth / container.clientHeight,
@@ -160,85 +242,94 @@ export default function AboutMachineModel() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.16;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     container.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
-    const fixedPolarAngle = THREE.MathUtils.degToRad(responsive.polarAngle);
+    const orbitTarget = new THREE.Vector3(0, 1.22, 0);
+
+    const applyControlSettings = (settings: ResponsiveSettings) => {
+      const fixedPolarAngle = THREE.MathUtils.degToRad(settings.polarAngle);
+
+      controls.minDistance = settings.minDistance;
+      controls.maxDistance = settings.maxDistance;
+      controls.minPolarAngle = fixedPolarAngle;
+      controls.maxPolarAngle = fixedPolarAngle;
+      controls.target.copy(orbitTarget);
+      controls.update();
+      controls.saveState();
+    };
 
     controls.enabled = false;
     controls.enableDamping = true;
     controls.dampingFactor = 0.075;
     controls.enableRotate = true;
-    controls.enableZoom = true;
+    controls.enableZoom = false;
     controls.enablePan = false;
     controls.screenSpacePanning = false;
     controls.zoomSpeed = 0.82;
     controls.rotateSpeed = 0.72;
-    controls.minDistance = responsive.minDistance;
-    controls.maxDistance = responsive.maxDistance;
-    controls.minPolarAngle = fixedPolarAngle;
-    controls.maxPolarAngle = fixedPolarAngle;
-    controls.target.set(0, 1.18, 0);
-    controls.update();
-    controls.saveState();
 
-    const ambientLight = new THREE.AmbientLight('#ffffff', 1.38);
-    const keyLight = new THREE.DirectionalLight('#ffffff', 4.7);
-    const fillLight = new THREE.DirectionalLight('#bfdfff', 2.15);
-    const rimLight = new THREE.DirectionalLight('#ffffff', 2);
+    applyControlSettings(responsive);
+
+    const ambientLight = new THREE.AmbientLight('#ffffff', 1.25);
+    const keyLight = new THREE.DirectionalLight('#ffffff', 4.8);
+    const fillLight = new THREE.DirectionalLight('#d3e6ff', 2.2);
+    const rimLight = new THREE.DirectionalLight('#ffffff', 2.2);
 
     keyLight.position.set(5.5, 8, 6);
     keyLight.castShadow = true;
+
     fillLight.position.set(-6.5, 4.5, -5);
     rimLight.position.set(0, 5.5, -7);
 
     scene.add(ambientLight, keyLight, fillLight, rimLight);
 
-    const floorGeometry = new THREE.CircleGeometry(14, 128);
+    const floorGeometry = new THREE.CircleGeometry(16, 128);
     const floorMaterial = new THREE.MeshStandardMaterial({
-      color: '#8796a8',
-      roughness: 0.58,
-      metalness: 0.02,
+      color: '#4e5a69',
+      roughness: 0.62,
+      metalness: 0,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0,
     });
 
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
     floor.rotation.x = -Math.PI / 2;
     floor.position.y = -0.08;
-    floor.receiveShadow = true;
     scene.add(floor);
 
     const loader = new GLTFLoader();
     const clock = new THREE.Clock();
+
     const storyState: StoryState = {
-      activeFact: -2,
+      activeFact: -3,
       isObserverMode: false,
     };
 
     let model: THREE.Group | null = null;
     let mixer: THREE.AnimationMixer | null = null;
     let animationFrame = 0;
-    let renderTimer = 0;
+    let renderTimer: number | undefined;
     let scrollTrigger: ScrollTrigger | null = null;
     let modelBaseScale = 1;
-    let originalMaxSize = 1;
+    let relevantBoundsSize = new THREE.Vector3(1, 1, 1);
     let isHovering = false;
     let isDragging = false;
     let hasUnmounted = false;
     let scaleTimeline: gsap.core.Timeline | null = null;
-    const modelRequestController = new AbortController();
 
     const facts = factRefs.current.filter(
       (element): element is HTMLDivElement => Boolean(element)
     );
+
     const dots = dotRefs.current.filter(
       (element): element is HTMLSpanElement => Boolean(element)
     );
+
     const lines = lineRefs.current.filter(
       (element): element is HTMLSpanElement => Boolean(element)
     );
@@ -284,6 +375,8 @@ export default function AboutMachineModel() {
 
     const setControlsEnabled = (enabled: boolean) => {
       controls.enabled = enabled;
+      controls.enableZoom = enabled;
+
       container.classList.toggle('about-machine-model__canvas--interactive', enabled);
 
       if (!enabled) {
@@ -303,9 +396,9 @@ export default function AboutMachineModel() {
           x: targetScale,
           y: targetScale,
           z: targetScale,
-          duration: 0.34,
+          duration: 0.42,
           ease: 'power3.out',
-          overwrite: true,
+          overwrite: 'auto',
         });
         return;
       }
@@ -313,24 +406,25 @@ export default function AboutMachineModel() {
       scaleTimeline = gsap
         .timeline()
         .to(model.scale, {
-          x: modelBaseScale * 1.06,
-          y: modelBaseScale * 1.06,
-          z: modelBaseScale * 1.06,
-          duration: 0.2,
-          ease: 'power2.out',
-          overwrite: true,
+          x: modelBaseScale * FACT_PULSE_ZOOM,
+          y: modelBaseScale * FACT_PULSE_ZOOM,
+          z: modelBaseScale * FACT_PULSE_ZOOM,
+          duration: 0.46,
+          ease: 'power3.out',
+          overwrite: 'auto',
         })
         .to(model.scale, {
           x: targetScale,
           y: targetScale,
           z: targetScale,
-          duration: 0.34,
+          duration: 0.72,
           ease: 'power3.out',
+          overwrite: 'auto',
         });
     };
 
-    const activateFact = (index: number, force = false) => {
-      if (!model || (!force && storyState.activeFact === index && !storyState.isObserverMode)) {
+    const activateFact = (index: number) => {
+      if (!model || (storyState.activeFact === index && !storyState.isObserverMode)) {
         return;
       }
 
@@ -397,14 +491,17 @@ export default function AboutMachineModel() {
         );
       }
 
+      gsap.killTweensOf(model.rotation);
+      gsap.killTweensOf(model.scale);
+
       gsap.to(model.rotation, {
         y: qualityFacts[index].rotationY,
-        duration: 0.62,
+        duration: 0.74,
         ease: 'power3.inOut',
-        overwrite: true,
+        overwrite: 'auto',
       });
 
-      animateModelScale(modelBaseScale * 1.03, true);
+      animateModelScale(modelBaseScale * FACT_SETTLE_ZOOM, true);
     };
 
     const showIntro = () => {
@@ -439,7 +536,7 @@ export default function AboutMachineModel() {
         y: INTRO_ROTATION_Y,
         duration: 0.46,
         ease: 'power2.out',
-        overwrite: true,
+        overwrite: 'auto',
       });
 
       animateModelScale(modelBaseScale, false);
@@ -481,20 +578,20 @@ export default function AboutMachineModel() {
         overwrite: true,
       });
 
-      animateModelScale(modelBaseScale, false);
+      animateModelScale(modelBaseScale * OBSERVER_ZOOM, false);
     };
 
     const getActiveFactFromProgress = (progress: number) => {
-      if (progress >= 0.1 && progress < 0.28) return 0;
-      if (progress >= 0.28 && progress < 0.46) return 1;
-      if (progress >= 0.46 && progress < 0.64) return 2;
-      if (progress >= 0.64 && progress < 0.82) return 3;
+      if (progress >= 0.08 && progress < 0.27) return 0;
+      if (progress >= 0.27 && progress < 0.46) return 1;
+      if (progress >= 0.46 && progress < 0.65) return 2;
+      if (progress >= 0.65 && progress < 0.84) return 3;
 
       return -1;
     };
 
     const updateStoryByProgress = (progress: number) => {
-      if (progress >= 0.82) {
+      if (progress >= 0.84) {
         unlockObserverMode();
         return;
       }
@@ -537,9 +634,9 @@ export default function AboutMachineModel() {
       });
 
       scrollTrigger = ScrollTrigger.create({
-        trigger: section,
+        trigger: sticky,
         start: 'top top',
-        end: () => (window.innerWidth <= 760 ? '+=3000' : '+=3700'),
+        end: () => (window.innerWidth <= 760 ? '+=2800' : '+=3300'),
         pin: sticky,
         anticipatePin: 1,
         invalidateOnRefresh: true,
@@ -548,7 +645,10 @@ export default function AboutMachineModel() {
       });
 
       updateStoryByProgress(scrollTrigger.progress);
-      ScrollTrigger.refresh();
+
+      window.setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 250);
     };
 
     const onWheel = (event: WheelEvent) => {
@@ -597,143 +697,135 @@ export default function AboutMachineModel() {
     window.addEventListener('pointerup', onPointerUp);
 
     const handleModelLoaded = (gltf: GLTF) => {
-        if (hasUnmounted) {
-          disposeModel(gltf.scene);
-          return;
-        }
+      if (hasUnmounted) {
+        disposeModel(gltf.scene);
+        return;
+      }
 
-        model = gltf.scene;
+      model = gltf.scene;
 
-        model.traverse((child) => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true;
-            child.receiveShadow = true;
+      model.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
 
-            if (Array.isArray(child.material)) {
-              child.material.forEach((material) => {
-                material.needsUpdate = true;
-              });
-            } else if (child.material) {
-              child.material.needsUpdate = true;
+          const lowerObjectName = child.name.toLowerCase();
+
+          const updateMaterial = (material: THREE.Material) => {
+            const lowerMaterialName = material.name.toLowerCase();
+
+            const isStageMesh =
+              isStageLikeName(lowerObjectName) || isStageLikeName(lowerMaterialName);
+
+            if (isStageMesh && material instanceof THREE.MeshStandardMaterial) {
+              material.color = new THREE.Color('#4f5b69');
+              material.roughness = 0.62;
+              material.metalness = 0.03;
             }
+
+            material.needsUpdate = true;
+          };
+
+          if (Array.isArray(child.material)) {
+            child.material.forEach(updateMaterial);
+          } else if (child.material) {
+            updateMaterial(child.material);
           }
-        });
-
-        const box = new THREE.Box3().setFromObject(model);
-        const center = new THREE.Vector3();
-        const size = new THREE.Vector3();
-
-        box.getCenter(center);
-        box.getSize(size);
-        model.position.sub(center);
-
-        originalMaxSize = Math.max(size.x, size.y, size.z);
-        modelBaseScale = responsive.modelSize / originalMaxSize;
-
-        model.scale.setScalar(modelBaseScale);
-        model.position.y = 0.04;
-        model.rotation.y = INTRO_ROTATION_Y;
-
-        scene.add(model);
-
-        if (gltf.animations.length > 0) {
-          mixer = new THREE.AnimationMixer(model);
-
-          gltf.animations.forEach((clip) => {
-            const action = mixer?.clipAction(clip);
-            action?.reset();
-            action?.setLoop(THREE.LoopRepeat, Infinity);
-            action?.play();
-          });
         }
+      });
 
-        setIsLoading(false);
+      const fullBox = new THREE.Box3().setFromObject(model);
+      const modelCenter = new THREE.Vector3();
+      fullBox.getCenter(modelCenter);
 
-        renderTimer = window.setTimeout(() => {
-          setShowRendering(false);
-        }, 2000);
+      model.position.sub(modelCenter);
+      model.position.y = -0.08;
+      model.rotation.y = INTRO_ROTATION_Y;
 
-        buildScrollStory();
-    };
+      scene.add(model);
 
-    const loadMachineModel = (path: string, canUseFallback: boolean) => {
-      loader.load(
-        path,
-        handleModelLoaded,
-        undefined,
-        (error) => {
-          if (hasUnmounted) return;
+      const relevantBox = getRelevantBounds(model);
+      const relevantCenter = new THREE.Vector3();
+      relevantBox.getCenter(relevantCenter);
+      relevantBox.getSize(relevantBoundsSize);
 
-          if (canUseFallback) {
-            loadMachineModel(FALLBACK_MODEL_PATH, false);
-            return;
-          }
+      model.position.x -= relevantCenter.x;
+      model.position.z -= relevantCenter.z;
 
-          console.error('GLB model loading failed:', error);
-          setIsLoading(false);
-          setHasError(true);
-        }
+      modelBaseScale = computeFitScale(
+        relevantBoundsSize,
+        camera,
+        orbitTarget,
+        responsive.viewportFill
       );
-    };
 
-    const resolveAndLoadModel = async () => {
-      try {
-        const response = await fetch(MODEL_PATH, {
-          method: 'HEAD',
-          signal: modelRequestController.signal,
+      model.scale.setScalar(modelBaseScale);
+
+      if (gltf.animations.length > 0) {
+        mixer = new THREE.AnimationMixer(model);
+
+        gltf.animations.forEach((clip) => {
+          const action = mixer?.clipAction(clip);
+          action?.reset();
+          action?.setLoop(THREE.LoopRepeat, Infinity);
+          action?.play();
         });
-
-        const contentType = response.headers.get('content-type') ?? '';
-        const isModelResponse =
-          response.ok &&
-          !contentType.includes('text/html') &&
-          !contentType.includes('text/plain');
-
-        if (!hasUnmounted && isModelResponse) {
-          loadMachineModel(MODEL_PATH, true);
-          return;
-        }
-      } catch {
-        if (hasUnmounted) return;
       }
 
-      if (!hasUnmounted) {
-        loadMachineModel(FALLBACK_MODEL_PATH, false);
-      }
+      setIsLoading(false);
+
+      renderTimer = window.setTimeout(() => {
+        setShowRendering(false);
+      }, 2000);
+
+      buildScrollStory();
     };
 
-    void resolveAndLoadModel();
+    loader.load(
+      MODEL_PATH,
+      handleModelLoaded,
+      undefined,
+      (error) => {
+        console.error('GLB model loading failed:', error);
+        setIsLoading(false);
+        setShowRendering(false);
+        setHasError(true);
+      }
+    );
 
     const handleResize = () => {
-      const nextResponsive = getResponsiveSettings();
+      responsive = getResponsiveSettings();
 
       camera.aspect = container.clientWidth / container.clientHeight;
-      camera.position.copy(nextResponsive.cameraPosition);
+      camera.position.copy(responsive.cameraPosition);
       camera.updateProjectionMatrix();
 
-      controls.minDistance = nextResponsive.minDistance;
-      controls.maxDistance = nextResponsive.maxDistance;
+      applyControlSettings(responsive);
 
-      const nextPolarAngle = THREE.MathUtils.degToRad(nextResponsive.polarAngle);
-      controls.minPolarAngle = nextPolarAngle;
-      controls.maxPolarAngle = nextPolarAngle;
-      controls.target.set(0, 1.18, 0);
-      controls.update();
-      controls.saveState();
+      if (model) {
+        modelBaseScale = computeFitScale(
+          relevantBoundsSize,
+          camera,
+          orbitTarget,
+          responsive.viewportFill
+        );
 
-      if (model && originalMaxSize > 0) {
-        modelBaseScale = nextResponsive.modelSize / originalMaxSize;
         const nextScale =
           storyState.activeFact >= 0 && !storyState.isObserverMode
-            ? modelBaseScale * 1.03
-            : modelBaseScale;
+            ? modelBaseScale * FACT_SETTLE_ZOOM
+            : storyState.isObserverMode
+              ? modelBaseScale * OBSERVER_ZOOM
+              : modelBaseScale;
 
         model.scale.setScalar(nextScale);
       }
 
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      ScrollTrigger.refresh();
+
+      window.setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
     };
 
     window.addEventListener('resize', handleResize);
@@ -759,9 +851,9 @@ export default function AboutMachineModel() {
 
     return () => {
       hasUnmounted = true;
-      modelRequestController.abort();
+
       cancelAnimationFrame(animationFrame);
-      window.clearTimeout(renderTimer);
+      if (renderTimer) window.clearTimeout(renderTimer);
 
       scrollTrigger?.kill();
       scaleTimeline?.kill();
@@ -771,7 +863,7 @@ export default function AboutMachineModel() {
         gsap.killTweensOf(model.scale);
       }
 
-      gsap.killTweensOf([facts, dots, lines, scrollHint, guide, observerMode]);
+      gsap.killTweensOf([...facts, ...dots, ...lines, scrollHint, guide, observerMode]);
 
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('pointerup', onPointerUp);
@@ -796,6 +888,7 @@ export default function AboutMachineModel() {
       scene.remove(floor);
       floorGeometry.dispose();
       floorMaterial.dispose();
+
       renderer.dispose();
 
       if (renderer.domElement.parentElement === container) {
@@ -808,23 +901,27 @@ export default function AboutMachineModel() {
     <section className="about-machine-model" ref={sectionRef}>
       <div className="about-machine-model__bg" />
 
+      <div
+        className={`about-machine-model__header ${
+          isHeaderReady ? 'about-machine-model__header--ready' : ''
+        }`}
+      >
+        <span>Interactive Print Quality</span>
+
+        <h2>
+          See the quality
+          <br />
+          behind every print.
+        </h2>
+
+        <p>
+          Scroll through the 3D press to discover NAPCO’s technology, production
+          capacity and finishing strength.
+        </p>
+      </div>
+
       <div className="about-machine-model__sticky" ref={stickyRef}>
-        <div className="about-machine-model__header" data-reveal>
-          <span>Interactive Print Quality</span>
-
-          <h2>
-            See the quality
-            <br />
-            behind every print.
-          </h2>
-
-          <p>
-            Scroll through the 3D press to discover NAPCO’s technology,
-            production capacity and finishing strength.
-          </p>
-        </div>
-
-        <div className="about-machine-model__stage" data-reveal>
+        <div className="about-machine-model__stage">
           <div className="about-machine-model__scroll-story" ref={scrollHintRef}>
             <span className="about-machine-model__scroll-line">
               <i />
@@ -911,34 +1008,6 @@ export default function AboutMachineModel() {
           )}
 
           <div ref={containerRef} className="about-machine-model__canvas" />
-        </div>
-      </div>
-
-      <div className="about-machine-model__description" data-reveal>
-        <span>Machine Capability</span>
-
-        <p>
-          This 3D press represents NAPCO’s production strength in web printing,
-          sheet-fed offset printing and finishing. The company combines modern
-          machinery, qualified personnel and specialist finishing services to
-          deliver reliable print output at scale.
-        </p>
-
-        <div className="about-machine-model__facts">
-          <div>
-            <strong>Web &amp; Sheet-fed</strong>
-            <small>Large-scale printing capacity</small>
-          </div>
-
-          <div>
-            <strong>Premium Finishing</strong>
-            <small>Varnishing, foiling, laminating and binding</small>
-          </div>
-
-          <div>
-            <strong>35,000 A4 Books</strong>
-            <small>Daily perfect-bound or wire-stitched capacity</small>
-          </div>
         </div>
       </div>
     </section>
