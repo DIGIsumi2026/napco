@@ -43,6 +43,15 @@ export default function ContactCta() {
 
     if (!section || !canvas) return;
 
+    const shouldAnimateParticles =
+      window.matchMedia('(min-width: 1024px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!shouldAnimateParticles) {
+      canvas.hidden = true;
+      return;
+    }
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -50,11 +59,12 @@ export default function ContactCta() {
     let animationFrame = 0;
     let width = 0;
     let height = 0;
+    let isVisible = false;
+    let sectionRect = section.getBoundingClientRect();
 
     const getParticleCount = () => {
-      if (window.innerWidth <= 680) return 260;
-      if (window.innerWidth <= 1024) return 460;
-      return 820;
+      if (window.innerWidth <= 1280) return 320;
+      return 460;
     };
 
     const createParticles = () => {
@@ -102,10 +112,11 @@ export default function ContactCta() {
 
     const resize = () => {
       const rect = section.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
 
       width = rect.width;
       height = rect.height;
+      sectionRect = rect;
 
       canvas.width = width * dpr;
       canvas.height = height * dpr;
@@ -125,7 +136,7 @@ export default function ContactCta() {
     };
 
     const drawCursorGlow = (x: number, y: number, strength: number) => {
-      const glowRadius = 145 + strength * 0.8;
+      const glowRadius = 115 + strength * 0.55;
 
       const glow = ctx.createRadialGradient(x, y, 0, x, y, glowRadius);
 
@@ -145,6 +156,11 @@ export default function ContactCta() {
     };
 
     const draw = () => {
+      if (!isVisible) {
+        animationFrame = 0;
+        return;
+      }
+
       ctx.clearRect(0, 0, width, height);
 
       const cursor = cursorRef.current;
@@ -273,7 +289,7 @@ export default function ContactCta() {
 
         if (softenedInfluence > 0.08) {
           ctx.globalCompositeOperation = 'lighter';
-          ctx.shadowBlur = 10 + softenedInfluence * 18;
+          ctx.shadowBlur = 6 + softenedInfluence * 10;
           ctx.shadowColor = particle.color;
         } else {
           ctx.globalCompositeOperation = 'source-over';
@@ -305,10 +321,21 @@ export default function ContactCta() {
       animationFrame = window.requestAnimationFrame(draw);
     };
 
+    const startDrawing = () => {
+      if (animationFrame) return;
+      animationFrame = window.requestAnimationFrame(draw);
+    };
+
+    const stopDrawing = () => {
+      if (!animationFrame) return;
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = 0;
+    };
+
     const handlePointerEnter = (event: PointerEvent) => {
-      const rect = section.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      sectionRect = section.getBoundingClientRect();
+      const x = event.clientX - sectionRect.left;
+      const y = event.clientY - sectionRect.top;
 
       cursorRef.current.x = x;
       cursorRef.current.y = y;
@@ -320,10 +347,8 @@ export default function ContactCta() {
     };
 
     const handlePointerMove = (event: PointerEvent) => {
-      const rect = section.getBoundingClientRect();
-
-      cursorRef.current.targetX = event.clientX - rect.left;
-      cursorRef.current.targetY = event.clientY - rect.top;
+      cursorRef.current.targetX = event.clientX - sectionRect.left;
+      cursorRef.current.targetY = event.clientY - sectionRect.top;
       cursorRef.current.active = true;
     };
 
@@ -332,26 +357,44 @@ export default function ContactCta() {
       cursorRef.current.speed = 0;
     };
 
-    resize();
-    draw();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
 
-    window.addEventListener('resize', resize);
-    section.addEventListener('pointerenter', handlePointerEnter);
-    section.addEventListener('pointermove', handlePointerMove);
-    section.addEventListener('pointerleave', handlePointerLeave);
+        if (isVisible) {
+          startDrawing();
+        } else {
+          cursorRef.current.active = false;
+          stopDrawing();
+        }
+      },
+      {
+        rootMargin: '180px 0px',
+        threshold: 0.01,
+      }
+    );
+
+    resize();
+    observer.observe(section);
+
+    window.addEventListener('resize', resize, { passive: true });
+    section.addEventListener('pointerenter', handlePointerEnter, { passive: true });
+    section.addEventListener('pointermove', handlePointerMove, { passive: true });
+    section.addEventListener('pointerleave', handlePointerLeave, { passive: true });
 
     return () => {
       window.removeEventListener('resize', resize);
       section.removeEventListener('pointerenter', handlePointerEnter);
       section.removeEventListener('pointermove', handlePointerMove);
       section.removeEventListener('pointerleave', handlePointerLeave);
+      observer.disconnect();
 
-      window.cancelAnimationFrame(animationFrame);
+      stopDrawing();
     };
   }, []);
 
   return (
-    <section className="contact-cta" ref={sectionRef}>
+    <section className="contact-cta" ref={sectionRef} data-reveal>
       <canvas className="contact-cta__particles" ref={canvasRef} />
 
       <div className="contact-cta__glow contact-cta__glow--left" />

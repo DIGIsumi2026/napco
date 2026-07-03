@@ -21,7 +21,7 @@ const services = [
     icon: BookOpen,
     title: 'Books & Publishing',
     description:
-      'Complete soft-cover and hard-cover book production from pre-press to binding and finishing.',
+      'Complete soft-cover and hard-cover book production from pre press to binding and finishing.',
   },
   {
     icon: FileText,
@@ -39,7 +39,7 @@ const services = [
     icon: CalendarDays,
     title: 'Calendars & Diaries',
     description:
-      'Customized calendars, diaries and planners with full-colour printing and professional finishing.',
+      'Customized calendars, diaries and planners with full colour printing and professional finishing.',
   },
   {
     icon: Tags,
@@ -57,7 +57,14 @@ export default function ServiceStats() {
 
     if (!section) return;
 
+    const shouldFloat =
+      window.matchMedia('(min-width: 1024px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!shouldFloat) return;
+
     let rafId: number | null = null;
+    let isActive = false;
 
     const updateFloatingElements = () => {
       const rect = section.getBoundingClientRect();
@@ -87,19 +94,34 @@ export default function ServiceStats() {
     };
 
     const handleScroll = () => {
+      if (!isActive) return;
       if (rafId !== null) return;
 
       rafId = window.requestAnimationFrame(updateFloatingElements);
     };
 
-    updateFloatingElements();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isActive = entry.isIntersecting;
+
+        if (isActive) {
+          handleScroll();
+        }
+      },
+      {
+        rootMargin: '220px 0px',
+        threshold: 0.01,
+      }
+    );
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
+    window.addEventListener('resize', handleScroll, { passive: true });
+    observer.observe(section);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
+      observer.disconnect();
 
       if (rafId !== null) {
         window.cancelAnimationFrame(rafId);

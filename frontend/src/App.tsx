@@ -8,6 +8,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about-us" element={<AboutUs />} />
+      {/* active after the servise.tsx */}
+      {/*<Route path="/services" element={<Services />} />*/}
 
       {/* optional old URL support */}
       <Route path="/about" element={<Navigate to="/about-us" replace />} />

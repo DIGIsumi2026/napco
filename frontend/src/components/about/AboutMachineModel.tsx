@@ -21,21 +21,21 @@ const qualityFacts = [
     eyebrow: 'Capacity',
     title: 'Web, sheet-fed and finishing strength',
     description:
-      'NAPCO is equipped for web printing, sheet-fed offset printing and finishing workflows at large production scale.',
+      'NAPCO is equipped for web printing, sheet fed offset printing and finishing workflows at large production scale.',
     rotationY: 0.06,
   },
   {
     eyebrow: 'Finishing',
     title: 'Premium finishing services',
     description:
-      'UV varnishing, gold foiling, laminating, hard case binding, perfect binding, wire binding and spiral binding support high-quality final output.',
+      'UV varnishing, gold foiling, laminating, hard case binding, perfect binding, wire binding and spiral binding support high quality final output.',
     rotationY: 0.92,
   },
   {
     eyebrow: 'Output',
     title: '35,000 A4 books per day',
     description:
-      'The production setup can deliver 35,000 A4 perfect-bound or wire-stitched books per day with finishing options.',
+      'The production setup can deliver 35,000 A4 perfect-bound or wire stitched books per day with finishing options.',
     rotationY: 1.5,
   },
 ];
@@ -239,7 +239,7 @@ export default function AboutMachineModel() {
     });
 
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.16;
@@ -821,7 +821,7 @@ export default function AboutMachineModel() {
       }
 
       renderer.setSize(container.clientWidth, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
       window.setTimeout(() => {
         ScrollTrigger.refresh();

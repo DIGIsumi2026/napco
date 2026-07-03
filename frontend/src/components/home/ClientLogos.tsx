@@ -66,6 +66,7 @@ export default function ClientLogos() {
     if (!scroller) return;
 
     let previousTime = performance.now();
+    let isVisible = false;
 
     const getSingleLoopWidth = () => scroller.scrollWidth / LOOP_COUNT;
 
@@ -110,6 +111,11 @@ export default function ClientLogos() {
     };
 
     const autoScroll = (time: number) => {
+      if (!isVisible) {
+        animationFrameRef.current = null;
+        return;
+      }
+
       const delta = time - previousTime;
       previousTime = time;
 
@@ -121,6 +127,18 @@ export default function ClientLogos() {
       }
 
       animationFrameRef.current = window.requestAnimationFrame(autoScroll);
+    };
+
+    const startAutoScroll = () => {
+      if (animationFrameRef.current) return;
+      previousTime = performance.now();
+      animationFrameRef.current = window.requestAnimationFrame(autoScroll);
+    };
+
+    const stopAutoScroll = () => {
+      if (!animationFrameRef.current) return;
+      window.cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
     };
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -176,6 +194,21 @@ export default function ClientLogos() {
     };
 
     const initialTimer = window.setTimeout(setInitialPosition, 150);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+
+        if (isVisible) {
+          startAutoScroll();
+        } else {
+          stopAutoScroll();
+        }
+      },
+      {
+        rootMargin: '180px 0px',
+        threshold: 0.01,
+      }
+    );
 
     scroller.addEventListener('pointerdown', handlePointerDown);
     scroller.addEventListener('pointermove', handlePointerMove);
@@ -185,9 +218,9 @@ export default function ClientLogos() {
     scroller.addEventListener('wheel', handleWheel, { passive: true });
     scroller.addEventListener('mouseenter', handleMouseEnter);
     scroller.addEventListener('mouseleave', handleMouseLeave);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
-    animationFrameRef.current = window.requestAnimationFrame(autoScroll);
+    observer.observe(scroller);
 
     return () => {
       window.clearTimeout(initialTimer);
@@ -201,14 +234,13 @@ export default function ClientLogos() {
       scroller.removeEventListener('mouseenter', handleMouseEnter);
       scroller.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('resize', handleResize);
+      observer.disconnect();
 
       if (resumeTimerRef.current) {
         window.clearTimeout(resumeTimerRef.current);
       }
 
-      if (animationFrameRef.current) {
-        window.cancelAnimationFrame(animationFrameRef.current);
-      }
+      stopAutoScroll();
     };
   }, []);
 

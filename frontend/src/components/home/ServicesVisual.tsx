@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
@@ -13,14 +14,14 @@ const visualServices = [
     type: 'Working Environment',
     title: 'Newspaper Printing',
     description:
-      'High-volume newspaper printing with reliable production capacity, consistent colour output and professional finishing for media and publishing clients.',
+      'High volume newspaper printing with reliable production capacity, consistent colour output and professional finishing for media and publishing clients.',
   },
   {
     image: imageAssets.services.visual.booksPublishing,
     type: 'Working Environment',
     title: 'Books & Publishing',
     description:
-      'Complete book and textbook production from pre-press to printing, binding, trimming and final finishing for institutional and commercial publishers.',
+      'Complete book and textbook production from pre press to printing, binding, trimming and final finishing for institutional and commercial publishers.',
   },
   {
     image: imageAssets.services.visual.commercialPrinting,
@@ -61,6 +62,14 @@ export default function ServicesVisual() {
     const canvas = canvasRef.current;
 
     if (!section || !canvas) return;
+
+    const shouldAnimateShader =
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!shouldAnimateShader) {
+      canvas.hidden = true;
+      return;
+    }
 
     const renderer = new THREE.WebGLRenderer({
       canvas,
@@ -128,6 +137,7 @@ export default function ServicesVisual() {
     scene.add(mesh);
 
     let frameId = 0;
+    let isVisible = false;
 
     const resize = () => {
       const width = section.offsetWidth;
@@ -138,19 +148,51 @@ export default function ServicesVisual() {
     };
 
     const animate = () => {
+      if (!isVisible) {
+        frameId = 0;
+        return;
+      }
+
       material.uniforms.uTime.value += 0.016;
       renderer.render(scene, camera);
       frameId = window.requestAnimationFrame(animate);
     };
 
-    resize();
-    animate();
+    const startAnimation = () => {
+      if (frameId) return;
+      frameId = window.requestAnimationFrame(animate);
+    };
 
-    window.addEventListener('resize', resize);
+    const stopAnimation = () => {
+      if (!frameId) return;
+      window.cancelAnimationFrame(frameId);
+      frameId = 0;
+    };
+
+    resize();
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+
+        if (isVisible) {
+          startAnimation();
+        } else {
+          stopAnimation();
+        }
+      },
+      {
+        rootMargin: '160px 0px',
+        threshold: 0.01,
+      }
+    );
+
+    observer.observe(section);
+    window.addEventListener('resize', resize, { passive: true });
 
     return () => {
       window.removeEventListener('resize', resize);
-      window.cancelAnimationFrame(frameId);
+      observer.disconnect();
+      stopAnimation();
 
       geometry.dispose();
       material.dispose();
@@ -561,10 +603,20 @@ export default function ServicesVisual() {
               </div>
 
               <div className="services-visual__detail-copy">
-                <span>{service.type}</span>
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-                <small>{String(index + 1).padStart(2, '0')} / 06</small>
+              <span>{service.type}</span>
+              <h3>{service.title}</h3>
+              <p>{service.description}</p>
+
+              <Link
+                to="/services"
+                className="services-visual__detail-button"
+                data-cursor="See More"
+                aria-label={`See more about ${service.title}`}
+              >
+                See More
+              </Link>
+
+              <small>{String(index + 1).padStart(2, '0')} / 06</small>
               </div>
             </article>
           ))}
