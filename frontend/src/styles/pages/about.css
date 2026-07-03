@@ -511,9 +511,9 @@
   isolation: isolate;
   padding: clamp(86px, 8vw, 140px) clamp(18px, 5vw, 96px);
   background:
-    radial-gradient(circle at 8% 10%, rgba(0, 174, 239, 0.12), transparent 34%),
-    radial-gradient(circle at 92% 72%, rgba(124, 58, 237, 0.14), transparent 34%),
-    linear-gradient(180deg, #e2ebf5 0%, #c9d7e6 48%, #e8eef6 100%);
+    radial-gradient(circle at 12% 12%, rgba(0, 83, 160, 0.07), transparent 32%),
+    radial-gradient(circle at 88% 74%, rgba(7, 23, 45, 0.08), transparent 34%),
+    linear-gradient(180deg, #e8eef5 0%, #cbd7e4 48%, #edf2f7 100%);
 }
 
 .about-machine-model__bg {
@@ -522,11 +522,20 @@
   z-index: -2;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(7, 23, 45, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(7, 23, 45, 0.08) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 72%);
-  -webkit-mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 72%);
+    linear-gradient(rgba(7, 23, 45, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(7, 23, 45, 0.045) 1px, transparent 1px);
+  background-size: 58px 58px;
+  mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 72%);
+}
+
+.about-machine-model__sticky {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .about-machine-model__header {
@@ -547,7 +556,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   border-radius: 999px;
-  background: rgba(0, 174, 239, 0.14);
+  background: rgba(0, 174, 239, 0.1);
   border: 1px solid rgba(0, 83, 160, 0.08);
 }
 
@@ -569,24 +578,20 @@
   font-weight: 600;
 }
 
-/* 3D stage */
-
 .about-machine-model__stage {
   position: relative;
-  width: min(1320px, 100%);
-  height: clamp(560px, 62vw, 860px);
+  width: min(1360px, 100%);
+  height: clamp(430px, calc(100vh - 260px), 760px);
   margin: 0 auto;
   overflow: hidden;
-  border-radius: clamp(30px, 3.4vw, 54px);
+  border-radius: clamp(28px, 3.2vw, 48px);
   background:
-    radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.28), transparent 42%),
-    radial-gradient(circle at 16% 18%, rgba(0, 174, 239, 0.12), transparent 28%),
-    radial-gradient(circle at 84% 72%, rgba(124, 58, 237, 0.12), transparent 32%),
-    linear-gradient(135deg, #9fb4c8 0%, #bcc9d8 44%, #a8b3c8 100%);
-  border: 1px solid rgba(7, 23, 45, 0.14);
+    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.22), transparent 40%),
+    linear-gradient(135deg, #8998aa 0%, #aebcca 48%, #8c9aac 100%);
+  border: 1px solid rgba(7, 23, 45, 0.16);
   box-shadow:
-    0 46px 110px rgba(7, 23, 45, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.58);
+    0 44px 105px rgba(7, 23, 45, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.44);
 }
 
 .about-machine-model__stage::before {
@@ -594,35 +599,38 @@
   position: absolute;
   inset: 18px;
   z-index: 1;
-  pointer-events: none;
   border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  pointer-events: none;
 }
 
 .about-machine-model__stage::after {
   content: '';
   position: absolute;
   left: 50%;
-  bottom: -18%;
+  bottom: -16%;
   z-index: 1;
-  width: 92%;
-  height: 44%;
+  width: 86%;
+  height: 40%;
   pointer-events: none;
   transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.3), transparent 64%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.24), transparent 66%);
   filter: blur(22px);
 }
-
-/* Canvas */
 
 .about-machine-model__canvas {
   position: relative;
   z-index: 2;
   width: 100%;
   height: 100%;
+  cursor: default;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
+}
+
+.about-machine-model__canvas--interactive {
   cursor: grab;
   touch-action: none;
-  overscroll-behavior: contain;
 }
 
 .about-machine-model__canvas--hovering {
@@ -637,27 +645,218 @@
   display: block;
   width: 100%;
   height: 100%;
-  touch-action: none;
 }
 
-/* User guide */
+.about-machine-model__scroll-story {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(30px, 4vw, 52px);
+  z-index: 7;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  color: #07172d;
+  text-align: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.about-machine-model__scroll-line {
+  position: relative;
+  width: 2px;
+  height: 76px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(7, 23, 45, 0.18);
+}
+
+.about-machine-model__scroll-line i {
+  position: absolute;
+  left: 0;
+  top: -36%;
+  width: 100%;
+  height: 36%;
+  border-radius: inherit;
+  background: #0053a0;
+  animation: modelStoryScrollLine 1.35s ease-in-out infinite;
+}
+
+.about-machine-model__scroll-story strong {
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.about-machine-model__scroll-story small {
+  color: #596579;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+@keyframes modelStoryScrollLine {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(250%);
+  }
+}
+
+.about-machine-model__hotspots {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.about-machine-model__fact {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.about-machine-model__fact-dot {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #0053a0;
+  border: 3px solid #ffffff;
+  box-shadow: 0 5px 16px rgba(7, 23, 45, 0.18);
+}
+
+.about-machine-model__fact-line {
+  width: clamp(60px, 6vw, 104px);
+  height: 1px;
+  flex: 0 0 auto;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(7, 23, 45, 0.65) 0 6px,
+    transparent 6px 11px
+  );
+  transform-origin: left center;
+}
+
+.about-machine-model__fact article {
+  width: min(322px, 25vw);
+  padding: 16px 17px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid rgba(7, 23, 45, 0.11);
+  box-shadow: 0 16px 38px rgba(7, 23, 45, 0.13);
+}
+
+.about-machine-model__fact article span {
+  display: block;
+  margin-bottom: 7px;
+  color: #0053a0;
+  font-size: 0.64rem;
+  font-weight: 950;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.about-machine-model__fact article h3 {
+  margin: 0;
+  color: #07172d;
+  font-size: clamp(1.02rem, 1.22vw, 1.25rem);
+  line-height: 1.13;
+  letter-spacing: -0.035em;
+  font-weight: 950;
+}
+
+.about-machine-model__fact article p {
+  margin: 9px 0 0;
+  color: #4f5e72;
+  font-size: 0.8rem;
+  line-height: 1.52;
+  font-weight: 650;
+}
+
+.about-machine-model__fact--1 {
+  left: 5%;
+  top: 22%;
+  flex-direction: row-reverse;
+}
+
+.about-machine-model__fact--1 .about-machine-model__fact-line,
+.about-machine-model__fact--3 .about-machine-model__fact-line {
+  transform-origin: right center;
+}
+
+.about-machine-model__fact--2 {
+  right: 5%;
+  top: 24%;
+}
+
+.about-machine-model__fact--3 {
+  left: 5%;
+  bottom: 17%;
+  flex-direction: row-reverse;
+}
+
+.about-machine-model__fact--4 {
+  right: 5%;
+  bottom: 17%;
+}
+
+.about-machine-model__observer-mode {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(28px, 4vw, 48px);
+  z-index: 7;
+  min-width: min(360px, calc(100% - 36px));
+  padding: 14px 18px;
+  color: #07172d;
+  text-align: center;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid rgba(7, 23, 45, 0.11);
+  box-shadow: 0 16px 38px rgba(7, 23, 45, 0.14);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.about-machine-model__observer-mode strong {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.about-machine-model__observer-mode small {
+  display: block;
+  margin-top: 3px;
+  color: #637083;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
 
 .about-machine-model__guide {
   position: absolute;
   top: clamp(18px, 2vw, 28px);
   right: clamp(18px, 2vw, 28px);
-  z-index: 5;
+  z-index: 7;
   display: inline-flex;
   align-items: center;
   gap: 12px;
   padding: 12px 15px;
   color: #07172d;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.78);
+  background: #ffffff;
   border: 1px solid rgba(7, 23, 45, 0.12);
-  box-shadow: 0 18px 46px rgba(7, 23, 45, 0.16);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 16px 38px rgba(7, 23, 45, 0.14);
+  pointer-events: none;
 }
 
 .about-machine-model__mouse {
@@ -676,7 +875,7 @@
   width: 5px;
   height: 8px;
   border-radius: 999px;
-  background: #00aeef;
+  background: #0053a0;
   transform: translateX(-50%);
   animation: modelMouseWheel 1.5s ease-in-out infinite;
 }
@@ -686,7 +885,6 @@
   color: #07172d;
   font-size: 0.78rem;
   font-weight: 950;
-  letter-spacing: -0.02em;
 }
 
 .about-machine-model__guide small {
@@ -713,32 +911,26 @@
   }
 }
 
-/* Rendering overlay */
-
 .about-machine-model__rendering {
   position: absolute;
   inset: 0;
-  z-index: 8;
+  z-index: 9;
   display: grid;
   place-items: center;
   align-content: center;
   gap: 12px;
   color: #07172d;
   text-align: center;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.76), rgba(181, 197, 216, 0.72)),
-    rgba(156, 172, 191, 0.45);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: rgba(202, 213, 225, 0.86);
   pointer-events: none;
 }
 
 .about-machine-model__render-ring {
   position: relative;
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
   border-radius: 999px;
-  border: 1px solid rgba(0, 83, 160, 0.14);
+  border: 2px solid rgba(0, 83, 160, 0.18);
 }
 
 .about-machine-model__render-ring::before {
@@ -747,19 +939,15 @@
   inset: -2px;
   border-radius: inherit;
   border: 3px solid transparent;
-  border-top-color: #00aeef;
-  border-right-color: #7c3aed;
-  animation: modelRenderRing 0.9s linear infinite;
+  border-top-color: #0053a0;
+  animation: modelRenderRing 0.95s linear infinite;
 }
 
 .about-machine-model__render-ring span {
   position: absolute;
   inset: 19px;
   border-radius: inherit;
-  background:
-    radial-gradient(circle at 35% 35%, #ffffff, rgba(0, 174, 239, 0.18)),
-    #ffffff;
-  box-shadow: 0 0 28px rgba(0, 174, 239, 0.26);
+  background: #ffffff;
 }
 
 .about-machine-model__rendering strong {
@@ -787,20 +975,15 @@
   }
 }
 
-/* Description */
-
 .about-machine-model__description {
   width: min(1080px, 100%);
   margin: clamp(34px, 4vw, 54px) auto 0;
   padding: clamp(28px, 4vw, 46px);
   text-align: center;
-  border-radius: clamp(24px, 3vw, 40px);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.64));
+  border-radius: clamp(22px, 2.8vw, 34px);
+  background: #ffffff;
   border: 1px solid rgba(7, 23, 45, 0.08);
-  box-shadow: 0 24px 70px rgba(7, 23, 45, 0.12);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 20px 60px rgba(7, 23, 45, 0.1);
 }
 
 .about-machine-model__description > span {
@@ -815,7 +998,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   border-radius: 999px;
-  background: rgba(0, 174, 239, 0.12);
+  background: rgba(0, 174, 239, 0.1);
 }
 
 .about-machine-model__description p {
@@ -839,10 +1022,9 @@
   display: grid;
   place-items: center;
   padding: 18px;
-  border-radius: 24px;
-  background: #ffffff;
+  border-radius: 8px;
+  background: #f6f9fc;
   border: 1px solid rgba(7, 23, 45, 0.07);
-  box-shadow: 0 18px 42px rgba(7, 23, 45, 0.07);
 }
 
 .about-machine-model__facts strong {
@@ -861,8 +1043,6 @@
   line-height: 1.45;
 }
 
-/* Tablet */
-
 @media (max-width: 1024px) {
   .about-machine-model {
     padding: 80px 20px;
@@ -873,8 +1053,17 @@
   }
 
   .about-machine-model__stage {
-    height: 590px;
-    border-radius: 34px;
+    height: clamp(430px, calc(100vh - 240px), 620px);
+    border-radius: 32px;
+  }
+
+  .about-machine-model__fact article {
+    width: min(286px, 33vw);
+    padding: 15px 16px;
+  }
+
+  .about-machine-model__fact-line {
+    width: 58px;
   }
 
   .about-machine-model__facts {
@@ -886,15 +1075,13 @@
   }
 }
 
-/* Mobile */
-
 @media (max-width: 760px) {
   .about-machine-model {
-    padding: 72px 16px;
+    padding: 48px 16px 72px;
   }
 
   .about-machine-model__header {
-    margin-bottom: 32px;
+    margin-bottom: 22px;
   }
 
   .about-machine-model__header span {
@@ -904,22 +1091,69 @@
   }
 
   .about-machine-model__header h2 {
-    font-size: clamp(3rem, 14vw, 5rem);
+    font-size: clamp(2.45rem, 11vw, 3.7rem);
     letter-spacing: -0.08em;
   }
 
   .about-machine-model__header p {
-    font-size: 0.96rem;
-    line-height: 1.65;
+    display: none;
   }
 
   .about-machine-model__stage {
-    height: 470px;
-    border-radius: 26px;
+    height: clamp(430px, calc(100vh - 230px), 520px);
+    border-radius: 24px;
   }
 
   .about-machine-model__stage::before {
     inset: 10px;
+  }
+
+  .about-machine-model__fact {
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 18px !important;
+    top: auto !important;
+    width: auto;
+    flex-direction: row !important;
+  }
+
+  .about-machine-model__fact-dot {
+    width: 10px;
+    height: 10px;
+    border-width: 2px;
+  }
+
+  .about-machine-model__fact-line {
+    width: 28px;
+    transform-origin: left center !important;
+  }
+
+  .about-machine-model__fact article {
+    width: 100%;
+    max-height: 150px;
+    padding: 13px 14px;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .about-machine-model__fact article span {
+    margin-bottom: 5px;
+    font-size: 0.58rem;
+  }
+
+  .about-machine-model__fact article h3 {
+    font-size: 0.98rem;
+    line-height: 1.14;
+  }
+
+  .about-machine-model__fact article p {
+    margin-top: 7px;
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
+  .about-machine-model__scroll-story {
+    bottom: 30px;
   }
 
   .about-machine-model__guide {
@@ -927,7 +1161,7 @@
     right: 16px;
     top: 16px;
     justify-content: center;
-    border-radius: 22px;
+    border-radius: 8px;
     padding: 10px 12px;
   }
 
@@ -944,9 +1178,14 @@
     height: 36px;
   }
 
+  .about-machine-model__observer-mode {
+    bottom: 18px;
+    border-radius: 8px;
+  }
+
   .about-machine-model__description {
     padding: 24px 18px;
-    border-radius: 24px;
+    border-radius: 20px;
   }
 
   .about-machine-model__description p {
@@ -960,20 +1199,41 @@
 
   .about-machine-model__facts div {
     min-height: 96px;
-    border-radius: 20px;
+    border-radius: 8px;
   }
 }
 
-/* Small mobile */
-
 @media (max-width: 420px) {
   .about-machine-model {
-    padding: 66px 12px;
+    padding: 42px 12px 66px;
   }
 
   .about-machine-model__stage {
-    height: 420px;
-    border-radius: 22px;
+    height: clamp(410px, calc(100vh - 220px), 470px);
+    border-radius: 20px;
+  }
+
+  .about-machine-model__fact {
+    left: 10px !important;
+    right: 10px !important;
+    bottom: 14px !important;
+  }
+
+  .about-machine-model__fact-line {
+    width: 22px;
+  }
+
+  .about-machine-model__fact article {
+    max-height: 142px;
+    padding: 12px;
+  }
+
+  .about-machine-model__fact article h3 {
+    font-size: 0.92rem;
+  }
+
+  .about-machine-model__fact article p {
+    font-size: 0.68rem;
   }
 
   .about-machine-model__guide {
@@ -987,8 +1247,8 @@
   }
 
   .about-machine-model__render-ring {
-    width: 62px;
-    height: 62px;
+    width: 58px;
+    height: 58px;
   }
 
   .about-machine-model__render-ring span {
