@@ -53,6 +53,7 @@ import aboutThumbnail from "../assets/images/about/about-thumbnail.png";
 
 import companyLogoBg from "../assets/images/about/company-logo-bg.png";
 import serviceQualityBg from "../assets/images/about/service-quality-bg.png";
+import visionMissionImage from "../assets/images/about/modern_print_studio_in_action.png";
 
 
 
@@ -71,11 +72,12 @@ export const imageAssets = {
   about:{
     logoRevealThumbnail: napcoLogoRevealThumb,
     thubnail: aboutThumbnail,
+    visionMission: visionMissionImage
   },
-  
+
   aboutCompanyIntro: {
-  companyLogoBg,
-  serviceQualityBg,
+    companyLogoBg,
+    serviceQualityBg,
   },
 
 

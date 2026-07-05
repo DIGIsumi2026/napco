@@ -1611,3 +1611,244 @@
     font-size: 0.88rem;
   }
 }
+
+/* =========================================
+   VISION / MISSION SECTION
+========================================= */
+
+.vision-mission {
+  position: relative;
+  height: 230vh;
+  background: #020711;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.vision-mission__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: #020711;
+}
+
+.vision-mission__media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.vision-mission__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.vision-mission__image--vision {
+  object-position: left center;
+}
+
+.vision-mission__image--mission {
+  object-position: 78% center;
+}
+
+.vision-mission__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(2, 7, 17, 0.76) 0%,
+      rgba(2, 7, 17, 0.38) 40%,
+      rgba(2, 7, 17, 0.14) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(2, 7, 17, 0.10) 0%,
+      rgba(2, 7, 17, 0.25) 100%
+    );
+  pointer-events: none;
+}
+
+.vision-mission__content {
+  position: absolute;
+  z-index: 3;
+  width: min(680px, 44vw);
+  color: #ffffff;
+  will-change: transform, opacity;
+}
+
+.vision-mission__content--vision {
+  left: clamp(28px, 7vw, 120px);
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.vision-mission__content--mission {
+  right: clamp(28px, 7vw, 120px);
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.vision-mission__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 18px;
+  margin-bottom: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #9ee7ff;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* KEEP THIS EXACTLY AS YOU REQUESTED */
+.vision-mission__content h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(3.1rem, 4vw, 7.1rem);
+  line-height: 0.9;
+  letter-spacing: -0.008em;
+  font-weight: 950;
+  text-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+}
+
+.vision-mission__content p {
+  margin: 28px 0 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(1rem, 1.08vw, 1.16rem);
+  line-height: 1.85;
+  font-weight: 500;
+  max-width: 620px;
+}
+
+.vision-mission__progress {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(28px, 4vw, 54px);
+  z-index: 4;
+  transform: translateX(-50%);
+  width: min(320px, calc(100% - 40px));
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.vision-mission__progress-line {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.vision-mission__progress-line span {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: linear-gradient(90deg, #00aeef, #ffffff);
+}
+
+.vision-mission__progress-label {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .vision-mission {
+    height: 220vh;
+  }
+
+  .vision-mission__content {
+    width: min(560px, 50vw);
+  }
+
+  .vision-mission__content--vision {
+    left: 36px;
+  }
+
+  .vision-mission__content--mission {
+    right: 36px;
+  }
+
+  .vision-mission__content p {
+    font-size: 0.98rem;
+    line-height: 1.75;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .vision-mission {
+    height: 220vh;
+  }
+
+  .vision-mission__overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(2, 7, 17, 0.15) 0%,
+        rgba(2, 7, 17, 0.38) 45%,
+        rgba(2, 7, 17, 0.84) 100%
+      );
+  }
+
+  .vision-mission__image--vision {
+    object-position: 28% center;
+  }
+
+  .vision-mission__image--mission {
+    object-position: 74% center;
+  }
+
+  .vision-mission__content,
+  .vision-mission__content--vision,
+  .vision-mission__content--mission {
+    left: 18px;
+    right: 18px;
+    top: auto;
+    bottom: 100px;
+    width: auto;
+    translate: none;
+  }
+
+  .vision-mission__eyebrow {
+    min-height: 36px;
+    padding: 0 14px;
+    margin-bottom: 18px;
+    font-size: 0.64rem;
+  }
+
+  .vision-mission__content h2 {
+    font-size: clamp(2.35rem, 10vw, 4rem);
+  }
+
+  .vision-mission__content p {
+    margin-top: 20px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .vision-mission__progress {
+    width: min(280px, calc(100% - 36px));
+    bottom: 24px;
+    gap: 10px;
+  }
+}

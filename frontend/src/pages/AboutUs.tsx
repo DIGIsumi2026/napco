@@ -12,6 +12,7 @@ import ScrollToTop from '../components/common/ScrollToTop';
 import AboutHero from '../components/about/AboutHero';
 import AboutMachineModel from '../components/about/AboutMachineModel';
 import AboutCompanyIntro from '../components/about/CompanyIntro';
+import VisionMission from '../components/about/VisionMission';
 
 import Footer from '../components/common/Footer';
 
@@ -74,7 +75,7 @@ export default function AboutUs() {
       <AboutHero />
       <AboutMachineModel/>
       <AboutCompanyIntro/>
-
+      <VisionMission />
       <Footer />
 
       <ScrollToTop />
