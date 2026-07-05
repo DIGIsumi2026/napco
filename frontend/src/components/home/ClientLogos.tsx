@@ -35,6 +35,30 @@ const clientLogos = [
     name: 'Client 8',
     logo: imageAssets.clients.client8,
   },
+  {
+    name: 'Client 9',
+    logo: imageAssets.clients.client9,
+  },
+  {
+    name: 'Client 10',
+    logo: imageAssets.clients.client10,
+  },
+  {
+    name: 'Client 11',
+    logo: imageAssets.clients.client11,
+  },
+  {
+    name: 'Client 12',
+    logo: imageAssets.clients.client12,
+  },
+  {
+    name: 'Client 13',
+    logo: imageAssets.clients.client13,
+  },
+  {
+    name: 'Client 14',
+    logo: imageAssets.clients.client14,
+  },
 ];
 
 const LOOP_COUNT = 3;

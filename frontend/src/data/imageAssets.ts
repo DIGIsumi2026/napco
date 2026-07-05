@@ -51,6 +51,9 @@ import client14 from "../assets/images/clients/client-14.png";
 //hero
 import aboutThumbnail from "../assets/images/about/about-thumbnail.png";
 
+import companyLogoBg from "../assets/images/about/company-logo-bg.png";
+import serviceQualityBg from "../assets/images/about/service-quality-bg.png";
+
 
 
 export const imageAssets = {
@@ -69,6 +72,12 @@ export const imageAssets = {
     logoRevealThumbnail: napcoLogoRevealThumb,
     thubnail: aboutThumbnail,
   },
+  
+  aboutCompanyIntro: {
+  companyLogoBg,
+  serviceQualityBg,
+  },
+
 
   services:{
     floating:{
