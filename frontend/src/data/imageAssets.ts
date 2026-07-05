@@ -63,6 +63,24 @@ import boardDulantha from "../assets/images/about/managment/dulantha-sumathipala
 import boardSajantha from "../assets/images/about/managment/sajantha-sumathipala.png";
 
 
+//companies 
+import company1 from "../assets/images/about/companies/company1.png";
+import company2 from "../assets/images/about/companies/company2.png";
+import company3 from "../assets/images/about/companies/company3.png";
+import company4 from "../assets/images/about/companies/company4.png";
+import company5 from "../assets/images/about/companies/company5.png";
+import company6 from "../assets/images/about/companies/company6.png";
+import company7 from "../assets/images/about/companies/company7.png";
+import company8 from "../assets/images/about/companies/company8.png";
+import company9 from "../assets/images/about/companies/company9.png";
+import company10 from "../assets/images/about/companies/company11.png";
+import company11 from "../assets/images/about/companies/company1.png";
+import company12 from "../assets/images/about/companies/company12.png";
+import company13 from "../assets/images/about/companies/company13.png";
+import company14 from "../assets/images/about/companies/company14.png";
+import company15 from "../assets/images/about/companies/company15.png";
+
+
 export const imageAssets = {
   logo: {
     main: nlogo,
@@ -132,6 +150,24 @@ export const imageAssets = {
     client12,
     client13,
     client14,
+  },
+
+  company: {
+    company1,
+    company2,
+    company3,
+    company4,
+    company5,
+    company6,
+    company7,
+    company8,
+    company9,
+    company10,
+    company11,
+    company12,
+    company13,
+    company14,
+    company15,
   },
 
 } as const;
