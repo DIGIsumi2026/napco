@@ -55,6 +55,12 @@ import companyLogoBg from "../assets/images/about/company-logo-bg.png";
 import serviceQualityBg from "../assets/images/about/service-quality-bg.png";
 import visionMissionImage from "../assets/images/about/modern_print_studio_in_action.png";
 
+//management 
+import boardThilanga from "../assets/images/about/managment/thilanga-sumathipala.png";
+import boardUdhantha from "../assets/images/about/managment/udhantha-sumathipala.png";
+import boardSamadara from "../assets/images/about/managment/samadara-sumathipala.png";
+import boardDulantha from "../assets/images/about/managment/dulantha-sumathipala.png";
+import boardSajantha from "../assets/images/about/managment/sajantha-sumathipala.png";
 
 
 export const imageAssets = {
@@ -80,6 +86,13 @@ export const imageAssets = {
     serviceQualityBg,
   },
 
+  aboutBoardManagement: {
+  thilanga: boardThilanga,
+  udhantha: boardUdhantha,
+  samadara: boardSamadara,
+  dulantha: boardDulantha,
+  sajantha: boardSajantha,
+},
 
   services:{
     floating:{

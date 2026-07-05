@@ -13,7 +13,7 @@ import AboutHero from '../components/about/AboutHero';
 import AboutMachineModel from '../components/about/AboutMachineModel';
 import AboutCompanyIntro from '../components/about/CompanyIntro';
 import VisionMission from '../components/about/VisionMission';
-
+import BoardManagement from '../components/about/BoardManagement';
 import Footer from '../components/common/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -76,6 +76,7 @@ export default function AboutUs() {
       <AboutMachineModel/>
       <AboutCompanyIntro/>
       <VisionMission />
+      <BoardManagement/>
       <Footer />
 
       <ScrollToTop />

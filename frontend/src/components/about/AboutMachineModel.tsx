@@ -312,7 +312,8 @@ export default function AboutMachineModel() {
 
     let model: THREE.Group | null = null;
     let mixer: THREE.AnimationMixer | null = null;
-    let animationFrame = 0;
+    let animationFrame: number | null = null;
+    let visibilityObserver: IntersectionObserver | null = null;
     let renderTimer: number | undefined;
     let scrollTrigger: ScrollTrigger | null = null;
     let modelBaseScale = 1;
@@ -320,7 +321,50 @@ export default function AboutMachineModel() {
     let isHovering = false;
     let isDragging = false;
     let hasUnmounted = false;
+    let isSectionInView = false;
     let scaleTimeline: gsap.core.Timeline | null = null;
+
+    const renderScene = () => {
+      renderer.render(scene, camera);
+    };
+
+    const renderLoop = () => {
+      if (hasUnmounted || !isSectionInView) {
+        animationFrame = null;
+        return;
+      }
+
+      const delta = clock.getDelta();
+
+      if (mixer) {
+        mixer.update(delta);
+      }
+
+      if (model && storyState.isObserverMode && isHovering && !isDragging) {
+        model.rotation.y += 0.0014;
+      }
+
+      controls.update();
+      renderScene();
+
+      animationFrame = window.requestAnimationFrame(renderLoop);
+    };
+
+    const startRenderLoop = () => {
+      if (hasUnmounted || !isSectionInView || animationFrame !== null) {
+        return;
+      }
+
+      clock.getDelta();
+      animationFrame = window.requestAnimationFrame(renderLoop);
+    };
+
+    const stopRenderLoop = () => {
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+      }
+    };
 
     const facts = factRefs.current.filter(
       (element): element is HTMLDivElement => Boolean(element)
@@ -383,6 +427,8 @@ export default function AboutMachineModel() {
         isDragging = false;
         container.classList.remove('about-machine-model__canvas--dragging');
       }
+
+      startRenderLoop();
     };
 
     const animateModelScale = (targetScale: number, withPulse: boolean) => {
@@ -399,12 +445,15 @@ export default function AboutMachineModel() {
           duration: 0.42,
           ease: 'power3.out',
           overwrite: 'auto',
+          onUpdate: startRenderLoop,
         });
         return;
       }
 
       scaleTimeline = gsap
-        .timeline()
+        .timeline({
+          onUpdate: startRenderLoop,
+        })
         .to(model.scale, {
           x: modelBaseScale * FACT_PULSE_ZOOM,
           y: modelBaseScale * FACT_PULSE_ZOOM,
@@ -499,9 +548,11 @@ export default function AboutMachineModel() {
         duration: 0.74,
         ease: 'power3.inOut',
         overwrite: 'auto',
+        onUpdate: startRenderLoop,
       });
 
       animateModelScale(modelBaseScale * FACT_SETTLE_ZOOM, true);
+      startRenderLoop();
     };
 
     const showIntro = () => {
@@ -537,9 +588,11 @@ export default function AboutMachineModel() {
         duration: 0.46,
         ease: 'power2.out',
         overwrite: 'auto',
+        onUpdate: startRenderLoop,
       });
 
       animateModelScale(modelBaseScale, false);
+      startRenderLoop();
     };
 
     const unlockObserverMode = () => {
@@ -579,6 +632,7 @@ export default function AboutMachineModel() {
       });
 
       animateModelScale(modelBaseScale * OBSERVER_ZOOM, false);
+      startRenderLoop();
     };
 
     const getActiveFactFromProgress = (progress: number) => {
@@ -593,6 +647,7 @@ export default function AboutMachineModel() {
     const updateStoryByProgress = (progress: number) => {
       if (progress >= 0.84) {
         unlockObserverMode();
+        startRenderLoop();
         return;
       }
 
@@ -600,10 +655,12 @@ export default function AboutMachineModel() {
 
       if (activeFact === -1) {
         showIntro();
+        startRenderLoop();
         return;
       }
 
       activateFact(activeFact);
+      startRenderLoop();
     };
 
     const buildScrollStory = () => {
@@ -668,6 +725,7 @@ export default function AboutMachineModel() {
     const onPointerEnter = () => {
       isHovering = true;
       container.classList.add('about-machine-model__canvas--hovering');
+      startRenderLoop();
     };
 
     const onPointerLeave = () => {
@@ -675,6 +733,7 @@ export default function AboutMachineModel() {
       isDragging = false;
       container.classList.remove('about-machine-model__canvas--hovering');
       container.classList.remove('about-machine-model__canvas--dragging');
+      startRenderLoop();
     };
 
     const onPointerDown = () => {
@@ -682,11 +741,13 @@ export default function AboutMachineModel() {
 
       isDragging = true;
       container.classList.add('about-machine-model__canvas--dragging');
+      startRenderLoop();
     };
 
     const onPointerUp = () => {
       isDragging = false;
       container.classList.remove('about-machine-model__canvas--dragging');
+      startRenderLoop();
     };
 
     container.addEventListener('pointerenter', onPointerEnter);
@@ -695,6 +756,25 @@ export default function AboutMachineModel() {
     container.addEventListener('wheel', onWheel, { passive: false });
     container.addEventListener('touchmove', onTouchMove, { passive: false });
     window.addEventListener('pointerup', onPointerUp);
+
+    visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        isSectionInView = entry.isIntersecting;
+
+        if (isSectionInView) {
+          startRenderLoop();
+        } else {
+          stopRenderLoop();
+        }
+      },
+      {
+        threshold: 0.04,
+        rootMargin: '120px 0px 120px 0px',
+      }
+    );
+
+    visibilityObserver.observe(section);
+    controls.addEventListener('change', startRenderLoop);
 
     const handleModelLoaded = (gltf: GLTF) => {
       if (hasUnmounted) {
@@ -779,6 +859,8 @@ export default function AboutMachineModel() {
       }, 2000);
 
       buildScrollStory();
+      renderScene();
+      startRenderLoop();
     };
 
     loader.load(
@@ -823,6 +905,9 @@ export default function AboutMachineModel() {
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
+      renderScene();
+      startRenderLoop();
+
       window.setTimeout(() => {
         ScrollTrigger.refresh();
       }, 100);
@@ -830,29 +915,13 @@ export default function AboutMachineModel() {
 
     window.addEventListener('resize', handleResize);
 
-    const animate = () => {
-      animationFrame = requestAnimationFrame(animate);
-
-      const delta = clock.getDelta();
-
-      if (mixer) {
-        mixer.update(delta);
-      }
-
-      if (model && storyState.isObserverMode && isHovering && !isDragging) {
-        model.rotation.y += 0.0014;
-      }
-
-      controls.update();
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
     return () => {
       hasUnmounted = true;
 
-      cancelAnimationFrame(animationFrame);
+      stopRenderLoop();
+      visibilityObserver?.disconnect();
+      controls.removeEventListener('change', startRenderLoop);
+
       if (renderTimer) window.clearTimeout(renderTimer);
 
       scrollTrigger?.kill();
