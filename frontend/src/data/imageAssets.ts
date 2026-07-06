@@ -99,6 +99,9 @@ import mitsubishiLithopia1 from "../assets/images/services/service gallery/mitsu
 import laminationUv from "../assets/images/services/service gallery/lamination-uv.jpg";
 import mitsubishiLithopia2 from "../assets/images/services/service gallery/mitsubishi-lithopia-2.jpg";
 
+//contact page 
+import contactHero from "../assets/images/contact/contact-hero.png";
+
 
 export const imageAssets = {
   logo: {
@@ -214,6 +217,10 @@ export const imageAssets = {
     laminationUv,
     mitsubishiLithopia2,
   },
+},
+
+contact: {
+  hero: contactHero,
 },
 
 } as const;

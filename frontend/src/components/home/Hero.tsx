@@ -52,7 +52,7 @@ export default function Hero() {
             <a href="#about" className="napco-btn-primary">
               Learn More <ArrowRight size={17} />
             </a>
-            <a href="#contact" className="napco-btn-outline">
+            <a href="/contact" className="napco-btn-outline">
               Contact Us
             </a>
           </motion.div>

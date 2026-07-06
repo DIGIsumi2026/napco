@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import '../styles/pages/services.css';
+import '../styles/pages/contact.css';
 
 import CustomCursor from '../components/common/CustomCursor';
 import NavigationBar from '../components/common/NavigationBar';
@@ -10,16 +10,11 @@ import Sidebar from '../components/common/Sidebar';
 import ScrollToTop from '../components/common/ScrollToTop';
 import Footer from '../components/common/Footer';
 
-import ServicesHero from '../components/services/ServicesHero';
-import ServiceStatCards from '../components/services/ServiceStatCards';
-import AboutMachineModel from '../components/about/AboutMachineModel';
-import QualityPrintingSection from '../components/services/QualityPrintingSection';
-import ContactCta from '../components/home/ContactCta';
-
+import ContactHero from '../components/contact/ContactHero';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Services() {
+export default function Contact() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -47,7 +42,7 @@ export default function Services() {
   }, []);
 
   return (
-    <main className="services-page">
+    <main className="contact-page">
       <CustomCursor />
 
       <NavigationBar
@@ -60,11 +55,7 @@ export default function Services() {
         onClose={() => setIsSidebarOpen(false)}
       />
 
-      <ServicesHero />
-      <ServiceStatCards />
-      <AboutMachineModel/>
-      <QualityPrintingSection/>
-      <ContactCta/>
+      <ContactHero />
 
       <Footer />
       <ScrollToTop />
