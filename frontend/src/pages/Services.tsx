@@ -11,6 +11,7 @@ import ScrollToTop from '../components/common/ScrollToTop';
 import Footer from '../components/common/Footer';
 
 import ServicesHero from '../components/services/ServicesHero';
+import ServiceStatCards from '../components/services/ServiceStatCards';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,19 +37,6 @@ export default function Services() {
           }
         );
       });
-
-      gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((element) => {
-        gsap.to(element, {
-          yPercent: -8,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: element,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
-        });
-      });
     });
 
     return () => ctx.revert();
@@ -69,9 +57,9 @@ export default function Services() {
       />
 
       <ServicesHero />
+      <ServiceStatCards />
 
       <Footer />
-
       <ScrollToTop />
     </main>
   );

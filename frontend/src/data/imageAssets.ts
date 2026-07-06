@@ -84,6 +84,14 @@ import company15 from "../assets/images/about/companies/company15.png";
 // hero 
 import  servicesHeroTeam from "../assets/images/services/services-hero-team.png";
 
+//service grid 
+import newspaperPrintingCard from "../assets/images/services/newspaper-printing.png";
+import booksPublishingCard from "../assets/images/services/books-publishing.png";
+import brochuresCataloguesCard from "../assets/images/services/brochures-catalogues.png";
+import postersLeafletsCard from "../assets/images/services/posters-leaflets.png";
+import labelsAnnualReportsCard from "../assets/images/services/labels-annual-reports.png";
+import calendarsDiariesCard from "../assets/images/services/calendars-diaries.png";
+
 
 export const imageAssets = {
   logo: {
@@ -144,6 +152,15 @@ export const imageAssets = {
 
   servicesHero: {
     heroTeam: servicesHeroTeam,
+  },
+
+  cards: {
+    newspaperPrinting: newspaperPrintingCard,
+    booksPublishing: booksPublishingCard,
+    brochuresCatalogues: brochuresCataloguesCard,
+    postersLeaflets: postersLeafletsCard,
+    labelsAnnualReports: labelsAnnualReportsCard,
+    calendarsDiaries: calendarsDiariesCard,
   },
 
   clients:{
