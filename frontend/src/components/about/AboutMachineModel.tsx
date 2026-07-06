@@ -277,7 +277,7 @@ export default function AboutMachineModel() {
 
     const ambientLight = new THREE.AmbientLight('#ffffff', 1.25);
     const keyLight = new THREE.DirectionalLight('#ffffff', 4.8);
-    const fillLight = new THREE.DirectionalLight('#d3e6ff', 2.2);
+    const fillLight = new THREE.DirectionalLight('#b8dcff', 2.2);
     const rimLight = new THREE.DirectionalLight('#ffffff', 2.2);
 
     keyLight.position.set(5.5, 8, 6);
@@ -290,7 +290,7 @@ export default function AboutMachineModel() {
 
     const floorGeometry = new THREE.CircleGeometry(16, 128);
     const floorMaterial = new THREE.MeshStandardMaterial({
-      color: '#4e5a69',
+      color: '#aeb9c7',
       roughness: 0.62,
       metalness: 0,
       transparent: true,
@@ -798,7 +798,7 @@ export default function AboutMachineModel() {
               isStageLikeName(lowerObjectName) || isStageLikeName(lowerMaterialName);
 
             if (isStageMesh && material instanceof THREE.MeshStandardMaterial) {
-              material.color = new THREE.Color('#4f5b69');
+              material.color = new THREE.Color('#383b3d');
               material.roughness = 0.62;
               material.metalness = 0.03;
             }
