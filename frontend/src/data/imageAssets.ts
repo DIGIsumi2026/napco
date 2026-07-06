@@ -92,6 +92,13 @@ import postersLeafletsCard from "../assets/images/services/posters-leaflets.png"
 import labelsAnnualReportsCard from "../assets/images/services/labels-annual-reports.png";
 import calendarsDiariesCard from "../assets/images/services/calendars-diaries.png";
 
+//service galleary
+import qualityBg from "../assets/images/services/service gallery/quality-bg.png";
+import heidelberg10c from "../assets/images/services/service gallery/heidelberg-10c.jpg";
+import mitsubishiLithopia1 from "../assets/images/services/service gallery/mitsubishi-lithopia-1.jpg";
+import laminationUv from "../assets/images/services/service gallery/lamination-uv.jpg";
+import mitsubishiLithopia2 from "../assets/images/services/service gallery/mitsubishi-lithopia-2.jpg";
+
 
 export const imageAssets = {
   logo: {
@@ -139,6 +146,7 @@ export const imageAssets = {
       calendarsDiaries: calendarsDiariesCloseup,
       annualReports: annualReportsCloseup,
     },
+    
 
   
   },
@@ -197,5 +205,15 @@ export const imageAssets = {
     company14,
     company15,
   },
+
+  servicesQuality: {
+  background: qualityBg,
+  gallery: {
+    heidelberg10c,
+    mitsubishiLithopia1,
+    laminationUv,
+    mitsubishiLithopia2,
+  },
+},
 
 } as const;
