@@ -12,6 +12,7 @@ import Footer from '../components/common/Footer';
 
 import ServicesHero from '../components/services/ServicesHero';
 import ServiceStatCards from '../components/services/ServiceStatCards';
+import AboutMachineModel from '../components/about/AboutMachineModel';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,6 +59,7 @@ export default function Services() {
 
       <ServicesHero />
       <ServiceStatCards />
+      <AboutMachineModel/>
 
       <Footer />
       <ScrollToTop />

@@ -1971,68 +1971,202 @@ body.is-hovering .cursor-ring {
   transform-origin: left;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   NAPCO V2 — SCROLL TO TOP
-   ═══════════════════════════════════════════════════════════════ */
+/* ================================
+   FLOATING ACTION BUTTONS
+================================ */
+
+.napco-floating-actions {
+  position: fixed;
+  right: clamp(18px, 2vw, 32px);
+  bottom: clamp(22px, 2.4vw, 34px);
+  z-index: 999;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  pointer-events: none;
+}
+
+.napco-whatsapp-float,
+.napco-scroll-to-top {
+  pointer-events: auto;
+}
+
+.napco-whatsapp-float {
+  position: relative;
+  width: 62px;
+  height: 62px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 999px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37, 211, 102, 0.9),
+      rgba(18, 140, 126, 0.86)
+    );
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 20px 44px rgba(7, 23, 45, 0.22),
+    0 0 30px rgba(37, 211, 102, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s ease,
+    filter 0.3s ease;
+}
+
+.napco-whatsapp-float::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      circle at 30% 18%,
+      rgba(255, 255, 255, 0.55),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.22),
+      transparent 58%
+    );
+  pointer-events: none;
+}
+
+.napco-whatsapp-float__glow {
+  position: absolute;
+  inset: -18px;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle,
+    rgba(37, 211, 102, 0.42),
+    transparent 58%
+  );
+  opacity: 0.72;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.napco-whatsapp-float__icon {
+  position: relative;
+  z-index: 2;
+  width: 31px;
+  height: 31px;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.22));
+}
+
+.napco-whatsapp-float:hover {
+  transform: translateY(-5px) scale(1.04);
+  filter: saturate(1.12);
+  box-shadow:
+    0 26px 58px rgba(7, 23, 45, 0.28),
+    0 0 42px rgba(37, 211, 102, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
+}
 
 .napco-scroll-to-top {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
   padding: 0;
-  outline: none;
+  cursor: pointer;
+  border: 1px solid rgba(168, 85, 247, 0.36);
+  border-radius: 999px;
+  color: #ffffff;
+  overflow: hidden;
+  background: rgba(22, 18, 44, 0.86);
+  box-shadow:
+    0 14px 34px rgba(7, 23, 45, 0.22),
+    0 0 22px rgba(168, 85, 247, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.napco-scroll-to-top::before {
+  display: none;
+}
+
+.napco-scroll-to-top:hover {
+  transform: translateY(-4px) scale(1.03);
+  background: rgba(30, 22, 62, 0.94);
+  border-color: rgba(168, 85, 247, 0.55);
+  box-shadow:
+    0 18px 42px rgba(7, 23, 45, 0.28),
+    0 0 28px rgba(168, 85, 247, 0.24);
 }
 
 .scroll-progress-svg {
   position: absolute;
   inset: 0;
-  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
 }
 
 .scroll-progress-icon {
   position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: rgba(10, 7, 28, 0.8);
-  backdrop-filter: blur(8px);
-  border-radius: 50%;
-  transition: background 0.3s ease, transform 0.3s ease;
+  z-index: 3;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
 }
 
-.napco-scroll-to-top:hover .scroll-progress-icon {
-  background: #7c3aed;
-  transform: translateY(-2px);
+.napco-whatsapp-float:focus-visible,
+.napco-scroll-to-top:focus-visible {
+  outline: 3px solid rgba(158, 231, 255, 0.45);
+  outline-offset: 5px;
 }
 
-/* ─── Responsive Adjustments ─── */
-@media (max-width: 1024px) {
-  .napco-nav-socials { display: none; }
-}
+/* Mobile */
+@media (max-width: 760px) {
+  .napco-floating-actions {
+    right: 16px;
+    bottom: 18px;
+    gap: 12px;
+  }
 
-@media (max-width: 768px) {
-  .napco-nav-links { display: none; }
-  .napco-pill-links { display: none; }
-}
+  .napco-whatsapp-float {
+    width: 56px;
+    height: 56px;
+  }
 
-@media (max-width: 640px) {
-  .napco-hero-heading { font-size: clamp(2.2rem, 10vw, 3.4rem); }
-  .napco-sidebar-panel { max-width: 100%; }
-}
+  .napco-whatsapp-float__icon {
+    width: 28px;
+    height: 28px;
+  }
 
+  .napco-scroll-to-top {
+    width: 62px;
+    height: 62px;
+  }
+
+  .scroll-progress-svg {
+    width: 62px;
+    height: 62px;
+  }
+
+  .scroll-progress-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
 
 .napco-nav-root {
   position: fixed;
@@ -2043,7 +2177,7 @@ body.is-hovering .cursor-ring {
   pointer-events: none;
 }
 
-/* ─── Glass nav (default / top) ─── */
+/* ─── Glass nav  ─── */
 .napco-nav-glass {
   pointer-events: all;
   width: 100%;

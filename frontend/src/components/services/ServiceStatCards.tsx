@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import { imageAssets } from '../../data/imageAssets';
 
 const serviceCards = [
@@ -40,12 +42,150 @@ const serviceCards = [
 ];
 
 export default function ServiceStatCards() {
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) return;
+
+    const shouldFloat =
+      window.matchMedia('(min-width: 1024px)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!shouldFloat) return;
+
+    let rafId: number | null = null;
+    let isActive = false;
+
+    const updateFloatingElements = () => {
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      const progress =
+        (viewportHeight - rect.top) / (viewportHeight + rect.height);
+
+      const clampedProgress = Math.min(Math.max(progress, 0), 1);
+      const baseMove = (clampedProgress - 0.5) * 180;
+
+      const floatingElements = section.querySelectorAll<HTMLElement>(
+        '.service-stat-cards__float'
+      );
+
+      floatingElements.forEach((element) => {
+        const speed = Number(element.dataset.floatSpeed || '1');
+        const rotate = element.dataset.rotate || '0deg';
+        const direction = Number(element.dataset.direction || '1');
+
+        const y = baseMove * speed * direction;
+
+        element.style.transform = `translate3d(0, ${y}px, 0) rotate(${rotate})`;
+      });
+
+      rafId = null;
+    };
+
+    const handleScroll = () => {
+      if (!isActive) return;
+      if (rafId !== null) return;
+
+      rafId = window.requestAnimationFrame(updateFloatingElements);
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isActive = entry.isIntersecting;
+
+        if (isActive) {
+          handleScroll();
+        }
+      },
+      {
+        rootMargin: '220px 0px',
+        threshold: 0.01,
+      }
+    );
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    observer.observe(section);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      observer.disconnect();
+
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
+
   return (
-    <section className="service-stat-cards">
-      <div className="service-stat-cards__float service-stat-cards__float--1" />
-      <div className="service-stat-cards__float service-stat-cards__float--2" />
-      <div className="service-stat-cards__float service-stat-cards__float--3" />
-      <div className="service-stat-cards__float service-stat-cards__float--4" />
+    <section className="service-stat-cards" ref={sectionRef}>
+      <div
+        className="service-stat-cards__float service-stat-cards__float--printer"
+        data-float-speed="0.8"
+        data-direction="1"
+        data-rotate="-10deg"
+        data-cursor="Printer"
+      >
+        <div className="service-stat-cards__float-inner">
+          <img
+            src={imageAssets.services.floating.printer}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+      </div>
+
+      <div
+        className="service-stat-cards__float service-stat-cards__float--papers"
+        data-float-speed="1.05"
+        data-direction="-1"
+        data-rotate="12deg"
+        data-cursor="Papers"
+      >
+        <div className="service-stat-cards__float-inner">
+          <img
+            src={imageAssets.services.floating.papers}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+      </div>
+
+      <div
+        className="service-stat-cards__float service-stat-cards__float--cartridges"
+        data-float-speed="0.9"
+        data-direction="1"
+        data-rotate="8deg"
+        data-cursor="Ink"
+      >
+        <div className="service-stat-cards__float-inner">
+          <img
+            src={imageAssets.services.floating.cartridges}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+      </div>
+
+      <div
+        className="service-stat-cards__float service-stat-cards__float--cartridges-secondary"
+        data-float-speed="0.8"
+        data-direction="-1"
+        data-rotate="-10deg"
+        data-cursor="Ink"
+      >
+        <div className="service-stat-cards__float-inner">
+          <img
+            src={imageAssets.services.floating.cartridges2}
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+      </div>
 
       <div className="service-stat-cards__inner">
         <div className="service-stat-cards__heading" data-reveal>
@@ -89,7 +229,10 @@ export default function ServiceStatCards() {
                 <div className="service-stat-card__hidden">
                   <p>{service.description}</p>
 
-                  <a href="/contact#contact" className="service-stat-card__button">
+                  <a
+                    href="/contact#contact"
+                    className="service-stat-card__button"
+                  >
                     Get a Quote
                   </a>
                 </div>

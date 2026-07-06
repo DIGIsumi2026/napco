@@ -21,7 +21,7 @@ const services = [
     icon: BookOpen,
     title: 'Books & Publishing',
     description:
-      'Complete soft-cover and hard-cover book production from pre press to binding and finishing.',
+      'Complete soft-cover and hard cover book production from pre press to binding and finishing.',
   },
   {
     icon: FileText,
