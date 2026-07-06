@@ -80,6 +80,10 @@ import company13 from "../assets/images/about/companies/company13.png";
 import company14 from "../assets/images/about/companies/company14.png";
 import company15 from "../assets/images/about/companies/company15.png";
 
+//service page 
+// hero 
+import  servicesHeroTeam from "../assets/images/services/services-hero-team.png";
+
 
 export const imageAssets = {
   logo: {
@@ -126,7 +130,9 @@ export const imageAssets = {
       labelsCloseup,
       calendarsDiaries: calendarsDiariesCloseup,
       annualReports: annualReportsCloseup,
-    }
+    },
+
+  
   },
   contactCta:{
      openBook: ctaOpenBook,
@@ -135,6 +141,11 @@ export const imageAssets = {
     calendar: ctaCalendar,
     bookStack: ctaBookStack,
   },
+
+  servicesHero: {
+    heroTeam: servicesHeroTeam,
+  },
+
   clients:{
     client1,
     client2,

@@ -12,6 +12,7 @@ import ServiceStats from '../components/home/ServiceStats';
 import ServicesVisual from '../components/home/ServicesVisual';
 import ContactCta from '../components/home/ContactCta';
 import ClientLogos from '../components/home/ClientLogos';
+
 import Footer from '../components/common/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
