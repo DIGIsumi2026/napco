@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, X } from 'lucide-react';
 
@@ -34,6 +35,30 @@ const socialLinks = [
 ];
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  useEffect(() => {
+    document.body.classList.toggle('napco-sidebar-is-open', isOpen);
+
+    return () => {
+      document.body.classList.remove('napco-sidebar-is-open');
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <>
       <button
@@ -70,7 +95,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             data-cursor="Close"
           >
             <span />
-            <X size={24} />
+            <X size={22} />
           </button>
         </div>
 
@@ -110,7 +135,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               rel={href === '#' ? undefined : 'noreferrer'}
               data-cursor={label}
             >
-              <Icon size={20} />
+              <Icon size={19} />
             </a>
           ))}
         </div>

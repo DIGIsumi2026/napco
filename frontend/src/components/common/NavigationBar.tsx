@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
+
 import { imageAssets } from '../../data/imageAssets';
 
 const navLinks = [
-  { label: 'Home', href: '/home' },
+  { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
   { label: 'Services', href: '/services' },
   { label: 'Contact Us', href: '/contact' },
@@ -21,68 +23,104 @@ interface NavigationBarProps {
   isSidebarOpen: boolean;
 }
 
-export default function NavigationBar({ onToggleSidebar, isSidebarOpen }: NavigationBarProps) {
+export default function NavigationBar({
+  onToggleSidebar,
+  isSidebarOpen,
+}: NavigationBarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [isHoveringCTA, setIsHoveringCTA] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 60);
+    };
+
+    onScroll();
+
     window.addEventListener('scroll', onScroll, { passive: true });
+
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const handleHamburgerClick = () => {
+    if (isSidebarOpen) return;
+    onToggleSidebar();
+  };
+
   return (
-    <div className="napco-nav-root" id="home">
+    <div
+      className={`napco-nav-root ${
+        isSidebarOpen ? 'napco-nav-root--disabled' : ''
+      }`}
+      data-navbar
+      aria-hidden={isSidebarOpen}
+    >
       <AnimatePresence mode="wait">
         {!scrolled ? (
-          /* ─── DEFAULT: Full-width glass bar ─── */
           <motion.header
             key="glass-nav"
             className="napco-nav-glass"
+            data-navbar-panel
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={{
+              opacity: isSidebarOpen ? 0 : 1,
+              y: isSidebarOpen ? -24 : 0,
+              filter: isSidebarOpen ? 'blur(8px)' : 'blur(0px)',
+            }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
+            transition={{ duration: 0.28, ease: 'easeOut' }}
           >
-            {/* Logo */}
-            <a href="/home" className="napco-nav-logo">
+            <Link to="/" className="napco-nav-logo" aria-label="NAPCO Home">
               <img src={imageAssets.logo.main} alt="Napco" />
-            </a>
+            </Link>
 
-            {/* Center links (hidden on mobile) */}
             <nav className="napco-nav-links hidden md:flex">
               {navLinks.map(({ label, href }) => (
-                <a key={label} href={href} className="napco-nav-link">
+                <Link key={label} to={href} className="napco-nav-link">
                   {label}
-                </a>
+                </Link>
               ))}
             </nav>
 
             <div className="napco-nav-actions">
-              {/* Social icons (desktop only) */}
               <div className="napco-nav-socials hidden lg:flex">
                 {socialLinks.map(({ Icon, href, label }) => (
-                  <a key={label} href={href} aria-label={label} className="napco-social-icon">
+                  <a
+                    key={label}
+                    href={href}
+                    aria-label={label}
+                    className="napco-social-icon"
+                  >
                     <Icon size={17} />
                   </a>
                 ))}
               </div>
 
-              {/* CTA */}
-              <a
-                href="/contact"
+              <Link
+                to="/contact"
                 className="napco-cta-wrapper"
                 onMouseEnter={() => setIsHoveringCTA(true)}
                 onMouseLeave={() => setIsHoveringCTA(false)}
               >
-                <div className={`napco-cta-bg ${isHoveringCTA ? 'animate-spin-slow' : ''}`} />
+                <div
+                  className={`napco-cta-bg ${
+                    isHoveringCTA ? 'animate-spin-slow' : ''
+                  }`}
+                />
                 <div className="napco-cta-inner">Get a Quote</div>
-              </a>
+              </Link>
 
-              {/* Hamburger */}
-              <button className="napco-hamburger" onClick={onToggleSidebar} aria-label="Toggle menu">
+              <button
+                type="button"
+                className="napco-hamburger"
+                onClick={handleHamburgerClick}
+                aria-label="Open menu"
+                disabled={isSidebarOpen}
+              >
                 <motion.div
-                  animate={isSidebarOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                  animate={
+                    isSidebarOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }
+                  }
                   className="hamburger-line"
                 />
                 <motion.div
@@ -90,53 +128,70 @@ export default function NavigationBar({ onToggleSidebar, isSidebarOpen }: Naviga
                   className="hamburger-line"
                 />
                 <motion.div
-                  animate={isSidebarOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                  animate={
+                    isSidebarOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }
+                  }
                   className="hamburger-line"
                 />
               </button>
             </div>
           </motion.header>
         ) : (
-          /* ─── SCROLLED: Floating pill ─── */
           <motion.div
             key="pill-nav"
             className="napco-nav-pill-wrap"
+            data-navbar-panel
             initial={{ opacity: 0, scale: 0.85, y: -30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
+            animate={{
+              opacity: isSidebarOpen ? 0 : 1,
+              scale: isSidebarOpen ? 0.92 : 1,
+              y: isSidebarOpen ? -24 : 0,
+              filter: isSidebarOpen ? 'blur(8px)' : 'blur(0px)',
+            }}
             exit={{ opacity: 0, scale: 0.85, y: -30 }}
             transition={{ type: 'spring', stiffness: 260, damping: 18 }}
           >
             <div className="napco-nav-pill">
-              {/* Logo */}
-              <a href="/home" className="napco-pill-logo">
+              <Link to="/" className="napco-pill-logo" aria-label="NAPCO Home">
                 <img src={imageAssets.logo.main} alt="Napco" />
-              </a>
+              </Link>
 
-              {/* Center links (hidden on mobile) */}
               <nav className="napco-pill-links hidden md:flex">
                 {navLinks.map(({ label, href }) => (
-                  <a key={label} href={href} className="napco-pill-link">
+                  <Link key={label} to={href} className="napco-pill-link">
                     {label}
-                  </a>
+                  </Link>
                 ))}
               </nav>
 
               <div className="napco-nav-actions">
-                {/* CTA */}
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="napco-cta-wrapper pill-cta"
                   onMouseEnter={() => setIsHoveringCTA(true)}
                   onMouseLeave={() => setIsHoveringCTA(false)}
                 >
-                  <div className={`napco-cta-bg ${isHoveringCTA ? 'animate-spin-slow' : ''}`} />
+                  <div
+                    className={`napco-cta-bg ${
+                      isHoveringCTA ? 'animate-spin-slow' : ''
+                    }`}
+                  />
                   <div className="napco-cta-inner">Get a Quote</div>
-                </a>
+                </Link>
 
-                {/* Hamburger */}
-                <button className="napco-hamburger" onClick={onToggleSidebar} aria-label="Toggle menu">
+                <button
+                  type="button"
+                  className="napco-hamburger"
+                  onClick={handleHamburgerClick}
+                  aria-label="Open menu"
+                  disabled={isSidebarOpen}
+                >
                   <motion.div
-                    animate={isSidebarOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                    animate={
+                      isSidebarOpen
+                        ? { rotate: 45, y: 8 }
+                        : { rotate: 0, y: 0 }
+                    }
                     className="hamburger-line"
                   />
                   <motion.div
@@ -144,7 +199,11 @@ export default function NavigationBar({ onToggleSidebar, isSidebarOpen }: Naviga
                     className="hamburger-line"
                   />
                   <motion.div
-                    animate={isSidebarOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                    animate={
+                      isSidebarOpen
+                        ? { rotate: -45, y: -8 }
+                        : { rotate: 0, y: 0 }
+                    }
                     className="hamburger-line"
                   />
                 </button>

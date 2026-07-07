@@ -332,6 +332,34 @@ img {
    SIDEBAR
 ================================ */
 
+/* Disable floating buttons and navbar when sidebar is open */
+
+body.napco-sidebar-is-open .napco-floating-actions,
+body.napco-sidebar-is-open .napco-whatsapp-float,
+body.napco-sidebar-is-open .napco-scroll-to-top {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+body.napco-sidebar-is-open .navigation-bar,
+body.napco-sidebar-is-open .navbar,
+body.napco-sidebar-is-open .nav-bar,
+body.napco-sidebar-is-open .napco-navbar,
+body.napco-sidebar-is-open .site-header,
+body.napco-sidebar-is-open header {
+  pointer-events: none !important;
+  opacity: 0.24;
+  filter: blur(2px);
+  transition:
+    opacity 0.28s ease,
+    filter 0.28s ease;
+}
+
+/* ================================
+   IMPROVED LIGHT SIDEBAR
+================================ */
+
 .napco-sidebar__backdrop {
   position: fixed;
   inset: 0;
@@ -339,7 +367,7 @@ img {
   border: 0;
   padding: 0;
   cursor: pointer;
-  background: rgba(2, 7, 17, 0.48);
+  background: rgba(2, 7, 17, 0.44);
   opacity: 0;
   pointer-events: none;
   backdrop-filter: blur(8px);
@@ -358,21 +386,21 @@ img {
   right: 18px;
   bottom: 18px;
   z-index: 999;
-  width: min(420px, calc(100% - 36px));
+  width: min(400px, calc(100% - 36px));
   overflow: hidden;
   isolation: isolate;
-  padding: 26px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   border-radius: 34px;
   background:
-    radial-gradient(circle at 18% 10%, rgba(0, 174, 239, 0.16), transparent 34%),
-    radial-gradient(circle at 86% 82%, rgba(124, 58, 237, 0.18), transparent 36%),
-    linear-gradient(145deg, rgba(5, 8, 22, 0.96), rgba(16, 9, 36, 0.96));
-  border: 1px solid rgba(158, 231, 255, 0.16);
+    radial-gradient(circle at 18% 10%, rgba(0, 174, 239, 0.14), transparent 34%),
+    radial-gradient(circle at 88% 86%, rgba(124, 58, 237, 0.12), transparent 38%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 251, 255, 0.96));
+  border: 1px solid rgba(7, 23, 45, 0.08);
   box-shadow:
-    0 38px 100px rgba(0, 0, 0, 0.46),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    0 38px 100px rgba(7, 23, 45, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
   transform: translateX(calc(100% + 34px));
   opacity: 0;
   pointer-events: none;
@@ -400,7 +428,7 @@ img {
   height: 220px;
   left: -80px;
   top: 12%;
-  background: rgba(0, 174, 239, 0.18);
+  background: rgba(0, 174, 239, 0.16);
 }
 
 .napco-sidebar__glow--purple {
@@ -408,7 +436,7 @@ img {
   height: 260px;
   right: -90px;
   bottom: 10%;
-  background: rgba(124, 58, 237, 0.22);
+  background: rgba(124, 58, 237, 0.14);
 }
 
 .napco-sidebar__top {
@@ -420,7 +448,7 @@ img {
 
 .napco-sidebar__logo {
   display: inline-flex;
-  width: 150px;
+  width: 140px;
 }
 
 .napco-sidebar__logo img {
@@ -429,30 +457,35 @@ img {
   display: block;
 }
 
+/* Close button */
+
 .napco-sidebar__close {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
   cursor: pointer;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #07172d;
+  border: 1px solid rgba(7, 23, 45, 0.12);
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 14px 34px rgba(7, 23, 45, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
   transition:
     transform 0.3s ease,
     background 0.3s ease,
-    border-color 0.3s ease;
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .napco-sidebar__close span {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.36), transparent 36%),
-    linear-gradient(135deg, rgba(0, 174, 239, 0.18), rgba(124, 58, 237, 0.2));
+  background: linear-gradient(135deg, #7c3aed, #00aeef);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -465,8 +498,11 @@ img {
 
 .napco-sidebar__close:hover {
   transform: rotate(8deg) scale(1.06);
-  background: rgba(255, 255, 255, 0.13);
-  border-color: rgba(158, 231, 255, 0.34);
+  color: #ffffff;
+  border-color: rgba(0, 174, 239, 0.28);
+  box-shadow:
+    0 18px 44px rgba(7, 23, 45, 0.16),
+    0 0 30px rgba(0, 174, 239, 0.2);
 }
 
 .napco-sidebar__close:hover span {
@@ -477,43 +513,47 @@ img {
   transform: rotate(90deg);
 }
 
+/* Smaller nav links */
+
 .napco-sidebar__nav {
   display: grid;
-  gap: 14px;
-  margin-top: 56px;
+  gap: 10px;
+  margin-top: 44px;
 }
 
 .napco-sidebar__link {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 58px;
-  padding: 0 20px;
-  color: rgba(255, 255, 255, 0.76);
+  min-height: 50px;
+  padding: 0 18px;
+  color: #536274;
   text-decoration: none;
-  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-size: clamp(1.05rem, 1vw, 1.32rem);
   line-height: 1;
   font-weight: 900;
-  letter-spacing: -0.035em;
-  border-radius: 20px;
+  letter-spacing: -0.02em;
+  border-radius: 18px;
   transition:
     color 0.28s ease,
     background 0.28s ease,
-    transform 0.28s ease;
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
 }
 
 .napco-sidebar__link:hover,
 .napco-sidebar__link--active {
-  color: #ffffff;
-  transform: translateX(8px);
-  background: rgba(255, 255, 255, 0.08);
+  color: #07172d;
+  transform: translateX(6px);
+  background: rgba(0, 174, 239, 0.09);
+  box-shadow: inset 0 0 0 1px rgba(0, 174, 239, 0.12);
 }
 
 .napco-sidebar__link::after {
   content: '';
   position: absolute;
-  left: 20px;
-  right: 20px;
+  left: 18px;
+  right: 18px;
   bottom: 8px;
   height: 2px;
   border-radius: 999px;
@@ -528,24 +568,26 @@ img {
   transform: scaleX(1);
 }
 
+/* Quote button */
+
 .napco-sidebar__quote {
-  min-height: 52px;
+  min-height: 50px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 32px;
+  margin-top: 28px;
   padding: 0 24px;
   color: #ffffff;
   text-decoration: none;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 950;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-radius: 999px;
   background: linear-gradient(135deg, #7c3aed, #00aeef);
   box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.28),
-    0 0 34px rgba(124, 58, 237, 0.24);
+    0 18px 42px rgba(7, 23, 45, 0.18),
+    0 0 34px rgba(124, 58, 237, 0.2);
   transition:
     transform 0.28s ease,
     box-shadow 0.28s ease,
@@ -556,9 +598,11 @@ img {
   transform: translateY(-4px);
   filter: saturate(1.1);
   box-shadow:
-    0 24px 54px rgba(0, 0, 0, 0.36),
-    0 0 44px rgba(0, 174, 239, 0.26);
+    0 24px 54px rgba(7, 23, 45, 0.24),
+    0 0 44px rgba(0, 174, 239, 0.22);
 }
+
+/* Socials */
 
 .napco-sidebar__socials {
   display: flex;
@@ -569,40 +613,33 @@ img {
   padding-top: 34px;
 }
 
-/* Responsive */
-
-@media (max-width: 1100px) {
-  .napco-footer__inner {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.napco-sidebar__socials a {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0053a0, #00aeef);
+  box-shadow: 0 14px 30px rgba(0, 83, 160, 0.18);
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    filter 0.28s ease;
 }
 
+.napco-sidebar__socials a:hover {
+  transform: translateY(-5px) scale(1.06);
+  filter: saturate(1.12);
+  box-shadow:
+    0 20px 42px rgba(0, 83, 160, 0.26),
+    0 0 32px rgba(0, 174, 239, 0.2);
+}
+
+/* Mobile */
+
 @media (max-width: 760px) {
-  .napco-footer {
-    margin: 16px;
-    padding: 34px 22px 22px;
-    border-radius: 30px 0 30px 30px;
-  }
-
-  .napco-footer__inner {
-    grid-template-columns: 1fr;
-    gap: 34px;
-  }
-
-  .napco-footer__logo {
-    width: 190px;
-  }
-
-  .napco-footer__map-frame {
-    min-height: 260px;
-    border-radius: 24px;
-  }
-
-  .napco-footer__bottom {
-    flex-direction: column;
-    gap: 8px;
-  }
-
   .napco-sidebar {
     top: 12px;
     right: 12px;
@@ -613,17 +650,82 @@ img {
   }
 
   .napco-sidebar__logo {
-    width: 132px;
+    width: 128px;
+  }
+
+  .napco-sidebar__close {
+    width: 46px;
+    height: 46px;
   }
 
   .napco-sidebar__nav {
-    margin-top: 42px;
+    margin-top: 38px;
+    gap: 9px;
   }
 
   .napco-sidebar__link {
-    min-height: 54px;
-    font-size: 1.55rem;
+    min-height: 48px;
+    font-size: 1.08rem;
   }
 }
 
+body.napco-sidebar-is-open {
+  overflow: hidden;
+}
 
+/* Hide and disable primary/scrolled navigation bars */
+body.napco-sidebar-is-open .navigation-bar,
+body.napco-sidebar-is-open .navigation-bar--scrolled,
+body.napco-sidebar-is-open .navigation-bar--floating,
+body.napco-sidebar-is-open .navbar,
+body.napco-sidebar-is-open .nav-bar,
+body.napco-sidebar-is-open .napco-navbar,
+body.napco-sidebar-is-open .site-header,
+body.napco-sidebar-is-open .header,
+body.napco-sidebar-is-open .main-header,
+body.napco-sidebar-is-open header:not(.napco-sidebar header) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-24px) !important;
+  filter: blur(8px) !important;
+  transition:
+    opacity 0.24s ease,
+    visibility 0.24s ease,
+    transform 0.24s ease,
+    filter 0.24s ease !important;
+}
+
+/* Also disable any fixed nav layer if your navbar uses a wrapper */
+body.napco-sidebar-is-open [data-navbar],
+body.napco-sidebar-is-open [data-navigation],
+body.napco-sidebar-is-open [data-nav-wrapper] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Keep sidebar and backdrop active */
+body.napco-sidebar-is-open .napco-sidebar,
+body.napco-sidebar-is-open .napco-sidebar *,
+body.napco-sidebar-is-open .napco-sidebar__backdrop {
+  visibility: visible !important;
+  pointer-events: auto;
+}
+
+/* Hide WhatsApp and scroll buttons */
+body.napco-sidebar-is-open .napco-floating-actions,
+body.napco-sidebar-is-open .napco-whatsapp-float,
+body.napco-sidebar-is-open .napco-scroll-to-top {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+body.napco-sidebar-is-open [data-navbar] {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-24px) !important;
+  filter: blur(8px) !important;
+}
