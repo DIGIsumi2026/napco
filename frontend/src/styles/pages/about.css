@@ -1618,16 +1618,16 @@
 
 .vision-mission {
   position: relative;
-  height: 230vh;
+  min-height: 100svh;
   background: #020711;
-  overflow: visible;
+  overflow: hidden;
   isolation: isolate;
 }
 
 .vision-mission__sticky {
-  position: sticky;
-  top: 0;
+  position: relative;
   height: 100svh;
+  width: 100%;
   overflow: hidden;
   background: #020711;
 }
@@ -1638,22 +1638,21 @@
   z-index: 1;
 }
 
-.vision-mission__image {
+.vision-mission__image-track {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+}
+
+.vision-mission__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 100%;
   object-fit: cover;
-  will-change: transform, opacity;
-  pointer-events: none;
-}
-
-.vision-mission__image--vision {
-  object-position: left center;
-}
-
-.vision-mission__image--mission {
-  object-position: 78% center;
+  will-change: transform;
 }
 
 .vision-mission__overlay {
@@ -1773,7 +1772,7 @@
 /* Tablet */
 @media (max-width: 1024px) {
   .vision-mission {
-    height: 220vh;
+    min-height: 100svh;
   }
 
   .vision-mission__content {
@@ -1797,7 +1796,7 @@
 /* Mobile */
 @media (max-width: 768px) {
   .vision-mission {
-    height: 220vh;
+    min-height: 100svh;
   }
 
   .vision-mission__overlay {
@@ -1808,14 +1807,6 @@
         rgba(2, 7, 17, 0.38) 45%,
         rgba(2, 7, 17, 0.84) 100%
       );
-  }
-
-  .vision-mission__image--vision {
-    object-position: 28% center;
-  }
-
-  .vision-mission__image--mission {
-    object-position: 74% center;
   }
 
   .vision-mission__content,

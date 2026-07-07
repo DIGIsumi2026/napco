@@ -6,133 +6,68 @@ import { imageAssets } from '../../data/imageAssets';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const clamp = (value: number, min: number, max: number) => {
-  return Math.min(Math.max(value, min), max);
-};
-
 export default function VisionMission() {
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
-
     if (!section) return;
 
     const ctx = gsap.context(() => {
-      const visionImage = section.querySelector<HTMLElement>(
-        '.vision-mission__image--vision'
-      );
+      const imageTrack = section.querySelector('.vision-mission__image-track');
+      const image = section.querySelector('.vision-mission__image');
+      const visionContent = section.querySelector('.vision-mission__content--vision');
+      const missionContent = section.querySelector('.vision-mission__content--mission');
+      const progressLine = section.querySelector('.vision-mission__progress-line span');
 
-      const missionImage = section.querySelector<HTMLElement>(
-        '.vision-mission__image--mission'
-      );
+      if (!imageTrack || !image || !visionContent || !missionContent || !progressLine) return;
 
-      const visionContent = section.querySelector<HTMLElement>(
-        '.vision-mission__content--vision'
-      );
+      // Initial states
+      gsap.set(visionContent, { autoAlpha: 1, y: 0 });
+      gsap.set(missionContent, { autoAlpha: 0, y: 60 });
+      gsap.set(image, { xPercent: 0, scale: 1.08 });
+      gsap.set(progressLine, { scaleX: 0, transformOrigin: 'left center' });
 
-      const missionContent = section.querySelector<HTMLElement>(
-        '.vision-mission__content--mission'
-      );
+      const isMobile = window.innerWidth <= 768;
+      const scrollEnd = isMobile ? '+=1100' : '+=1600';
 
-      const progressLine = section.querySelector<HTMLElement>(
-        '.vision-mission__progress-line span'
-      );
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: scrollEnd,
+          scrub: 0.9,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
 
-      if (
-        !visionImage ||
-        !missionImage ||
-        !visionContent ||
-        !missionContent ||
-        !progressLine
-      ) {
-        return;
+      // 0.00 to 0.35: keep Vision readable
+      tl.to(progressLine, { scaleX: 0.35, duration: 0.35, ease: 'none' }, 0);
+      
+      // 0.35 to 0.55: fade/slide Vision out
+      tl.to(visionContent, { autoAlpha: 0, y: -40, duration: 0.20, ease: 'power2.inOut' }, 0.35);
+      tl.to(progressLine, { scaleX: 0.55, duration: 0.20, ease: 'none' }, 0.35);
+
+      // 0.35 to 0.75: pan/zoom image to right side
+      tl.to(image, { xPercent: -14, scale: 1.16, duration: 0.40, ease: 'power2.inOut' }, 0.35);
+      
+      // 0.55 to 0.85: fade/slide Mission in
+      tl.to(missionContent, { autoAlpha: 1, y: 0, duration: 0.30, ease: 'power2.inOut' }, 0.55);
+      tl.to(progressLine, { scaleX: 0.85, duration: 0.30, ease: 'none' }, 0.55);
+
+      // 0.85 to 1.00: hold Mission readable
+      tl.to(progressLine, { scaleX: 1, duration: 0.15, ease: 'none' }, 0.85);
+
+      // Refresh ScrollTrigger once image is loaded to recalculate heights if necessary
+      const imgEl = image as HTMLImageElement;
+      if (imgEl.complete) {
+        ScrollTrigger.refresh();
+      } else {
+        imgEl.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
       }
 
-      const applyProgress = (progress: number) => {
-        const transition = clamp((progress - 0.28) / 0.44, 0, 1);
-
-        gsap.set(progressLine, {
-          scaleX: progress,
-          transformOrigin: 'left center',
-        });
-
-        // Vision image: left-side focus
-        gsap.set(visionImage, {
-          autoAlpha: 1 - transition,
-          scale: 1.08 + transition * 0.05,
-        });
-
-        // Mission image: right-side machine/man focus
-        gsap.set(missionImage, {
-          autoAlpha: transition,
-          scale: 1.18 - transition * 0.1,
-        });
-
-        // Vision text disappears while scrolling down, reappears when scrolling up
-        gsap.set(visionContent, {
-          autoAlpha: 1 - transition,
-          y: -52 * transition,
-          clipPath: `inset(0% 0% ${transition * 100}% 0%)`,
-        });
-
-        // Mission text appears while scrolling down, disappears when scrolling up
-        gsap.set(missionContent, {
-          autoAlpha: transition,
-          y: 52 * (1 - transition),
-          clipPath: `inset(${100 - transition * 100}% 0% 0% 0%)`,
-        });
-      };
-
-      gsap.set(visionImage, {
-        autoAlpha: 1,
-        scale: 1.08,
-      });
-
-      gsap.set(missionImage, {
-        autoAlpha: 0,
-        scale: 1.18,
-      });
-
-      gsap.set(visionContent, {
-        autoAlpha: 1,
-        y: 0,
-        clipPath: 'inset(0% 0% 0% 0%)',
-      });
-
-      gsap.set(missionContent, {
-        autoAlpha: 0,
-        y: 52,
-        clipPath: 'inset(100% 0% 0% 0%)',
-      });
-
-      gsap.set(progressLine, {
-        scaleX: 0,
-        transformOrigin: 'left center',
-      });
-
-      applyProgress(0);
-
-      const trigger = ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: 'bottom bottom',
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          applyProgress(self.progress);
-        },
-        onRefresh: (self) => {
-          applyProgress(self.progress);
-        },
-      });
-
-      window.setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 250);
-
-      return () => {
-        trigger.kill();
-      };
     }, section);
 
     return () => ctx.revert();
@@ -142,19 +77,13 @@ export default function VisionMission() {
     <section className="vision-mission" ref={sectionRef}>
       <div className="vision-mission__sticky">
         <div className="vision-mission__media" aria-hidden="true">
-          <img
-            src={imageAssets.about.visionMission}
-            alt=""
-            className="vision-mission__image vision-mission__image--vision"
-            onLoad={() => ScrollTrigger.refresh()}
-          />
-
-          <img
-            src={imageAssets.about.visionMission}
-            alt=""
-            className="vision-mission__image vision-mission__image--mission"
-            onLoad={() => ScrollTrigger.refresh()}
-          />
+          <div className="vision-mission__image-track">
+            <img
+              src={imageAssets.about.visionMission}
+              alt=""
+              className="vision-mission__image"
+            />
+          </div>
         </div>
 
         <div className="vision-mission__overlay" />
