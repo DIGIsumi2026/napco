@@ -12,6 +12,7 @@ import Footer from '../components/common/Footer';
 
 import ContactHero from '../components/contact/ContactHero';
 import ContactFormSection from '../components/contact/ContactFormSection';
+import ContactMapSection from '../components/contact/ContactMapSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,6 +59,7 @@ export default function Contact() {
 
       <ContactHero />
       <ContactFormSection/>
+      <ContactMapSection/>
 
       <Footer />
       <ScrollToTop />
