@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { imageAssets } from '../../data/imageAssets';
 
 export default function ContactHero() {
@@ -29,9 +30,9 @@ export default function ContactHero() {
         </p>
 
         <div className="contact-hero__actions">
-          <a href="/contact-form" className="contact-hero__button">
+          <Link to="/contact#contact-form" className="contact-hero__button">
             Get a Quote
-          </a>
+          </Link>
 
           <a href="tel:+94112910015" className="contact-hero__button contact-hero__button--ghost">
             Call Us

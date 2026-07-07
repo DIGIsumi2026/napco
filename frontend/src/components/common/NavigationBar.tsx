@@ -13,9 +13,9 @@ const navLinks = [
 ];
 
 const socialLinks = [
-  { Icon: Facebook, href: '#', label: 'Facebook' },
-  { Icon: Instagram, href: '#', label: 'Instagram' },
-  { Icon: Linkedin, href: '#', label: 'LinkedIn' },
+  { Icon: Facebook, href: 'https://www.facebook.com/share/1EmKKmMVfr/?mibextid=wwXIfr', label: 'Facebook' },
+  { Icon: Instagram, href: 'https://www.instagram.com/napcolk?igsh=MWk0ajNrdDFxODB5ZA==', label: 'Instagram' },
+  { Icon: Linkedin, href: 'https://www.linkedin.com/company/napcopvtltd/', label: 'LinkedIn' },
 ];
 
 interface NavigationBarProps {
@@ -97,7 +97,7 @@ export default function NavigationBar({
               </div>
 
               <Link
-                to="/contact"
+                to="/contact#contact-form"
                 className="napco-cta-wrapper"
                 onMouseEnter={() => setIsHoveringCTA(true)}
                 onMouseLeave={() => setIsHoveringCTA(false)}
@@ -166,7 +166,7 @@ export default function NavigationBar({
 
               <div className="napco-nav-actions">
                 <Link
-                  to="/contact"
+                  to="/contact#contact-form"
                   className="napco-cta-wrapper pill-cta"
                   onMouseEnter={() => setIsHoveringCTA(true)}
                   onMouseLeave={() => setIsHoveringCTA(false)}

@@ -12,7 +12,7 @@ export default function ScrollToTop() {
     restDelta: 0.001,
   });
 
-  const radius = 28;
+  const radius = 24;
   const circumference = 2 * Math.PI * radius;
 
   const strokeDashoffset = useTransform(
@@ -83,10 +83,10 @@ export default function ScrollToTop() {
         aria-label="Scroll to top"
         data-cursor="Top"
       >
-        <svg width="68" height="68" className="scroll-progress-svg">
+        <svg width="58" height="58" className="scroll-progress-svg">
           <circle
-            cx="34"
-            cy="34"
+            cx="29"
+            cy="29"
             r={radius}
             stroke="rgba(255, 255, 255, 0.2)"
             strokeWidth="3.5"
@@ -94,8 +94,8 @@ export default function ScrollToTop() {
           />
 
           <motion.circle
-            cx="34"
-            cy="34"
+            cx="29"
+            cy="29"
             r={radius}
             stroke="url(#napcoScrollGradient)"
             strokeWidth="3.5"

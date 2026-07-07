@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import HeroCarousel from './HeroCarousel';
 
@@ -52,9 +53,9 @@ export default function Hero() {
             <a href="#about" className="napco-btn-primary">
               Learn More <ArrowRight size={17} />
             </a>
-            <a href="/contact" className="napco-btn-outline">
+            <Link to="/contact#contact-form" className="napco-btn-outline">
               Contact Us
-            </a>
+            </Link>
           </motion.div>
         </div>
 

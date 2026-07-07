@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { BookOpen, CalendarDays, Printer } from 'lucide-react';
 
 import { imageAssets } from '../../data/imageAssets';
@@ -138,9 +139,9 @@ export default function AboutPrinting() {
             ))}
           </div>
 
-          <a href="/about-us" className="napco-about__button" data-cursor="Read More">
+          <Link to="/about" className="napco-about__button" data-cursor="Read More">
             Read More
-          </a>
+          </Link>
         </div>
       </div>
     </section>

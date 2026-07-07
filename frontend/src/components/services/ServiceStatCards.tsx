@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import { imageAssets } from '../../data/imageAssets';
 
@@ -229,12 +230,12 @@ export default function ServiceStatCards() {
                 <div className="service-stat-card__hidden">
                   <p>{service.description}</p>
 
-                  <a
-                    href="/contact#contact"
+                  <Link
+                    to="/contact#contact-form"
                     className="service-stat-card__button"
                   >
                     Get a Quote
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>

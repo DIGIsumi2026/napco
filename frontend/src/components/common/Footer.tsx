@@ -19,17 +19,17 @@ const quickLinks = [
 const socialLinks = [
   {
     label: 'Facebook',
-    href: '#',
+    href: 'https://www.facebook.com/share/1EmKKmMVfr/?mibextid=wwXIfr',
     icon: Facebook,
   },
   {
     label: 'Instagram',
-    href: '#',
+    href: 'https://www.instagram.com/napcolk?igsh=MWk0ajNrdDFxODB5ZA==',
     icon: Instagram,
   },
   {
     label: 'LinkedIn',
-    href: '#',
+    href: 'https://www.linkedin.com/company/napcopvtltd/',
     icon: Linkedin,
   },
 ];

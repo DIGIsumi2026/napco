@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { imageAssets } from '../../data/imageAssets';
 
 export default function ServicesHero() {
@@ -28,9 +29,9 @@ export default function ServicesHero() {
           solutions with professional care.
         </p>
 
-        <a href="/contact" className="services-hero__button">
+        <Link to="/contact#contact-form" className="services-hero__button">
           Get a Quote
-        </a>
+        </Link>
       </div>
     </section>
   );

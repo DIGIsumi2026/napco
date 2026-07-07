@@ -1993,8 +1993,8 @@ body.is-hovering .cursor-ring {
 
 .napco-whatsapp-float {
   position: relative;
-  width: 62px;
-  height: 62px;
+  width: 54px;
+  height: 54px;
   display: grid;
   place-items: center;
   color: #ffffff;
@@ -2056,8 +2056,8 @@ body.is-hovering .cursor-ring {
 .napco-whatsapp-float__icon {
   position: relative;
   z-index: 2;
-  width: 31px;
-  height: 31px;
+  width: 28px;
+  height: 28px;
   filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.22));
 }
 
@@ -2072,8 +2072,8 @@ body.is-hovering .cursor-ring {
 
 .napco-scroll-to-top {
   position: relative;
-  width: 68px;
-  height: 68px;
+  width: 58px;
+  height: 58px;
   display: grid;
   place-items: center;
   padding: 0;
@@ -2113,13 +2113,15 @@ body.is-hovering .cursor-ring {
   inset: 0;
   z-index: 2;
   overflow: visible;
+  width: 58px;
+  height: 58px;
 }
 
 .scroll-progress-icon {
   position: relative;
   z-index: 3;
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
   border-radius: 999px;
@@ -2143,28 +2145,28 @@ body.is-hovering .cursor-ring {
   }
 
   .napco-whatsapp-float {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
   }
 
   .napco-whatsapp-float__icon {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
   }
 
   .napco-scroll-to-top {
-    width: 62px;
-    height: 62px;
+    width: 52px;
+    height: 52px;
   }
 
   .scroll-progress-svg {
-    width: 62px;
-    height: 62px;
+    width: 52px;
+    height: 52px;
   }
 
   .scroll-progress-icon {
-    width: 40px;
-    height: 40px;
+    width: 34px;
+    height: 34px;
   }
 }
 

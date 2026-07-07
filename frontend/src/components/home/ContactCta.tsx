@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { MessageCircle, Send } from 'lucide-react';
 
 import { imageAssets } from '../../data/imageAssets';
@@ -456,17 +457,17 @@ export default function ContactCta() {
         </p>
 
         <div className="contact-cta__actions">
-          <a
-            href="/contact-us"
+          <Link
+            to="/contact#contact-form"
             className="contact-cta__button contact-cta__button--primary"
             data-cursor="Contact"
           >
             <Send size={18} />
             Contact Us
-          </a>
+          </Link>
 
           <a
-            href="https://wa.me/YOUR_WHATSAPP_NUMBER"
+            href="https://wa.me/94112910015"
             target="_blank"
             rel="noreferrer"
             className="contact-cta__button contact-cta__button--secondary"

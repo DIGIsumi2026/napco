@@ -19,17 +19,17 @@ const navLinks = [
 const socialLinks = [
   {
     label: 'Facebook',
-    href: '#',
+    href: 'https://www.facebook.com/share/1EmKKmMVfr/?mibextid=wwXIfr',
     icon: Facebook,
   },
   {
     label: 'Instagram',
-    href: '#',
+    href: 'https://www.instagram.com/napcolk?igsh=MWk0ajNrdDFxODB5ZA==',
     icon: Instagram,
   },
   {
     label: 'LinkedIn',
-    href: '#',
+    href: 'https://www.linkedin.com/company/napcopvtltd/',
     icon: Linkedin,
   },
 ];
@@ -117,7 +117,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </nav>
 
         <Link
-          to="/contact"
+          to="/contact#contact-form"
           className="napco-sidebar__quote"
           onClick={onClose}
           data-cursor="Quote"
