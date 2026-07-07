@@ -29,7 +29,7 @@ export default function ContactHero() {
         </p>
 
         <div className="contact-hero__actions">
-          <a href="#contact-form" className="contact-hero__button">
+          <a href="/contact-form" className="contact-hero__button">
             Get a Quote
           </a>
 

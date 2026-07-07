@@ -11,6 +11,7 @@ import ScrollToTop from '../components/common/ScrollToTop';
 import Footer from '../components/common/Footer';
 
 import ContactHero from '../components/contact/ContactHero';
+import ContactFormSection from '../components/contact/ContactFormSection';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,6 +57,7 @@ export default function Contact() {
       />
 
       <ContactHero />
+      <ContactFormSection/>
 
       <Footer />
       <ScrollToTop />
