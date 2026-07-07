@@ -1,126 +1,120 @@
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { Link, NavLink } from 'react-router-dom';
+import { Facebook, Instagram, Linkedin, X } from 'lucide-react';
 
-const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'About Us', href: '/about-us' },
-  { label: 'Services', href: '/#services' },
-  { label: 'Contact Us', href: '/#contact' },
-];
+import { imageAssets } from '../../data/imageAssets';
 
-interface SidebarProps {
+type SidebarProps = {
   isOpen: boolean;
   onClose: () => void;
-}
+};
+
+const navLinks = [
+  { label: 'Home', path: '/' },
+  { label: 'About Us', path: '/about' },
+  { label: 'Services', path: '/services' },
+  { label: 'Contact Us', path: '/contact' },
+];
+
+const socialLinks = [
+  {
+    label: 'Facebook',
+    href: '#',
+    icon: Facebook,
+  },
+  {
+    label: 'Instagram',
+    href: '#',
+    icon: Instagram,
+  },
+  {
+    label: 'LinkedIn',
+    href: '#',
+    icon: Linkedin,
+  },
+];
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleEscape);
-    } else {
-      document.body.style.overflow = '';
-    }
-
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', handleEscape);
-    };
-  }, [isOpen, onClose]);
-
   return (
-    <div
-      className={`napco-sidebar ${isOpen ? 'napco-sidebar--open' : ''}`}
-      aria-hidden={!isOpen}
-    >
-      <motion.div
-        className="napco-sidebar-overlay"
-        initial={false}
-        animate={{
-          opacity: isOpen ? 1 : 0,
-          pointerEvents: isOpen ? 'auto' : 'none',
-        }}
-        transition={{ duration: 0.28, ease: 'easeOut' }}
+    <>
+      <button
+        type="button"
+        className={`napco-sidebar__backdrop ${
+          isOpen ? 'napco-sidebar__backdrop--open' : ''
+        }`}
+        aria-label="Close sidebar"
         onClick={onClose}
       />
 
-      <motion.aside
-        className="napco-sidebar-panel"
-        initial={false}
-        animate={{
-          x: isOpen ? '0%' : '105%',
-        }}
-        transition={{
-          type: 'spring',
-          damping: 28,
-          stiffness: 220,
-        }}
-        aria-label="Site navigation"
+      <aside
+        className={`napco-sidebar ${isOpen ? 'napco-sidebar--open' : ''}`}
+        aria-hidden={!isOpen}
       >
-        <div className="napco-sidebar-close">
-          <button type="button" onClick={onClose} aria-label="Close menu">
-            <span className="hamburger-line hamburger-line--close-1" />
-            <span className="hamburger-line hamburger-line--close-2" />
-            <span className="hamburger-line hamburger-line--close-3" />
+        <div className="napco-sidebar__glow napco-sidebar__glow--cyan" />
+        <div className="napco-sidebar__glow napco-sidebar__glow--purple" />
+
+        <div className="napco-sidebar__top">
+          <Link
+            to="/"
+            className="napco-sidebar__logo"
+            onClick={onClose}
+            aria-label="NAPCO Home"
+          >
+            <img src={imageAssets.brand.logo} alt="NAPCO" />
+          </Link>
+
+          <button
+            type="button"
+            className="napco-sidebar__close"
+            onClick={onClose}
+            aria-label="Close menu"
+            data-cursor="Close"
+          >
+            <span />
+            <X size={24} />
           </button>
         </div>
 
-        <motion.nav
-          className="napco-sidebar-links"
-          initial={false}
-          animate={isOpen ? 'open' : 'closed'}
-          variants={{
-            open: {
-              transition: {
-                staggerChildren: 0.07,
-                delayChildren: 0.16,
-              },
-            },
-            closed: {
-              transition: {
-                staggerChildren: 0.04,
-                staggerDirection: -1,
-              },
-            },
-          }}
+        <nav className="napco-sidebar__nav" aria-label="Sidebar navigation">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              onClick={onClose}
+              className={({ isActive }) =>
+                isActive
+                  ? 'napco-sidebar__link napco-sidebar__link--active'
+                  : 'napco-sidebar__link'
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <Link
+          to="/contact"
+          className="napco-sidebar__quote"
+          onClick={onClose}
+          data-cursor="Quote"
         >
-          {navLinks.map(({ label, href }) => (
-            <motion.a
+          Get a Quote
+        </Link>
+
+        <div className="napco-sidebar__socials">
+          {socialLinks.map(({ label, href, icon: Icon }) => (
+            <a
               key={label}
               href={href}
-              className="napco-sidebar-link"
-              onClick={onClose}
-              variants={{
-                closed: {
-                  x: 24,
-                  opacity: 0,
-                },
-                open: {
-                  x: 0,
-                  opacity: 1,
-                },
-              }}
-              whileHover={{
-                x: 8,
-                color: '#a855f7',
-              }}
-              transition={{
-                type: 'spring',
-                stiffness: 300,
-                damping: 22,
-              }}
+              aria-label={label}
+              target={href === '#' ? undefined : '_blank'}
+              rel={href === '#' ? undefined : 'noreferrer'}
+              data-cursor={label}
             >
-              {label}
-            </motion.a>
+              <Icon size={20} />
+            </a>
           ))}
-        </motion.nav>
-      </motion.aside>
-    </div>
+        </div>
+      </aside>
+    </>
   );
 }

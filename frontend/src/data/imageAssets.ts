@@ -1,3 +1,5 @@
+//footer
+import napcoLogo from '../assets/images/nlogo.png';
 // home page 
 //hero
 import nlogo from '../assets/images/nlogo.png';
@@ -107,6 +109,11 @@ export const imageAssets = {
   logo: {
     main: nlogo,
   },
+
+  brand: {
+  logo: napcoLogo,
+  },
+  
   hero: {
     img1: building1,
     img2: building2,
