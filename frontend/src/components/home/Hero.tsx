@@ -14,15 +14,6 @@ export default function Hero() {
       <div className="napco-hero-overlay">
         <div className="napco-hero-content center-align">
 
-          <motion.span
-            className="napco-hero-tag"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.1 }}
-          >
-            Premium Printing Solutions
-          </motion.span>
-
           <motion.h1
             className="napco-hero-heading"
             initial={{ opacity: 0, y: 36 }}
@@ -39,7 +30,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.36 }}
           >
-            From business cards to large-format prints, Napco delivers precision,
+            From business cards to large format prints, Napco delivers precision,
             speed, and unmatched quality. Every project is crafted to leave a
             lasting impression.
           </motion.p>

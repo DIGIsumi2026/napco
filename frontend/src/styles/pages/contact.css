@@ -70,7 +70,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: clamp(18px, 7vw, 120px);
+  padding-left: clamp(15.30px, 5.95vw, 102px);
   padding-top: 110px;
   padding-bottom: 80px;
   color: #ffffff;
@@ -99,7 +99,7 @@
 .contact-hero__content h1 {
   margin: 0;
   color: #ffffff;
-  font-size: clamp(3.1rem, 4vw, 7.1rem);
+  font-size: clamp(2.63rem, 3.40vw, 6.03rem);
   line-height: 0.9;
   letter-spacing: -0.008em;
   font-weight: 950;
@@ -110,7 +110,7 @@
   max-width: 660px;
   margin: 28px 0 0;
   color: rgba(255, 255, 255, 0.82);
-  font-size: clamp(1rem, 1.1vw, 1.18rem);
+  font-size: clamp(0.85rem, 0.94vw, 1rem);
   line-height: 1.75;
   font-weight: 650;
   text-shadow: 0 14px 34px rgba(0, 0, 0, 0.36);
@@ -233,7 +233,7 @@
   }
 
   .contact-hero__content h1 {
-    font-size: clamp(2.55rem, 11vw, 4.2rem);
+    font-size: clamp(2.17rem, 9.35vw, 3.57rem);
     line-height: 0.92;
   }
 
@@ -262,7 +262,7 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  padding: clamp(86px, 8vw, 140px) clamp(18px, 5vw, 86px);
+  padding: clamp(73.10px, 6.80vw, 119px) clamp(15.30px, 4.25vw, 73.10px);
   background:
     radial-gradient(circle at 12% 16%, rgba(0, 174, 239, 0.12), transparent 34%),
     radial-gradient(circle at 88% 82%, rgba(124, 58, 237, 0.1), transparent 34%),
@@ -291,7 +291,7 @@
 
 .contact-form-section__heading {
   width: min(980px, 100%);
-  margin: 0 auto clamp(38px, 5vw, 68px);
+  margin: 0 auto clamp(32.30px, 4.25vw, 57.80px);
   text-align: center;
 }
 
@@ -314,7 +314,7 @@
 .contact-form-section__heading h2 {
   margin: 0;
   color: #07172d;
-  font-size: clamp(3.1rem, 4vw, 7.1rem);
+  font-size: clamp(2.63rem, 3.40vw, 6.03rem);
   line-height: 0.9;
   letter-spacing: -0.008em;
   font-weight: 950;
@@ -325,7 +325,7 @@
   max-width: 740px;
   margin: 24px auto 0;
   color: #536274;
-  font-size: clamp(1rem, 1.08vw, 1.16rem);
+  font-size: clamp(0.85rem, 0.92vw, 0.99rem);
   line-height: 1.75;
   font-weight: 650;
 }
@@ -335,8 +335,8 @@
 .contact-info-cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(16px, 2vw, 26px);
-  margin-bottom: clamp(28px, 4vw, 54px);
+  gap: clamp(13.60px, 1.70vw, 22.10px);
+  margin-bottom: clamp(23.80px, 3.40vw, 45.90px);
 }
 
 .contact-info-card {
@@ -344,9 +344,9 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  padding: clamp(22px, 2.2vw, 34px);
+  padding: clamp(18.70px, 1.87vw, 28.90px);
   text-decoration: none;
-  border-radius: clamp(24px, 2vw, 34px);
+  border-radius: clamp(20.40px, 1.70vw, 28.90px);
   background: rgba(255, 255, 255, 0.86);
   border: 1px solid rgba(7, 23, 45, 0.08);
   box-shadow: 0 24px 70px rgba(7, 23, 45, 0.1);
@@ -389,7 +389,7 @@ a.contact-info-card:hover {
   display: block;
   margin-top: 8px;
   color: #07172d;
-  font-size: clamp(1rem, 1.15vw, 1.26rem);
+  font-size: clamp(0.85rem, 0.98vw, 1.07rem);
   line-height: 1.35;
   font-weight: 850;
 }
@@ -399,14 +399,14 @@ a.contact-info-card:hover {
 .contact-forms-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 36px);
+  gap: clamp(17px, 2.55vw, 30.60px);
 }
 
 .contact-form-card {
   position: relative;
   overflow: hidden;
-  border-radius: clamp(28px, 3vw, 42px);
-  padding: clamp(24px, 3vw, 42px);
+  border-radius: clamp(23.80px, 2.55vw, 35.70px);
+  padding: clamp(20.40px, 2.55vw, 35.70px);
   background:
     radial-gradient(circle at 20% 12%, rgba(0, 174, 239, 0.12), transparent 34%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 251, 255, 0.92));
@@ -439,7 +439,7 @@ a.contact-info-card:hover {
 .contact-form-card__top h3 {
   margin: 0;
   color: #07172d;
-  font-size: clamp(2rem, 2.4vw, 3.4rem);
+  font-size: clamp(1.70rem, 2.04vw, 2.89rem);
   line-height: 0.95;
   letter-spacing: -0.045em;
   font-weight: 950;
@@ -633,7 +633,7 @@ a.contact-info-card:hover {
   }
 
   .contact-form-section__heading h2 {
-    font-size: clamp(3.1rem, 12vw, 4.2rem);
+    font-size: clamp(2.63rem, 10.20vw, 3.57rem);
   }
 
   .contact-form-section__heading p {
@@ -661,7 +661,7 @@ a.contact-info-card:hover {
   }
 
   .contact-form-card__top h3 {
-    font-size: clamp(2rem, 9vw, 3rem);
+    font-size: clamp(1.70rem, 7.65vw, 2.55rem);
   }
 
   .contact-form-card__split {
@@ -681,7 +681,7 @@ a.contact-info-card:hover {
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  padding: clamp(86px, 8vw, 140px) clamp(18px, 5vw, 86px);
+  padding: clamp(73.10px, 6.80vw, 119px) clamp(15.30px, 4.25vw, 73.10px);
   background:
     radial-gradient(circle at 12% 18%, rgba(0, 174, 239, 0.12), transparent 34%),
     radial-gradient(circle at 88% 78%, rgba(124, 58, 237, 0.12), transparent 34%),
@@ -708,7 +708,7 @@ a.contact-info-card:hover {
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.35fr);
-  gap: clamp(26px, 5vw, 76px);
+  gap: clamp(22.10px, 4.25vw, 64.60px);
   align-items: center;
 }
 
@@ -736,7 +736,7 @@ a.contact-info-card:hover {
 .contact-map-section__content h2 {
   margin: 0;
   color: #07172d;
-  font-size: clamp(3.1rem, 4vw, 7.1rem);
+  font-size: clamp(2.63rem, 3.40vw, 6.03rem);
   line-height: 0.9;
   letter-spacing: -0.008em;
   font-weight: 950;
@@ -747,7 +747,7 @@ a.contact-info-card:hover {
   max-width: 560px;
   margin: 26px 0 0;
   color: #536274;
-  font-size: clamp(1rem, 1.08vw, 1.16rem);
+  font-size: clamp(0.85rem, 0.92vw, 0.99rem);
   line-height: 1.75;
   font-weight: 650;
 }
@@ -782,7 +782,7 @@ a.contact-info-card:hover {
 
 .contact-map-section__address strong {
   color: #07172d;
-  font-size: clamp(1rem, 1.08vw, 1.18rem);
+  font-size: clamp(0.85rem, 0.92vw, 1rem);
   line-height: 1.5;
   font-weight: 850;
 }
@@ -823,9 +823,9 @@ a.contact-info-card:hover {
 
 .contact-map-section__map-wrap {
   position: relative;
-  min-height: clamp(460px, 42vw, 650px);
+  min-height: clamp(391px, 35.70vw, 552.50px);
   overflow: hidden;
-  border-radius: clamp(28px, 3vw, 46px);
+  border-radius: clamp(23.80px, 2.55vw, 39.10px);
   background: #07172d;
   border: 1px solid rgba(7, 23, 45, 0.12);
   box-shadow:
@@ -879,7 +879,7 @@ a.contact-info-card:hover {
   }
 
   .contact-map-section__content h2 {
-    font-size: clamp(3.1rem, 12vw, 4.2rem);
+    font-size: clamp(2.63rem, 10.20vw, 3.57rem);
   }
 
   .contact-map-section__content p {

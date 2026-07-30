@@ -28,14 +28,26 @@ export default function AboutPrinting() {
 
   const [showContent, setShowContent] = useState(false);
   const [showThumbnail, setShowThumbnail] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      setShowContent(true);
+      return;
+    }
     const contentTimer = window.setTimeout(() => {
       setShowContent(true);
     }, 2200);
 
     return () => window.clearTimeout(contentTimer);
-  }, []);
+  }, [isMobile]);
 
   const handleVideoEnded = () => {
     setShowThumbnail(true);
@@ -58,40 +70,46 @@ export default function AboutPrinting() {
 
   return (
     <section className="napco-about--video" id="about">
-      <video
-        ref={videoRef}
-        className="napco-about__video"
-        src={videoAssets.about.logoReveal}
-        poster={imageAssets.about.logoRevealThumbnail}
-        autoPlay
-        muted
-        playsInline
-        preload="auto"
-        onEnded={handleVideoEnded}
-      />
-
-      <div className="napco-about__shade" />
-
-      {showThumbnail && (
-        <button
-          type="button"
-          className="napco-about__thumbnail"
-          onMouseEnter={playVideoAgain}
-          onFocus={playVideoAgain}
-          onClick={playVideoAgain}
-          aria-label="Replay NAPCO logo reveal video"
-          data-cursor="Replay"
-        >
-          <img
-            src={imageAssets.about.logoRevealThumbnail}
-            alt="NAPCO logo reveal preview"
+      {!isMobile ? (
+        <>
+          <video
+            ref={videoRef}
+            className="napco-about__video"
+            src={videoAssets.about.logoReveal}
+            poster={imageAssets.about.logoRevealThumbnail}
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            onEnded={handleVideoEnded}
           />
 
-          <span className="napco-about__thumbnail-play">
-            <i className="fa-solid fa-play" />
-            Replay Video
-          </span>
-        </button>
+          <div className="napco-about__shade" />
+
+          {showThumbnail && (
+            <button
+              type="button"
+              className="napco-about__thumbnail"
+              onMouseEnter={playVideoAgain}
+              onFocus={playVideoAgain}
+              onClick={playVideoAgain}
+              aria-label="Replay NAPCO logo reveal video"
+              data-cursor="Replay"
+            >
+              <img
+                src={imageAssets.about.logoRevealThumbnail}
+                alt="NAPCO logo reveal preview"
+              />
+
+              <span className="napco-about__thumbnail-play">
+                <i className="fa-solid fa-play" />
+                Replay Video
+              </span>
+            </button>
+          )}
+        </>
+      ) : (
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${imageAssets.about.logoRevealThumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.35 }} />
       )}
 
       <div className="napco-about__inner">

@@ -85,7 +85,7 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #9f9f9f;
+  background: #7400f6;
   border-radius: 18px;
   border: 3px solid #2e2e2e;
 }
@@ -99,11 +99,11 @@ img {
   position: relative;
   overflow: hidden;
   isolation: isolate;
-  margin: clamp(22px, 3vw, 42px);
-  padding: clamp(42px, 5vw, 76px) clamp(22px, 4vw, 62px) 26px;
+  margin: clamp(18.70px, 2.55vw, 35.70px);
+  padding: clamp(35.70px, 4.25vw, 64.60px) clamp(18.70px, 3.40vw, 52.70px) 26px;
   color: #07172d;
-  border-radius: clamp(34px, 4vw, 58px) 0 clamp(34px, 4vw, 58px)
-    clamp(34px, 4vw, 58px);
+  border-radius: clamp(28.90px, 3.40vw, 49.30px) 0 clamp(28.90px, 3.40vw, 49.30px)
+    clamp(28.90px, 3.40vw, 49.30px);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(247, 251, 255, 0.96));
   border: 1px solid rgba(7, 23, 45, 0.08);
@@ -163,7 +163,7 @@ img {
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1.25fr 0.65fr 1fr 1.15fr;
-  gap: clamp(26px, 4vw, 64px);
+  gap: clamp(22.10px, 3.40vw, 54.40px);
 }
 
 .napco-footer h3 {
@@ -235,6 +235,7 @@ img {
 }
 
 .napco-footer__links a {
+
   width: fit-content;
   color: #536274;
   text-decoration: none;
@@ -243,6 +244,9 @@ img {
   transition:
     color 0.24s ease,
     transform 0.24s ease;
+
+  position: relative;
+  display: inline-block;
 }
 
 .napco-footer__links a:hover {
@@ -312,7 +316,7 @@ img {
 
 .napco-footer__bottom {
   width: min(1480px, 100%);
-  margin: clamp(34px, 4vw, 56px) auto 0;
+  margin: clamp(28.90px, 3.40vw, 47.60px) auto 0;
   padding-top: 22px;
   display: flex;
   justify-content: space-between;
@@ -529,7 +533,7 @@ body.napco-sidebar-is-open header {
   padding: 0 18px;
   color: #536274;
   text-decoration: none;
-  font-size: clamp(1.05rem, 1vw, 1.32rem);
+  font-size: clamp(0.89rem, 0.85vw, 1.12rem);
   line-height: 1;
   font-weight: 900;
   letter-spacing: -0.02em;
@@ -549,12 +553,17 @@ body.napco-sidebar-is-open header {
   box-shadow: inset 0 0 0 1px rgba(0, 174, 239, 0.12);
 }
 
-.napco-sidebar__link::after {
+.napco-sidebar__link-text {
+  position: relative;
+  display: inline-block;
+}
+
+.napco-sidebar__link-text::after {
   content: '';
   position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 8px;
+  left: 0;
+  right: 0;
+  bottom: -4px;
   height: 2px;
   border-radius: 999px;
   background: linear-gradient(90deg, #00aeef, #7c3aed);
@@ -563,8 +572,8 @@ body.napco-sidebar-is-open header {
   transition: transform 0.28s ease;
 }
 
-.napco-sidebar__link:hover::after,
-.napco-sidebar__link--active::after {
+.napco-sidebar__link:hover .napco-sidebar__link-text::after,
+.napco-sidebar__link--active .napco-sidebar__link-text::after {
   transform: scaleX(1);
 }
 
@@ -728,4 +737,56 @@ body.napco-sidebar-is-open [data-navbar] {
   pointer-events: none !important;
   transform: translateY(-24px) !important;
   filter: blur(8px) !important;
+}
+/* Global typography overrides */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600 !important;
+  letter-spacing: -0.004em !important;
+}
+
+
+@media (min-width: 1024px) {
+  .napco-hamburger { display: none !important; }
+}
+
+
+@media (max-width: 1024px) {
+  .napco-footer__inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .napco-footer__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.napco-footer__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #00aeef, #7c3aed);
+  transition: width 0.3s ease;
+}
+
+.napco-footer__links a:hover::after {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .napco-cta-wrapper {
+    display: none !important;
+  }
+}
+
+/* Fix Scroll to Top overlap on mobile */
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: 80px !important; /* Push it up above the progress bar or other elements */
+    right: 20px !important;
+  }
 }

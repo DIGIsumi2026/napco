@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -12,11 +12,20 @@ const clamp = (value: number, min: number, max: number) => {
 
 export default function CompanyIntro() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   useEffect(() => {
     const section = sectionRef.current;
 
-    if (!section) return;
+    if (!section || isMobile) return;
 
     let trigger: ScrollTrigger | null = null;
     let refreshTimer = 0;
@@ -125,6 +134,40 @@ export default function CompanyIntro() {
       ctx.revert();
     };
   }, []);
+
+  if (isMobile) {
+    return (
+      <section className="company-intro company-intro--mobile" ref={sectionRef}>
+        <div className="company-intro__mobile-item">
+          <img src={imageAssets.aboutCompanyIntro.companyLogoBg} alt="" className="company-intro__mobile-img" />
+          <div className="company-intro__content">
+            <span className="company-intro__eyebrow">About NAPCO</span>
+            <h2>A Sri Lankan printing partner built on trust, technology and people.</h2>
+            <p>
+              NAPCO has grown as a reliable printing partner for brands,
+              institutions and publishers that expect consistent quality. With
+              modern machinery, skilled professionals and a strong service culture,
+              the company supports complete printing needs from concept to final
+              delivery.
+            </p>
+          </div>
+        </div>
+        <div className="company-intro__mobile-item">
+          <img src={imageAssets.aboutCompanyIntro.serviceQualityBg} alt="" className="company-intro__mobile-img" />
+          <div className="company-intro__content">
+            <span className="company-intro__eyebrow">Print Quality</span>
+            <h2>Every printed detail is handled with accuracy, care and finishing strength.</h2>
+            <p>
+              From newspapers, books and commercial print work to labels,
+              calendars, diaries, annual reports and stationery, NAPCO focuses on
+              sharp detail, colour accuracy, premium paper handling and refined
+              finishing to make every impression look professional.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="company-intro" ref={sectionRef}>

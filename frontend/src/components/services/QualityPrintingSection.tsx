@@ -37,6 +37,7 @@ const AUTOPLAY_DELAY = 4200;
 export default function QualityPrintingSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const timerRef = useRef<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [experienceCount, setExperienceCount] = useState(0);
@@ -136,6 +137,22 @@ export default function QualityPrintingSection() {
     resetAutoplay();
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) goToNext();
+      else goToPrevious();
+    }
+    touchStartX.current = null;
+  };
+
   return (
     <section className="quality-printing" ref={sectionRef}>
       <img
@@ -154,7 +171,12 @@ export default function QualityPrintingSection() {
           <small>Experience</small>
         </div>
 
-        <div className="quality-printing__gallery" data-reveal>
+        <div
+          className="quality-printing__gallery"
+          data-reveal
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className="quality-printing__image-wrap">
             <img
               key={activeSlide.number}

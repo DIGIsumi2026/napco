@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, Send } from 'lucide-react';
 
@@ -26,6 +26,14 @@ const particleColors = ['#00aeef', '#ec008c', '#fff200', '#8b35ff', '#ffffff'];
 export default function ContactCta() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const cursorRef = useRef({
     x: 0,
@@ -395,7 +403,7 @@ export default function ContactCta() {
   }, []);
 
   return (
-    <section className="contact-cta" ref={sectionRef} data-reveal>
+    <section className="contact-cta" ref={sectionRef} {...(!isMobile ? { 'data-reveal': true } : {})}>
       <canvas className="contact-cta__particles" ref={canvasRef} />
 
       <div className="contact-cta__glow contact-cta__glow--left" />

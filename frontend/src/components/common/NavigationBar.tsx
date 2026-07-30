@@ -165,6 +165,19 @@ export default function NavigationBar({
               </nav>
 
               <div className="napco-nav-actions">
+                <div className="napco-nav-socials hidden lg:flex pill-socials">
+                  {socialLinks.map(({ Icon, href, label }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      aria-label={label}
+                      className="napco-social-icon"
+                    >
+                      <Icon size={17} />
+                    </a>
+                  ))}
+                </div>
+
                 <Link
                   to="/contact#contact-form"
                   className="napco-cta-wrapper pill-cta"

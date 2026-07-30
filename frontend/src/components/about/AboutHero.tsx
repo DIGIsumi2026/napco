@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, RotateCcw } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -25,6 +25,15 @@ export default function AboutHero() {
   const thumbnailContentRef = useRef<HTMLDivElement | null>(null);
   const scrollHintRef = useRef<HTMLDivElement | null>(null);
   const replayRef = useRef<HTMLButtonElement | null>(null);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const playVideo = () => {
     const video = videoRef.current;
@@ -215,15 +224,19 @@ export default function AboutHero() {
 
   return (
     <section className="about-hero" ref={sectionRef}>
-      <video
-        ref={videoRef}
-        className="about-hero__video"
-        src={videoAssets.about.hero}
-        muted
-        playsInline
-        preload="auto"
-        onLoadedData={() => ScrollTrigger.refresh()}
-      />
+      {!isMobile ? (
+        <video
+          ref={videoRef}
+          className="about-hero__video"
+          src={videoAssets.about.hero}
+          muted
+          playsInline
+          preload="auto"
+          onLoadedData={() => ScrollTrigger.refresh()}
+        />
+      ) : (
+        <div className="about-hero__video" style={{ backgroundImage: `url(${imageAssets.about.thubnail})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5 }} />
+      )}
 
       <div className="about-hero__video-vignette" />
 

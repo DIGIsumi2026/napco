@@ -198,7 +198,7 @@ export default function AboutMachineModel() {
           minDistance: 5.1,
           maxDistance: 14,
           polarAngle: 63,
-          viewportFill: 0.64,
+          viewportFill: 0.5,
         };
       }
 
@@ -208,7 +208,7 @@ export default function AboutMachineModel() {
           minDistance: 5.6,
           maxDistance: 15.5,
           polarAngle: 62,
-          viewportFill: 0.69,
+          viewportFill: 0.55,
         };
       }
 
@@ -217,7 +217,7 @@ export default function AboutMachineModel() {
         minDistance: 6.2,
         maxDistance: 18,
         polarAngle: 61,
-        viewportFill: 0.7,
+        viewportFill: 0.55,
       };
     };
 

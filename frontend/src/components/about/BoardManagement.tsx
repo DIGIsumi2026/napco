@@ -140,7 +140,7 @@ export default function BoardManagement() {
                 ))}
               </div>
 
-              <span className="board-management__hint">Hover to view more</span>
+              <span className="board-management__hint">view more</span>
             </article>
           ))}
         </div>

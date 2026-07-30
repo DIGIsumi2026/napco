@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -55,6 +55,15 @@ const visualServices = [
 
 export default function ServicesVisual() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -62,6 +71,26 @@ export default function ServicesVisual() {
     const canvas = canvasRef.current;
 
     if (!section || !canvas) return;
+
+    
+  useEffect(() => {
+    if (!isMobile) return;
+    const cards = document.querySelectorAll('[data-scroll-pop]');
+    const popObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-active');
+          } else {
+            entry.target.classList.remove('is-active');
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+    cards.forEach((card) => popObserver.observe(card));
+    return () => popObserver.disconnect();
+  }, [isMobile]);
 
     const shouldAnimateShader =
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -564,6 +593,39 @@ export default function ServicesVisual() {
 
     return () => ctx.revert();
   }, []);
+
+  if (isMobile) {
+    return (
+      <section className="services-visual services-visual--mobile" ref={sectionRef}>
+        <div className="services-visual__intro">
+          <span>Visual Service Discovery</span>
+          <h2>Explore NAPCO’s Print Capabilities</h2>
+        </div>
+        <div className="services-visual__mobile-list">
+          {visualServices.map((service, index) => (
+            <article className="services-visual__mobile-card" key={service.title} data-scroll-pop>
+              <div className="services-visual__mobile-image">
+                <img src={service.image} alt={service.title} />
+              </div>
+              <div className="services-visual__mobile-content">
+                <span>{service.type}</span>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="services-visual__mobile-cta">
+          <Link to="/services" className="pill-cta">
+            <span>All Services</span>
+            <span className="pill-cta__icon">
+              <i className="fa-solid fa-arrow-right-long" />
+            </span>
+          </Link>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="services-visual" ref={sectionRef}>

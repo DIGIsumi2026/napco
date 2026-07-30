@@ -111,7 +111,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   : 'napco-sidebar__link'
               }
             >
-              {link.label}
+              <span className="napco-sidebar__link-text">{link.label}</span>
             </NavLink>
           ))}
         </nav>

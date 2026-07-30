@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -8,10 +8,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function VisionMission() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section || isMobile) return;
 
     const ctx = gsap.context(() => {
       const imageTrack = section.querySelector('.vision-mission__image-track');
@@ -72,6 +81,41 @@ export default function VisionMission() {
 
     return () => ctx.revert();
   }, []);
+
+  if (isMobile) {
+    return (
+      <section className="vision-mission vision-mission--mobile" ref={sectionRef}>
+        <div className="vision-mission__mobile-image">
+          <img src={imageAssets.about.visionMission} alt="" />
+        </div>
+        <div className="vision-mission__mobile-list">
+          <div className="vision-mission__content">
+            <span className="vision-mission__eyebrow">Our Vision</span>
+            <h2>Driven by quality, service excellence and innovation.</h2>
+            <p>
+              To be a key player in the printing industry in the pursuit of quality
+              &amp; service excellence while earning our employees &amp; customers
+              enthusiasm through continues improvement driven by integrity, team
+              work &amp; innovation.
+            </p>
+          </div>
+          <div className="vision-mission__content">
+            <span className="vision-mission__eyebrow">Our Mission</span>
+            <h2>
+              Comprehensive printing solutions with responsibility and growth.
+            </h2>
+            <p>
+              Committed to provide comprehensive printing solution dedicated to
+              excellence in customer service, product quality &amp; its impact
+              within the environment, local community &amp; its staff providing the
+              very best in all that we do for the benefit of our staff, customers
+              &amp; suppliers, as well as ensuring a profitable growth.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="vision-mission" ref={sectionRef}>

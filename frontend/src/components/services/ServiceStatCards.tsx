@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { imageAssets } from '../../data/imageAssets';
@@ -44,6 +44,34 @@ const serviceCards = [
 
 export default function ServiceStatCards() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const cards = document.querySelectorAll('.service-stat-cards__card');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-active');
+          } else {
+            entry.target.classList.remove('is-active');
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+    cards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, [isMobile]);
+
 
   useEffect(() => {
     const section = sectionRef.current;
