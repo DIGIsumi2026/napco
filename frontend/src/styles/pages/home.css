@@ -3659,10 +3659,10 @@ body.is-hovering .cursor-ring {
   max-width: 960px;
   margin: 0 auto;
   color: #15110c;
-  font-size: clamp(2.34rem, 4.59vw, 5.27rem);
+  font-size: clamp(2.34rem, 3.59vw, 5.27rem);
   line-height: 0.95;
   letter-spacing: -0.075em;
-  font-weight: 900;
+  font-weight: 600;
   text-align: center;
   text-wrap: balance;
 }

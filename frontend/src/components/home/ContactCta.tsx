@@ -451,9 +451,7 @@ export default function ContactCta() {
         </span>
 
         <h2>
-          Ready to
-          <br />
-          bring your
+          Ready to bring your
           <br />
           next impression to life?
         </h2>

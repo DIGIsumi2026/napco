@@ -121,13 +121,7 @@ export default function AboutPrinting() {
           <span className="section-pill">About NAPCO</span>
 
           <h2>
-            Professional
-            <br />
-            Printing &amp;
-            <br />
-            Publishing
-            <br />
-            Solutions
+            Professional Printing &amp; Publishing Solutions
           </h2>
 
           <h3>NAPCO Printers (Pvt) Ltd</h3>

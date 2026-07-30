@@ -67,13 +67,6 @@ export default function ServicesVisual() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    const section = sectionRef.current;
-    const canvas = canvasRef.current;
-
-    if (!section || !canvas) return;
-
-    
-  useEffect(() => {
     if (!isMobile) return;
     const cards = document.querySelectorAll('[data-scroll-pop]');
     const popObserver = new IntersectionObserver(
@@ -91,6 +84,12 @@ export default function ServicesVisual() {
     cards.forEach((card) => popObserver.observe(card));
     return () => popObserver.disconnect();
   }, [isMobile]);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const canvas = canvasRef.current;
+
+    if (!section || !canvas) return;
 
     const shouldAnimateShader =
       !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
