@@ -326,12 +326,21 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
       });
     }, section);
 
+    // Refresh after setup so pin recalculates correct position on fresh mount
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+
     return () => {
       ctx.revert();
-      // Kill every scroll trigger so pin styles are removed and scroll is free
+      // Kill every scroll trigger so pin styles + spacers are fully removed
       ScrollTrigger.getAll().forEach((st) => st.kill());
-      ScrollTrigger.clearScrollMemory();
-      window.scrollTo(0, window.scrollY); // un-jam scroll position
+      // Re-sync Lenis smooth scroll (if active) or force a native resize event
+      // so the scroll engine recalculates page height after the pin-spacer is gone
+      const lenis = (window as unknown as { napcoLenis?: { resize(): void } }).napcoLenis;
+      if (lenis) {
+        lenis.resize();
+      } else {
+        window.dispatchEvent(new Event('resize'));
+      }
     };
   }, [sectionRef]);
 

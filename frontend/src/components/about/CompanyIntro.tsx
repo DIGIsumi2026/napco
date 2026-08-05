@@ -6,57 +6,97 @@ import { imageAssets } from '../../data/imageAssets';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const MOBILE_BP = 1024;
+
 const clamp = (value: number, min: number, max: number) => {
   return Math.min(Math.max(value, min), max);
 };
 
-export default function CompanyIntro() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-
+// ─── Mobile sub-component ────────────────────────────────────────────────────
+function MobileCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
   useEffect(() => {
     const section = sectionRef.current;
+    if (!section) return;
 
-    if (!section || isMobile) return;
+    const items = section.querySelectorAll<HTMLElement>('[data-ci-mob-anim]');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('ci-mob--visible');
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [sectionRef]);
+
+  return (
+    <section className="company-intro company-intro--mobile" ref={sectionRef as React.RefObject<HTMLElement>}>
+      <div className="company-intro__mobile-item">
+        <img 
+          src={imageAssets.aboutCompanyIntro.companyLogoBg} 
+          alt="Company Logo Background" 
+          className="company-intro__mobile-img" 
+          data-ci-mob-anim 
+        />
+        <div className="company-intro__content" data-ci-mob-anim>
+          <span className="company-intro__eyebrow">About NAPCO</span>
+          <h2>A Sri Lankan printing partner built on trust, technology and people.</h2>
+          <p>
+            NAPCO has grown as a reliable printing partner for brands,
+            institutions and publishers that expect consistent quality. With
+            modern machinery, skilled professionals and a strong service culture,
+            the company supports complete printing needs from concept to final
+            delivery.
+          </p>
+        </div>
+      </div>
+      <div className="company-intro__mobile-item">
+        <img 
+          src={imageAssets.aboutCompanyIntro.serviceQualityBg} 
+          alt="Service Quality Background" 
+          className="company-intro__mobile-img" 
+          data-ci-mob-anim 
+        />
+        <div className="company-intro__content" data-ci-mob-anim>
+          <span className="company-intro__eyebrow">Print Quality</span>
+          <h2>Every printed detail is handled with accuracy, care and finishing strength.</h2>
+          <p>
+            From newspapers, books and commercial print work to labels,
+            calendars, diaries, annual reports and stationery, NAPCO focuses on
+            sharp detail, colour accuracy, premium paper handling and refined
+            finishing to make every impression look professional.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Desktop sub-component ───────────────────────────────────────────────────
+function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
 
     let trigger: ScrollTrigger | null = null;
-    let refreshTimer = 0;
     let applyCurrentProgress: (() => void) | null = null;
 
-    const ctx = gsap.context(() => {
-      const firstImage = section.querySelector<HTMLElement>(
-        '.company-intro__image--first'
-      );
-      const secondImage = section.querySelector<HTMLElement>(
-        '.company-intro__image--second'
-      );
-      const firstContent = section.querySelector<HTMLElement>(
-        '.company-intro__content--first'
-      );
-      const secondContent = section.querySelector<HTMLElement>(
-        '.company-intro__content--second'
-      );
-      const progressLine = section.querySelector<HTMLElement>(
-        '.company-intro__progress-line span'
-      );
+    // Kill any leftover scroll triggers
+    ScrollTrigger.getAll().forEach((st) => st.kill());
 
-      if (
-        !firstImage ||
-        !secondImage ||
-        !firstContent ||
-        !secondContent ||
-        !progressLine
-      ) {
-        return;
-      }
+    const ctx = gsap.context(() => {
+      const firstImage = section.querySelector<HTMLElement>('.company-intro__image--first');
+      const secondImage = section.querySelector<HTMLElement>('.company-intro__image--second');
+      const firstContent = section.querySelector<HTMLElement>('.company-intro__content--first');
+      const secondContent = section.querySelector<HTMLElement>('.company-intro__content--second');
+      const progressLine = section.querySelector<HTMLElement>('.company-intro__progress-line span');
+
+      if (!firstImage || !secondImage || !firstContent || !secondContent || !progressLine) return;
 
       gsap.set(progressLine, {
         scaleX: 0,
@@ -96,7 +136,6 @@ export default function CompanyIntro() {
         const rect = section.getBoundingClientRect();
         const scrollDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
         const progress = clamp(-rect.top / scrollDistance, 0, 1);
-
         applyProgress(progress);
       };
 
@@ -119,12 +158,12 @@ export default function CompanyIntro() {
         onUpdate: () => applyCurrentProgress?.(),
         onRefresh: () => applyCurrentProgress?.(),
       });
-
-      refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 250);
     }, section);
 
+    // Refresh after setup so pin recalculates correct position on fresh mount
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+
     return () => {
-      window.clearTimeout(refreshTimer);
       if (applyCurrentProgress) {
         window.removeEventListener('scroll', applyCurrentProgress);
         window.removeEventListener('resize', applyCurrentProgress);
@@ -132,57 +171,32 @@ export default function CompanyIntro() {
       }
       trigger?.kill();
       ctx.revert();
+      
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+      const lenis = (window as unknown as { napcoLenis?: { resize(): void } }).napcoLenis;
+      if (lenis) {
+        lenis.resize();
+      } else {
+        window.dispatchEvent(new Event('resize'));
+      }
     };
-  }, []);
-
-  if (isMobile) {
-    return (
-      <section className="company-intro company-intro--mobile" ref={sectionRef}>
-        <div className="company-intro__mobile-item">
-          <img src={imageAssets.aboutCompanyIntro.companyLogoBg} alt="" className="company-intro__mobile-img" />
-          <div className="company-intro__content">
-            <span className="company-intro__eyebrow">About NAPCO</span>
-            <h2>A Sri Lankan printing partner built on trust, technology and people.</h2>
-            <p>
-              NAPCO has grown as a reliable printing partner for brands,
-              institutions and publishers that expect consistent quality. With
-              modern machinery, skilled professionals and a strong service culture,
-              the company supports complete printing needs from concept to final
-              delivery.
-            </p>
-          </div>
-        </div>
-        <div className="company-intro__mobile-item">
-          <img src={imageAssets.aboutCompanyIntro.serviceQualityBg} alt="" className="company-intro__mobile-img" />
-          <div className="company-intro__content">
-            <span className="company-intro__eyebrow">Print Quality</span>
-            <h2>Every printed detail is handled with accuracy, care and finishing strength.</h2>
-            <p>
-              From newspapers, books and commercial print work to labels,
-              calendars, diaries, annual reports and stationery, NAPCO focuses on
-              sharp detail, colour accuracy, premium paper handling and refined
-              finishing to make every impression look professional.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  }, [sectionRef]);
 
   return (
-    <section className="company-intro" ref={sectionRef}>
+    <section className="company-intro" ref={sectionRef as React.RefObject<HTMLElement>}>
       <div className="company-intro__sticky">
         <div className="company-intro__media" aria-hidden="true">
           <img
             src={imageAssets.aboutCompanyIntro.companyLogoBg}
             alt=""
             className="company-intro__image company-intro__image--first"
+            onLoad={() => ScrollTrigger.refresh()}
           />
-
           <img
             src={imageAssets.aboutCompanyIntro.serviceQualityBg}
             alt=""
             className="company-intro__image company-intro__image--second"
+            onLoad={() => ScrollTrigger.refresh()}
           />
         </div>
 
@@ -190,11 +204,9 @@ export default function CompanyIntro() {
 
         <div className="company-intro__content company-intro__content--first">
           <span className="company-intro__eyebrow">About NAPCO</span>
-
           <h2>
             A Sri Lankan printing partner built on trust, technology and people.
           </h2>
-
           <p>
             NAPCO has grown as a reliable printing partner for brands,
             institutions and publishers that expect consistent quality. With
@@ -206,12 +218,10 @@ export default function CompanyIntro() {
 
         <div className="company-intro__content company-intro__content--second">
           <span className="company-intro__eyebrow">Print Quality</span>
-
           <h2>
             Every printed detail is handled with accuracy, care and finishing
             strength.
           </h2>
-
           <p>
             From newspapers, books and commercial print work to labels,
             calendars, diaries, annual reports and stationery, NAPCO focuses on
@@ -224,10 +234,27 @@ export default function CompanyIntro() {
           <div className="company-intro__progress-line">
             <span />
           </div>
-
           <span>Company Story</span>
         </div>
       </div>
     </section>
   );
+}
+
+// ─── Root component ──────────────────────────────────────────────────────────
+export default function CompanyIntro() {
+  const [isMobile, setIsMobile] = useState<boolean>(
+    () => typeof window !== 'undefined' && window.innerWidth <= MOBILE_BP
+  );
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= MOBILE_BP);
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return isMobile
+    ? <MobileCompanyIntro sectionRef={sectionRef} />
+    : <DesktopCompanyIntro sectionRef={sectionRef} />;
 }

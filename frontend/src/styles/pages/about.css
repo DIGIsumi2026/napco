@@ -2505,3 +2505,84 @@
     opacity: 0.8 !important;
   }
 }
+
+/* ================================
+   ABOUT US - MOBILE SIZE REDUCTIONS
+================================ */
+
+@media (max-width: 1024px) {
+  /* Reduce span sections (eyebrows) */
+  .about-hero__thumbnail-content span,
+  .company-intro__eyebrow,
+  .vision-mission__eyebrow,
+  .machine-model__eyebrow,
+  .board-management__eyebrow {
+    font-size: 0.72rem !important;
+    padding: 6px 12px !important;
+    margin-bottom: 12px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  /* Make headings slightly tighter in mobile for about page */
+  .about-hero__thumbnail-content h1 {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+  }
+}
+
+/* ================================
+   VISION MISSION - MOBILE ANIMATIONS
+================================ */
+.vision-mission--mobile .vision-mission__mobile-image {
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.vision-mission--mobile .vision-mission__mobile-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(100%);
+  transition: filter 3s ease, transform 1s ease;
+  transform: scale(1.05);
+}
+
+.vision-mission--mobile .vision-mission__mobile-image.vm-mob--visible img {
+  filter: grayscale(0%);
+  transform: scale(1);
+}
+
+.vision-mission--mobile .vision-mission__content[data-vm-mob-anim] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.vision-mission--mobile .vision-mission__content[data-vm-mob-anim].vm-mob--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================================
+   COMPANY INTRO - MOBILE ANIMATIONS
+================================ */
+.company-intro--mobile .company-intro__mobile-img[data-ci-mob-anim] {
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.company-intro--mobile .company-intro__mobile-img[data-ci-mob-anim].ci-mob--visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.company-intro--mobile .company-intro__content[data-ci-mob-anim] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.company-intro--mobile .company-intro__content[data-ci-mob-anim].ci-mob--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
