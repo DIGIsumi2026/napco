@@ -790,3 +790,37 @@ h1, h2, h3, h4, h5, h6 {
     right: 20px !important;
   }
 }
+
+/* ================================
+   MOBILE RESPONSIVE OVERRIDES (ADDED)
+================================ */
+
+/* Hide native scrollbar on mobile/tablet */
+@media (max-width: 1024px) {
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+  body, html {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+}
+
+/* Global Section Headings Update */
+body h2:not(.napco-hero-heading),
+.section-heading,
+.napco-about__content h2,
+.service-stats__heading h2,
+.services-visual__intro h2,
+.about-hero-content h1,
+.about-hero-content h2,
+.machine-model h2,
+.machine-gallery h2,
+.contact-cta h2,
+.vision-mission__content h2,
+.board-management h2 {
+  font-size: clamp(2.04rem, 3vw, 4.42rem) !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.06em !important;
+  font-weight: 600 !important;
+}

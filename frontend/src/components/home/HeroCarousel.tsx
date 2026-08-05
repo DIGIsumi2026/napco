@@ -42,10 +42,10 @@ export default function HeroCarousel() {
           return (
             <SwiperSlide key={i}>
               <div className="hero-slide">
-                <img 
-                  src={imageSource} 
-                  alt={`Napco slide ${i + 1}`} 
-                  className="hero-slide-img" 
+                <img
+                  src={imageSource}
+                  alt={`Napco slide ${i + 1}`}
+                  className="hero-slide-img"
                 />
               </div>
             </SwiperSlide>
@@ -56,29 +56,33 @@ export default function HeroCarousel() {
       {/* Dark gradient overlay */}
       <div className="hero-gradient-overlay" />
 
-      {/* Custom Pagination Container (Pill Style) */}
+      {/* Pagination — positioned on the left, inline with content area */}
       <div className="hero-pagination-container">
         {heroImages.map((_, i) => {
           const isActive = i === activeIndex;
 
           return (
-            <div
+            <button
               key={i}
-              className={`hero-pagination-pill ${isActive ? 'active' : 'inactive'}`}
+              type="button"
+              aria-label={`Go to slide ${i + 1}`}
+              className={`hero-pagination-pill${isActive ? ' active' : ' inactive'}`}
               onClick={() => swiperRef.current?.slideToLoop(i)}
             >
               {isActive && (
                 <motion.div
                   key={progressKey}
-                  layoutId="activePill"
                   className="hero-pagination-fill"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: AUTOPLAY_DELAY / 1000, ease: 'linear' }}
-                  style={{ originX: 0 }}
+                  initial={{ scaleY: 0 }}
+                  animate={{ scaleY: 1 }}
+                  transition={{
+                    duration: AUTOPLAY_DELAY / 1000,
+                    ease: 'linear',
+                  }}
+                  style={{ originY: 0 }}
                 />
               )}
-            </div>
+            </button>
           );
         })}
       </div>

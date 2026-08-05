@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import {
   BookOpen,
   CalendarDays,
@@ -51,6 +51,34 @@ const services = [
 
 export default function ServiceStats() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const cards = document.querySelectorAll('.service-stats__card');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-active');
+            observer.unobserve(entry.target); // Pop only once
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    cards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, [isMobile]);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 1024);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -131,8 +159,7 @@ export default function ServiceStats() {
 
   return (
     <section className="service-stats" ref={sectionRef}>
-      <div
-        className="service-stats__float service-stats__float--printer"
+      {!isMobile && <div className="service-stats__float service-stats__float--printer"
         data-float-speed="0.8"
         data-direction="1"
         data-rotate="-10deg"
@@ -142,13 +169,9 @@ export default function ServiceStats() {
           <img
             src={imageAssets.services.floating.printer}
             alt=""
-            aria-hidden="true"
-          />
-        </div>
-      </div>
+            aria-hidden="true" /></div></div>}
 
-      <div
-        className="service-stats__float service-stats__float--papers"
+      {!isMobile && <div className="service-stats__float service-stats__float--papers"
         data-float-speed="1.05"
         data-direction="-1"
         data-rotate="12deg"
@@ -158,13 +181,9 @@ export default function ServiceStats() {
           <img
             src={imageAssets.services.floating.papers}
             alt=""
-            aria-hidden="true"
-          />
-        </div>
-      </div>
+            aria-hidden="true" /></div></div>}
 
-      <div
-        className="service-stats__float service-stats__float--cartridges"
+      {!isMobile && <div className="service-stats__float service-stats__float--cartridges"
         data-float-speed="0.9"
         data-direction="1"
         data-rotate="8deg"
@@ -174,13 +193,9 @@ export default function ServiceStats() {
           <img
             src={imageAssets.services.floating.cartridges}
             alt=""
-            aria-hidden="true"
-          />
-        </div>
-      </div>
+            aria-hidden="true" /></div></div>}
 
-      <div
-        className="service-stats__float service-stats__float--cartridges-secondary"
+      {!isMobile && <div className="service-stats__float service-stats__float--cartridges-secondary"
         data-float-speed="0.8"
         data-direction="-1"
         data-rotate="-10deg"
@@ -190,10 +205,7 @@ export default function ServiceStats() {
           <img
             src={imageAssets.services.floating.cartridges2}
             alt=""
-            aria-hidden="true"
-          />
-        </div>
-      </div>
+            aria-hidden="true" /></div></div>}
 
       <div className="service-stats__inner">
         <div className="service-stats__heading">

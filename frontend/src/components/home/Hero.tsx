@@ -12,7 +12,7 @@ export default function Hero() {
 
       {/* ── Overlay text content ── */}
       <div className="napco-hero-overlay">
-        <div className="napco-hero-content center-align">
+        <div className="napco-hero-content">
 
           <motion.h1
             className="napco-hero-heading"
@@ -20,7 +20,8 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.22 }}
           >
-            Your Impression is{' '}
+            Your Impression is
+            <br />
             <span className="napco-hero-accent">Our Responsibility</span>
           </motion.h1>
 
@@ -36,7 +37,7 @@ export default function Hero() {
           </motion.p>
 
           <motion.div
-            className="napco-hero-actions center-actions"
+            className="napco-hero-actions"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}

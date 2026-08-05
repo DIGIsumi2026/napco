@@ -1760,11 +1760,11 @@ body.is-hovering .cursor-ring {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 680px;
+  min-height: 620px;
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .hero-carousel-wrap {
@@ -1810,19 +1810,19 @@ body.is-hovering .cursor-ring {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 0 24px;
+  padding: 0 clamp(24px, 8vw, 120px);
   pointer-events: none;
 }
 
-.napco-hero-content.center-align {
+.napco-hero-content {
   text-align: left;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   pointer-events: all;
-  max-width: 760px;
+  max-width: 720px;
 }
 
 .napco-hero-tag {
@@ -1840,11 +1840,11 @@ body.is-hovering .cursor-ring {
 }
 
 .napco-hero-heading {
-  margin: 0 0 28px;
-  font-size: clamp(2.38rem, 5.10vw, 4.93rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.004em;
+  margin: 0 0 24px;
+  font-size: clamp(2rem, 4.2vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   color: #ffffff;
 }
 
@@ -1856,18 +1856,18 @@ body.is-hovering .cursor-ring {
 }
 
 .napco-hero-desc {
-  margin: 0 0 44px;
-  max-width: 580px;
-  font-size: clamp(0.89rem, 1.27vw, 1.06rem);
+  margin: 0 0 36px;
+  max-width: 520px;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.72);
 }
 
-.napco-hero-actions.center-actions {
+.napco-hero-actions {
   display: flex;
-  align-items: left;
-  justify-content: center;
-  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -1928,47 +1928,52 @@ body.is-hovering .cursor-ring {
   50% { transform: translateY(8px); }
 }
 
-/* ─── Hero Custom Pagination (Pill style) ─── */
+/* ─── Hero Custom Pagination (Vertical Pill style) ─── */
 .hero-pagination-container {
   position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: clamp(16px, 3.5vw, 52px);
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 10;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .hero-pagination-pill {
-  height: 8px;
+  width: 4px;
   border-radius: 100px;
   cursor: pointer;
-  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  border: none;
+  padding: 0;
+  background: transparent;
+  transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-pagination-pill.inactive {
-  width: 24px;
-  background: rgba(255, 255, 255, 0.2);
+  height: 28px;
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .hero-pagination-pill.inactive:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.45);
 }
 
 .hero-pagination-pill.active {
-  width: 64px;
-  background: rgba(255, 255, 255, 0.15);
+  height: 80px;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .hero-pagination-fill {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #7c3aed, #c084fc);
+  background: linear-gradient(180deg, #7c3aed, #a855f7, #c084fc);
   border-radius: 100px;
-  transform-origin: left;
+  transform-origin: top center;
+  will-change: transform;
 }
 
 /* ================================
@@ -2352,10 +2357,11 @@ body.is-hovering .cursor-ring {
   position: relative;
   width: 100%;
   height: 100vh;
-  min-height: 680px;
+  min-height: 620px;
   overflow: hidden;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 /* ─── Carousel wrapper ─── */
@@ -2465,7 +2471,7 @@ body.is-hovering .cursor-ring {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 max(32px, calc((100vw - 1200px) / 2));
+  padding: 0 clamp(24px, 8vw, 120px);
   padding-bottom: 80px;
   pointer-events: none;
 }
@@ -2473,6 +2479,10 @@ body.is-hovering .cursor-ring {
 .napco-hero-content {
   max-width: 680px;
   pointer-events: all;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .napco-hero-tag {
@@ -2491,10 +2501,10 @@ body.is-hovering .cursor-ring {
 
 .napco-hero-heading {
   margin: 0 0 24px;
-  font-size: clamp(2.21rem, 4.67vw, 4.59rem);
-  font-weight: 600;
+  font-size: clamp(2rem, 4.2vw, 3.8rem);
+  font-weight: 700;
   line-height: 1.08;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: #ffffff;
 }
 
@@ -2506,9 +2516,9 @@ body.is-hovering .cursor-ring {
 }
 
 .napco-hero-desc {
-  margin: 0 0 40px;
+  margin: 0 0 36px;
   max-width: 520px;
-  font-size: clamp(0.85rem, 1.19vw, 1rem);
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
   line-height: 1.75;
   color: rgba(255, 255, 255, 0.68);
 }
@@ -2516,7 +2526,8 @@ body.is-hovering .cursor-ring {
 .napco-hero-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: flex-start;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -2612,7 +2623,10 @@ body.is-hovering .cursor-ring {
   .napco-nav-links { display: none; }
   .napco-nav-glass { grid-template-columns: auto auto; justify-content: space-between; }
   .napco-pill-links { display: none; }
-  .napco-hero-heading { font-size: clamp(1.78rem, 7.65vw, 2.72rem); }
+  .napco-hero-heading { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+  .hero-pagination-container { left: 12px; }
+  .hero-pagination-pill.inactive { height: 20px; }
+  .hero-pagination-pill.active { height: 60px; }
 }
 
 /* ================================
@@ -3119,10 +3133,10 @@ body.is-hovering .cursor-ring {
 .service-stats__heading h2 {
   margin: 0;
   color: #07172d;
-  font-size: clamp(2.04rem, 4.08vw, 4.42rem);
+  font-size: clamp(2.04rem, 3vw, 4.42rem);
   line-height: 1.02;
   letter-spacing: -0.06em;
-  font-weight: 900;
+  font-weight: 600;
 }
 
 .service-stats__heading p {
@@ -4778,4 +4792,256 @@ body.is-hovering .cursor-ring {
 .services-visual__mobile-cta {
   margin-top: 40px;
   text-align: center;
+}
+
+/* ================================
+   ABOUT NAPCO MOBILE REDESIGN (ADDED)
+================================ */
+
+@media (max-width: 1024px) {
+  /* Reduce the span section */
+  .napco-about__content .section-pill {
+    font-size: 0.75rem !important;
+    padding: 6px 14px !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* Redesign stats/highlights for mobile */
+  .napco-about__highlights {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin: 24px 0 !important;
+  }
+  
+  .napco-about__card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    background: rgba(255,255,255,0.03) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 12px !important;
+    gap: 16px !important;
+  }
+  
+  .napco-about__card-icon {
+    margin-bottom: 0 !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: rgba(168, 85, 247, 0.15) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+  }
+  
+  .napco-about__card-icon svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  .napco-about__card div {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  .napco-about__card strong {
+    font-size: 0.95rem !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .napco-about__card small {
+    font-size: 0.75rem !important;
+    opacity: 0.7 !important;
+  }
+  
+  /* Disable video and adjust layout */
+  .napco-about--video {
+    min-height: auto !important;
+    padding: 60px 0 !important;
+  }
+}
+
+/* ================================
+   SERVICE STATS MOBILE ANIMATION
+================================ */
+
+@media (max-width: 1024px) {
+  .service-stats__card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: opacity 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Add a slight delay based on the index to create a sequential pop effect */
+    transition-delay: calc(var(--card-index, 0) * 0.1s);
+  }
+  
+  .service-stats__card.is-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ================================
+   SERVICES VISUAL MOBILE ANIMATION
+================================ */
+
+@media (max-width: 1024px) {
+  .services-visual--mobile [data-scroll-pop] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  
+  .services-visual--mobile [data-scroll-pop].is-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Simplify cards layout */
+  .services-visual__mobile-card {
+    padding: 24px !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    margin-bottom: 16px !important;
+  }
+  
+  .services-visual__mobile-content h3 {
+    font-size: 1.25rem !important;
+    margin: 0 0 8px 0 !important;
+    color: #fff !important;
+  }
+  
+  .services-visual__mobile-content p {
+    font-size: 0.95rem !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    margin: 0 !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* ================================
+   SERVICES VISUAL -- MOBILE / TABLET
+================================ */
+
+.services-visual--mobile {
+  background: #04020e;
+  padding: 80px clamp(20px, 5vw, 60px) 80px;
+  min-height: 100vh;
+}
+
+.sv-mob__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.sv-mob__eyebrow {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 100px;
+  background: rgba(168, 85, 247, 0.14);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+  color: #c084fc;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.sv-mob__header h2 {
+  color: #ffffff;
+  margin: 0;
+}
+
+.sv-mob__list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.sv-mob__card {
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  opacity: 0;
+  transform: scale(0.9) translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sv-mob__card.sv-mob--visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.sv-mob__image-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.sv-mob__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.1);
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sv-mob__card.sv-mob--visible .sv-mob__image {
+  transform: scale(1);
+}
+
+.sv-mob__copy {
+  padding: 22px 22px 26px;
+}
+
+.sv-mob__title {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: clamp(1.05rem, 2.4vw, 1.28rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.sv-mob__desc {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: clamp(0.83rem, 1.6vw, 0.95rem);
+  line-height: 1.65;
+}
+
+.sv-mob__cta {
+  margin-top: 52px;
+  display: flex;
+  justify-content: center;
+}
+
+.sv-mob__cta[data-mob-anim] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s ease 0.1s, transform 0.55s ease 0.1s;
+}
+
+.sv-mob__cta[data-mob-anim].sv-mob--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sv-mob__header[data-mob-anim] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.sv-mob__header[data-mob-anim].sv-mob--visible {
+  opacity: 1;
+  transform: translateY(0);
 }
