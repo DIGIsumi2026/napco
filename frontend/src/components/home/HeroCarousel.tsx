@@ -6,7 +6,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import { imageAssets } from '../../data/imageAssets';
+// @ts-ignore: TS doesn't resolve swiper CSS modules automatically
 import 'swiper/css';
+// @ts-ignore
 import 'swiper/css/effect-fade';
 
 const AUTOPLAY_DELAY = 4500;
