@@ -98,7 +98,7 @@ export default function NavigationBar({
 
               <Link
                 to="/contact#contact-form"
-                className="napco-cta-wrapper"
+                className="napco-cta-wrapper hidden md:flex"
                 onMouseEnter={() => setIsHoveringCTA(true)}
                 onMouseLeave={() => setIsHoveringCTA(false)}
               >
@@ -180,7 +180,7 @@ export default function NavigationBar({
 
                 <Link
                   to="/contact#contact-form"
-                  className="napco-cta-wrapper pill-cta"
+                  className="napco-cta-wrapper pill-cta hidden md:flex"
                   onMouseEnter={() => setIsHoveringCTA(true)}
                   onMouseLeave={() => setIsHoveringCTA(false)}
                 >

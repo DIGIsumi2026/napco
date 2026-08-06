@@ -5085,3 +5085,35 @@ body.is-hovering .cursor-ring {
 .services-visual--mobile .pill-cta:hover .pill-cta__icon {
   background: rgba(255, 255, 255, 0.35);
 }
+/* ================================
+   NAVIGATION BAR - MOBILE HIDE & LAYOUT
+================================ */
+
+@media (max-width: 1024px) {
+  /* Hide the elements */
+  .napco-nav-links,
+  .napco-pill-links,
+  .napco-nav-socials,
+  .napco-cta-wrapper {
+    display: none !important;
+  }
+
+  /* Fix the layout for default top navbar */
+  .napco-nav-glass {
+    grid-template-columns: auto auto !important;
+    justify-content: space-between !important;
+    padding: 0 24px !important;
+  }
+
+  /* Fix the layout for scrolling pill navbar */
+  .napco-nav-pill-wrap {
+    padding: 0 16px !important;
+  }
+  
+  .napco-nav-pill {
+    width: 100% !important;
+    max-width: none !important;
+    justify-content: space-between !important;
+    padding: 10px 20px !important;
+  }
+}
