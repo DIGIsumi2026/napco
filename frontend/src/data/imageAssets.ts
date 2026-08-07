@@ -85,7 +85,7 @@ import company15 from "../assets/images/about/companies/company15.png";
 
 //service page 
 // hero 
-import  servicesHeroTeam from "../assets/images/services/services-hero-team.png";
+import  servicesHeroTeam from "../assets/images/services/services-hero-team.webp";
 
 //service grid 
 import newspaperPrintingCard from "../assets/images/services/newspaper-printing.png";

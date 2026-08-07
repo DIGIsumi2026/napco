@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
-import { ChevronUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollYProgress } = useScroll();
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -26,11 +27,20 @@ export default function ScrollToTop() {
       setIsVisible(window.scrollY > 200);
     };
 
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 1024);
+    };
+
     toggleVisibility();
+    checkMobile();
 
     window.addEventListener('scroll', toggleVisibility, { passive: true });
+    window.addEventListener('resize', checkMobile, { passive: true });
 
-    return () => window.removeEventListener('scroll', toggleVisibility);
+    return () => {
+      window.removeEventListener('scroll', toggleVisibility);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   const scrollToTop = () => {
@@ -83,49 +93,51 @@ export default function ScrollToTop() {
         aria-label="Scroll to top"
         data-cursor="Top"
       >
-        <svg width="58" height="58" className="scroll-progress-svg">
-          <circle
-            cx="29"
-            cy="29"
-            r={radius}
-            stroke="rgba(255, 255, 255, 0.2)"
-            strokeWidth="3.5"
-            fill="none"
-          />
+        {!isMobile && (
+          <svg width="58" height="58" className="scroll-progress-svg">
+            <circle
+              cx="29"
+              cy="29"
+              r={radius}
+              stroke="rgba(255, 255, 255, 0.2)"
+              strokeWidth="3.5"
+              fill="none"
+            />
 
-          <motion.circle
-            cx="29"
-            cy="29"
-            r={radius}
-            stroke="url(#napcoScrollGradient)"
-            strokeWidth="3.5"
-            fill="none"
-            strokeLinecap="round"
-            style={{
-              strokeDasharray: circumference,
-              strokeDashoffset,
-              rotate: -90,
-              transformOrigin: '50% 50%',
-            }}
-          />
+            <motion.circle
+              cx="29"
+              cy="29"
+              r={radius}
+              stroke="url(#napcoScrollGradient)"
+              strokeWidth="3.5"
+              fill="none"
+              strokeLinecap="round"
+              style={{
+                strokeDasharray: circumference,
+                strokeDashoffset,
+                rotate: -90,
+                transformOrigin: '50% 50%',
+              }}
+            />
 
-          <defs>
-            <linearGradient
-              id="napcoScrollGradient"
-              x1="8"
-              y1="8"
-              x2="60"
-              y2="60"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#00aeef" />
-              <stop offset="1" stopColor="#a855f7" />
-            </linearGradient>
-          </defs>
-        </svg>
+            <defs>
+              <linearGradient
+                id="napcoScrollGradient"
+                x1="8"
+                y1="8"
+                x2="60"
+                y2="60"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stopColor="#00aeef" />
+                <stop offset="1" stopColor="#a855f7" />
+              </linearGradient>
+            </defs>
+          </svg>
+        )}
 
         <span className="scroll-progress-icon">
-          <ChevronUp size={28} strokeWidth={2.8} />
+          <ArrowUp size={26} strokeWidth={3} />
         </span>
       </motion.button>
     </div>

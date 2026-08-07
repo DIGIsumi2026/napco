@@ -13,7 +13,6 @@ export default function ContactMapSection() {
 
       <div className="contact-map-section__inner">
         <div className="contact-map-section__content" data-reveal>
-          <span className="contact-map-section__eyebrow">Find Us</span>
 
           <h2>
             Visit NAPCO

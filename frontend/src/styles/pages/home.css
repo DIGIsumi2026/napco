@@ -2741,8 +2741,8 @@ body.is-hovering .cursor-ring {
   padding: 0 20px;
   margin-bottom: 30px;
   color: #d49aff;
-  font-size: 0.98rem;
-  font-weight: 900;
+  font-size: 0.82rem;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-align: left;
   text-transform: uppercase;
@@ -3035,7 +3035,7 @@ body.is-hovering .cursor-ring {
   .section-pill {
     min-height: 40px;
     padding: 0 16px;
-    font-size: 0.82rem;
+    font-size: 0.72rem;
   }
 
   .napco-about__content h2 {
