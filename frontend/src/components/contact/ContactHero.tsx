@@ -15,7 +15,6 @@ export default function ContactHero() {
       <div className="contact-hero__shade" />
 
       <div className="contact-hero__content" data-reveal>
-        <span className="contact-hero__eyebrow">Contact NAPCO</span>
 
         <h1>
           Let’s discuss
