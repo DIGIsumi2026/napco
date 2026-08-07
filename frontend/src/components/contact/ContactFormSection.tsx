@@ -108,7 +108,12 @@ ${message}
             </div>
           </a>
 
-          <div className="contact-info-card">
+          <a
+            href="https://maps.app.goo.gl/hYzBLQzEu58e5ndc9"
+            target="_blank"
+            rel="noreferrer"
+            className="contact-info-card"
+          >
             <span>
               <MapPin size={24} />
             </span>
@@ -120,7 +125,7 @@ ${message}
                 Lanka.
               </strong>
             </div>
-          </div>
+          </a>
         </div>
 
         <div className="contact-forms-grid">
