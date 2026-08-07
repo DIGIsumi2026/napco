@@ -251,7 +251,6 @@ export default function ServiceStatCards() {
               <div className="service-stat-card__shade" />
 
               <div className="service-stat-card__content">
-                <span className="service-stat-card__eyebrow">Service</span>
 
                 <h3>{service.title}</h3>
 

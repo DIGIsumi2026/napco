@@ -1,5 +1,6 @@
 //footer
 import napcoLogo from '../assets/images/nlogo.png';
+import navlogo from "../assets/images/navlogo.png";
 // home page 
 //hero
 import nlogo from '../assets/images/nlogo.png';
@@ -108,6 +109,7 @@ import contactHero from "../assets/images/contact/contact-hero.png";
 export const imageAssets = {
   logo: {
     main: nlogo,
+    nav: navlogo
   },
 
   brand: {

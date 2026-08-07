@@ -316,8 +316,8 @@
   color: #07172d;
   font-size: clamp(2.63rem, 3.40vw, 6.03rem);
   line-height: 0.9;
-  letter-spacing: -0.008em;
-  font-weight: 950;
+  letter-spacing: -0.00008em;
+  font-weight: 600;
   text-shadow: 0 24px 70px rgba(7, 23, 45, 0.12);
 }
 

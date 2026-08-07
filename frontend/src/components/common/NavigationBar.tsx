@@ -71,7 +71,7 @@ export default function NavigationBar({
             transition={{ duration: 0.28, ease: 'easeOut' }}
           >
             <Link to="/" className="napco-nav-logo" aria-label="NAPCO Home">
-              <img src={imageAssets.logo.main} alt="Napco" />
+              <img src={imageAssets.logo.nav} alt="Napco" />
             </Link>
 
             <nav className="napco-nav-links hidden md:flex">
@@ -153,7 +153,7 @@ export default function NavigationBar({
           >
             <div className="napco-nav-pill">
               <Link to="/" className="napco-pill-logo" aria-label="NAPCO Home">
-                <img src={imageAssets.logo.main} alt="Napco" />
+                <img src={imageAssets.logo.nav} alt="Napco" />
               </Link>
 
               <nav className="napco-pill-links hidden md:flex">

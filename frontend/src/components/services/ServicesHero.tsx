@@ -15,7 +15,6 @@ export default function ServicesHero() {
       <div className="services-hero__fade" />
 
       <div className="services-hero__content">
-        <span className="services-hero__eyebrow">Our Services</span>
 
         <h1>
           Printing solutions
