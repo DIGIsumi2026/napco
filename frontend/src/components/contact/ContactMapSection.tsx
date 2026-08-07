@@ -18,7 +18,7 @@ export default function ContactMapSection() {
           <h2>
             Visit NAPCO
             <br />
-            in Kiribathgoda.
+            in Kiribathgoda
           </h2>
 
           <p>

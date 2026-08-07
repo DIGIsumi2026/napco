@@ -820,8 +820,8 @@ body h2:not(.napco-hero-heading),
 .vision-mission__content h2,
 .board-management h2 {
   font-size: clamp(2.04rem, 3vw, 4.42rem) !important;
-  line-height: 0.94 !important;
-  letter-spacing: -0.00065em !important;
+  line-height: 1.12 !important;
+  letter-spacing: 0.02em !important;
   font-weight: 700 !important;
   max-width: 100% !important;
 }

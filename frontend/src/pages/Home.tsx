@@ -81,7 +81,6 @@ export default function Home() {
       />
 
       <Hero />
-      {/* <IdeaCards /> */}
       <AboutPrinting />
       <ServiceStats/>
       <ServicesVisual/>

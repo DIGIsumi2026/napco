@@ -20,7 +20,7 @@ export default function ContactHero() {
         <h1>
           Let’s discuss
           <br />
-          your next print.
+          your next print
         </h1>
 
         <p>
