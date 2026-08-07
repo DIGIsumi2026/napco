@@ -1,6 +1,4 @@
-# Presvila Clone - React + Vite + TypeScript
-
-This project is structured with separate frontend and backend folders.
+# NAPCO official web page 
 
 ## Folder structure
 
