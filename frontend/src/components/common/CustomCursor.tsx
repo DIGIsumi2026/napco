@@ -34,8 +34,8 @@ export default function CursorFollower() {
       ringX += (targetX - ringX) * 0.18;
       ringY += (targetY - ringY) * 0.18;
 
-      dot.style.transform = `translate3d(${dotX - 3.5}px, ${dotY - 3.5}px, 0)`;
-      ring.style.transform = `translate3d(${ringX - 29}px, ${ringY - 29}px, 0)`;
+      dot.style.transform = `translate3d(${dotX - 3}px, ${dotY - 3}px, 0)`;
+      ring.style.transform = `translate3d(${ringX - 19}px, ${ringY - 19}px, 0)`;
 
       frame = window.requestAnimationFrame(render);
     };

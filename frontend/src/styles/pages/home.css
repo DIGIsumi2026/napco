@@ -100,8 +100,8 @@
 }
 
 .cursor-ring {
-  width: 58px;
-  height: 58px;
+  width: 38px;
+  height: 38px;
   border: 2px solid rgba(116, 0, 246, .65);
   border-radius: 50%;
   mix-blend-mode: multiply;
@@ -109,15 +109,15 @@
 }
 
 .cursor-dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--purple);
 }
 
 body.is-hovering .cursor-ring {
-  width: 78px;
-  height: 78px;
+  width: 52px;
+  height: 52px;
   border-color: rgba(116, 0, 246, .38);
 }
 
@@ -1535,7 +1535,8 @@ body.is-hovering .cursor-ring {
 }
 
 .napco-nav-link:hover { color: #fff; }
-.napco-nav-link:hover::after { width: 100%; }
+.napco-nav-link:hover::after, .napco-nav-link.active::after { width: 100%; }
+.napco-nav-link.active { color: #fff; }
 
 .napco-nav-actions {
   display: flex;
@@ -1688,7 +1689,24 @@ body.is-hovering .cursor-ring {
   white-space: nowrap;
 }
 
-.napco-pill-link:hover { color: #c084fc; }
+.napco-pill-link { position: relative; }
+.napco-pill-link:hover, .napco-pill-link.active { color: #c084fc; }
+
+.napco-pill-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #a855f7, #7c3aed);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.napco-pill-link:hover::after, .napco-pill-link.active::after {
+  width: 100%;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    NAPCO V2 — SIDEBAR
@@ -5094,6 +5112,7 @@ body.is-hovering .cursor-ring {
   .napco-nav-links,
   .napco-pill-links,
   .napco-nav-socials,
+  .napco-nav-socials-floating,
   .napco-cta-wrapper {
     display: none !important;
   }
@@ -5116,4 +5135,33 @@ body.is-hovering .cursor-ring {
     justify-content: space-between !important;
     padding: 10px 20px !important;
   }
+}
+
+/* ================================
+   FLOATING SOCIALS (PILL NAV)
+================================ */
+.napco-nav-socials-floating {
+  position: absolute;
+  right: max(24px, calc((100vw - 1400px) / 2));
+  top: 18px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  z-index: 200;
+  pointer-events: all;
+}
+
+.napco-nav-socials-floating .napco-social-icon {
+  background: #000000;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.napco-nav-socials-floating .napco-social-icon:hover {
+  background: rgba(168, 85, 247, 0.5);
+  border-color: #d8b4fe;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5);
+  transform: scale(1.1) translateY(-2px);
 }

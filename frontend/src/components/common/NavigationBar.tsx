@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
 
@@ -28,18 +28,50 @@ export default function NavigationBar({
   isSidebarOpen,
 }: NavigationBarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [showPillNav, setShowPillNav] = useState(false);
   const [isHoveringCTA, setIsHoveringCTA] = useState(false);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
     const onScroll = () => {
-      setScrolled(window.scrollY > 60);
+      const currentScrollY = window.scrollY;
+      const isScrolledDownPastThreshold = currentScrollY > 60;
+      
+      setScrolled(isScrolledDownPastThreshold);
+
+      if (isScrolledDownPastThreshold) {
+        if (currentScrollY < lastScrollY - 2) {
+          // Scrolling UP (with a small threshold of 2px to prevent jitter)
+          setShowPillNav(true);
+          
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+            setShowPillNav(false);
+          }, 3500); // Appear for 3.5 seconds
+        } else if (currentScrollY > lastScrollY + 2) {
+          // Scrolling DOWN
+          setShowPillNav(false);
+          clearTimeout(timeoutId);
+        }
+      } else {
+         // Back at top
+         setShowPillNav(false);
+         clearTimeout(timeoutId);
+      }
+      
+      lastScrollY = currentScrollY;
     };
 
     onScroll();
 
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const handleHamburgerClick = () => {
@@ -56,7 +88,7 @@ export default function NavigationBar({
       aria-hidden={isSidebarOpen}
     >
       <AnimatePresence mode="wait">
-        {!scrolled ? (
+        {!scrolled && (
           <motion.header
             key="glass-nav"
             className="napco-nav-glass"
@@ -76,9 +108,9 @@ export default function NavigationBar({
 
             <nav className="napco-nav-links hidden md:flex">
               {navLinks.map(({ label, href }) => (
-                <Link key={label} to={href} className="napco-nav-link">
+                <NavLink key={label} to={href} className="napco-nav-link">
                   {label}
-                </Link>
+                </NavLink>
               ))}
             </nav>
 
@@ -136,7 +168,8 @@ export default function NavigationBar({
               </button>
             </div>
           </motion.header>
-        ) : (
+        )}
+        {scrolled && showPillNav && (
           <motion.div
             key="pill-nav"
             className="napco-nav-pill-wrap"
@@ -158,26 +191,13 @@ export default function NavigationBar({
 
               <nav className="napco-pill-links hidden md:flex">
                 {navLinks.map(({ label, href }) => (
-                  <Link key={label} to={href} className="napco-pill-link">
+                  <NavLink key={label} to={href} className="napco-pill-link">
                     {label}
-                  </Link>
+                  </NavLink>
                 ))}
               </nav>
 
               <div className="napco-nav-actions">
-                <div className="napco-nav-socials hidden lg:flex pill-socials">
-                  {socialLinks.map(({ Icon, href, label }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      aria-label={label}
-                      className="napco-social-icon"
-                    >
-                      <Icon size={17} />
-                    </a>
-                  ))}
-                </div>
-
                 <Link
                   to="/contact#contact-form"
                   className="napco-cta-wrapper pill-cta hidden md:flex"
@@ -221,6 +241,19 @@ export default function NavigationBar({
                   />
                 </button>
               </div>
+            </div>
+            
+            <div className="napco-nav-socials-floating hidden lg:flex">
+              {socialLinks.map(({ Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="napco-social-icon"
+                >
+                  <Icon size={17} />
+                </a>
+              ))}
             </div>
           </motion.div>
         )}

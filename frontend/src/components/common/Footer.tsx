@@ -140,7 +140,6 @@ export default function Footer() {
 
       <div className="napco-footer__bottom">
         <p>© {new Date().getFullYear()} NAPCO. All rights reserved.</p>
-        <span>Professional Printing Solutions in Sri Lanka</span>
       </div>
     </footer>
   );
