@@ -70,9 +70,6 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
     const section = sectionRef.current;
     if (!section) return;
 
-    // Kill any leftover scroll triggers before setting up new ones
-    ScrollTrigger.getAll().forEach((st) => st.kill());
-
     const ctx = gsap.context(() => {
       const imageTrack = section.querySelector('.vision-mission__image-track');
       const image = section.querySelector('.vision-mission__image');
@@ -81,6 +78,27 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
       const progressLine = section.querySelector('.vision-mission__progress-line span');
 
       if (!imageTrack || !image || !visionContent || !missionContent || !progressLine) return;
+
+      // ── Entrance transition from 3D model section above ───────────────────
+      // Animate the inner sticky wrapper, NOT the root section (which is pinned).
+      const stickyWrapper = section.querySelector('.vision-mission__sticky');
+      if (stickyWrapper) {
+        gsap.fromTo(
+          stickyWrapper,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.0,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
 
       // Initial states
       gsap.set(visionContent, { autoAlpha: 1, y: 0 });
@@ -108,7 +126,6 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
       tl.to(progressLine, { scaleX: 0.55, duration: 0.20, ease: 'none' }, 0.35);
 
       // 0.35 to 0.75: pan/zoom image to right side.
-      // NOTE: xPercent changed from -14 to -4 to prevent black gap on the right side.
       tl.to(image, { xPercent: -4, scale: 1.1, duration: 0.40, ease: 'power2.inOut' }, 0.35);
       
       // 0.55 to 0.85: fade/slide Mission in
@@ -125,7 +142,6 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
 
     return () => {
       ctx.revert();
-      ScrollTrigger.getAll().forEach((st) => st.kill());
       
       const lenis = (window as unknown as { napcoLenis?: { resize(): void } }).napcoLenis;
       if (lenis) {
