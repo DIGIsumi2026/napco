@@ -11,14 +11,14 @@ const MOBILE_BP = 1024;
 
 // ─── Mobile sub-component ────────────────────────────────────────────────────
 function MobileVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
-  const [expandedCard, setExpandedCard] = useState<number | null>(null);
-
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const items = section.querySelectorAll<HTMLElement>('.vm-mobile-card');
-    const observer = new IntersectionObserver(
+    
+    // Observer for fade-in visibility
+    const visibilityObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -26,29 +26,44 @@ function MobileVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLE
           }
         });
       },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
 
-    items.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [sectionRef]);
+    // Observer for auto-expansion when in the middle of the screen
+    const expansionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('vm-mob--expanded');
+          } else {
+            entry.target.classList.remove('vm-mob--expanded');
+          }
+        });
+      },
+      { threshold: 0.4, rootMargin: '-10% 0px -10% 0px' }
+    );
 
-  const toggleCard = (index: number) => {
-    setExpandedCard(expandedCard === index ? null : index);
-  };
+    items.forEach((el) => {
+      visibilityObserver.observe(el);
+      expansionObserver.observe(el);
+    });
+
+    return () => {
+      visibilityObserver.disconnect();
+      expansionObserver.disconnect();
+    };
+  }, [sectionRef]);
 
   return (
     <section className="vm-mobile-section" ref={sectionRef as React.RefObject<HTMLElement>}>
       {/* Vision Card */}
-      <div 
-        className={`vm-mobile-card ${expandedCard === 0 ? 'vm-mob--expanded' : ''}`}
-        onClick={() => toggleCard(0)}
-      >
+      <div className="vm-mobile-card">
         <img 
           src={imageAssets.about.visionMission} 
           alt="NAPCO Vision" 
           className="vm-mobile-bg"
         />
+        <div className="vm-mobile-blur" />
         <div className="vm-mobile-overlay" />
         <div className="vm-mobile-content">
           <div className="vm-mobile-title">
@@ -69,15 +84,13 @@ function MobileVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLE
       </div>
 
       {/* Mission Card */}
-      <div 
-        className={`vm-mobile-card ${expandedCard === 1 ? 'vm-mob--expanded' : ''}`}
-        onClick={() => toggleCard(1)}
-      >
+      <div className="vm-mobile-card">
         <img 
           src={imageAssets.aboutCompanyIntro.serviceQualityBg} 
           alt="NAPCO Mission" 
           className="vm-mobile-bg"
         />
+        <div className="vm-mobile-blur" />
         <div className="vm-mobile-overlay" />
         <div className="vm-mobile-content">
           <div className="vm-mobile-title">
@@ -115,6 +128,7 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
     const ctx = gsap.context(() => {
       panels.forEach((panel, i) => {
         const bg = panel.querySelector('.vm-accordion-bg');
+        const blurLayer = panel.querySelector('.vm-accordion-blur');
         const overlay = panel.querySelector('.vm-accordion-overlay');
         const desc = panel.querySelector('.vm-accordion-desc');
         const titleArea = panel.querySelector('.vm-accordion-title-area');
@@ -123,21 +137,24 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
         if (hoveredIndex === i) {
           // Hovered state
           gsap.to(panel, { flex: '1 1 70%', duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
-          gsap.to(bg, { filter: 'blur(0px) brightness(1)', scale: 1.05, xPercent: -2, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(bg, { scale: 1.05, xPercent: -2, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(blurLayer, { opacity: 0, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
           gsap.to(overlay, { opacity: 1, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
           gsap.to(desc, { autoAlpha: 1, y: 0, duration: 0.5, delay: 0.1, ease: 'power3.out', overwrite: 'auto' });
           gsap.to(titleArea, { scale: 1.05, transformOrigin: 'left center', duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
         } else if (hoveredIndex !== null) {
           // Shrunk state (when something else is hovered)
           gsap.to(panel, { flex: '1 1 30%', duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
-          gsap.to(bg, { filter: 'blur(8px) brightness(0.6)', scale: 1, xPercent: 2, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(bg, { scale: 1, xPercent: 2, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(blurLayer, { opacity: 1, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
           gsap.to(overlay, { opacity: 0, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
           gsap.to(desc, { autoAlpha: 0, y: 20, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
           gsap.to(titleArea, { scale: 0.95, transformOrigin: 'left center', duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
         } else {
           // Default state (nothing hovered)
           gsap.to(panel, { flex: '1 1 50%', duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
-          gsap.to(bg, { filter: 'blur(8px) brightness(0.75)', scale: 1, xPercent: 0, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(bg, { scale: 1, xPercent: 0, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(blurLayer, { opacity: 1, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
           gsap.to(overlay, { opacity: 0, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
           gsap.to(desc, { autoAlpha: 0, y: 20, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
           gsap.to(titleArea, { scale: 1, transformOrigin: 'left center', duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
@@ -168,6 +185,7 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
               className="vm-accordion-bg"
             />
           </div>
+          <div className="vm-accordion-blur" />
           <div className="vm-accordion-overlay" />
           <div className="vm-accordion-content">
             <div className="vm-accordion-title-area">
@@ -203,6 +221,7 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
               className="vm-accordion-bg"
             />
           </div>
+          <div className="vm-accordion-blur" />
           <div className="vm-accordion-overlay" />
           <div className="vm-accordion-content">
             <div className="vm-accordion-title-area">
