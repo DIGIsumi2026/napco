@@ -177,6 +177,8 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
           tabIndex={0}
           role="button"
           aria-expanded={hoveredIndex === 0}
+          data-cursor-type="accordion"
+          data-cursor-label="Explore"
         >
           <div className="vm-accordion-bg-wrapper">
             <img 
@@ -213,6 +215,8 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
           tabIndex={0}
           role="button"
           aria-expanded={hoveredIndex === 1}
+          data-cursor-type="accordion"
+          data-cursor-label="Explore"
         >
           <div className="vm-accordion-bg-wrapper">
             <img 

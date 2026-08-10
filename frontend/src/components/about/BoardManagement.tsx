@@ -114,6 +114,8 @@ export default function BoardManagement() {
               className="board-management__card"
               key={member.name}
               tabIndex={0}
+              data-cursor-type="profile"
+              data-cursor-label="Profile"
             >
               <div className="board-management__image-wrap">
                 <img

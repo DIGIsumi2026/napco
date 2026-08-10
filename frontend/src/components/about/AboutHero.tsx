@@ -234,6 +234,8 @@ export default function AboutHero() {
             playsInline
             preload="auto"
             onLoadedData={() => ScrollTrigger.refresh()}
+            data-cursor-type="image"
+            data-cursor-label="View"
           />
 
           <div className="about-hero__video-vignette" />
@@ -262,7 +264,12 @@ export default function AboutHero() {
             <small>Scroll Down</small>
           </div>
 
-          <div className="about-hero__thumbnail-full" ref={thumbnailRef}>
+          <div 
+            className="about-hero__thumbnail-full" 
+            ref={thumbnailRef}
+            data-cursor-type="image"
+            data-cursor-label="View"
+          >
             <img
               ref={thumbnailImageRef}
               src={imageAssets.about.thubnail}

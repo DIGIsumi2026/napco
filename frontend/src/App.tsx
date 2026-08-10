@@ -5,10 +5,12 @@ import AboutUs from './pages/AboutUs';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
 import RouteScrollManager from './components/common/RouteScrollManager';
+import CustomCursor from './components/common/CustomCursor';
 
 function App() {
   return (
     <>
+      <CustomCursor />
       <RouteScrollManager />
       <Routes>
         <Route path="/" element={<Home />} />

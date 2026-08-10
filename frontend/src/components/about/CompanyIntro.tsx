@@ -134,7 +134,12 @@ function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLE
 
   return (
     <div ref={containerRef}>
-      <section className="about-napco-section" ref={sectionRef as React.RefObject<HTMLElement>}>
+      <section 
+        className="about-napco-section" 
+        ref={sectionRef as React.RefObject<HTMLElement>}
+        data-cursor-type="image"
+        data-cursor-label="View"
+      >
         <div className="about-napco-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.aboutCompanyIntro.companyLogoBg})` }} />
         <div className="about-napco-section__overlay" />
         <div className="about-napco-section__content">
@@ -152,7 +157,11 @@ function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLE
         </div>
       </section>
 
-      <section className="about-quality-section">
+      <section 
+        className="about-quality-section"
+        data-cursor-type="image"
+        data-cursor-label="View"
+      >
         <div className="about-quality-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.aboutCompanyIntro.serviceQualityBg})` }} />
         <div className="about-quality-section__overlay" />
         <div className="about-quality-section__content">

@@ -9,19 +9,26 @@ declare global {
 
 export default function RouteScrollManager() {
   const location = useLocation();
-  const lastPathname = useRef(location.pathname);
+  const currentPathname = useRef(location.pathname);
+  const currentScrollY = useRef(0);
 
-  // Function to save current scroll position
-  const saveScrollPosition = (pathname: string) => {
-    const scrollY = window.scrollY;
-    sessionStorage.setItem(`napco-scroll:${pathname}`, scrollY.toString());
-  };
+  // Continuously track the scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      currentScrollY.current = window.scrollY;
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
-    // 1. Save scroll position of the previous page before we handle the new one
-    if (lastPathname.current !== location.pathname) {
-      saveScrollPosition(lastPathname.current);
-      lastPathname.current = location.pathname;
+    // 1. If the route has changed, save the LAST KNOWN scroll position for the old route
+    if (currentPathname.current !== location.pathname) {
+      sessionStorage.setItem(`napco-scroll:${currentPathname.current}`, currentScrollY.current.toString());
+      currentPathname.current = location.pathname;
+      currentScrollY.current = 0; // reset for the new route
     }
 
     // 2. Mark this route as visited
@@ -74,21 +81,21 @@ export default function RouteScrollManager() {
           window.scrollTo({ top: 0, behavior: 'auto' });
         }
       }
-    }, 50);
+    }, 100); // 100ms gives React more time to paint the page
 
     return () => clearTimeout(timeoutId);
   }, [location]);
 
-  // Optionally, save on beforeunload so we don't lose the position if user refreshes
+  // Save on beforeunload so we don't lose the position if user refreshes
   useEffect(() => {
     const handleBeforeUnload = () => {
-      saveScrollPosition(location.pathname);
+      sessionStorage.setItem(`napco-scroll:${currentPathname.current}`, currentScrollY.current.toString());
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [location.pathname]);
+  }, []);
 
   return null;
 }
