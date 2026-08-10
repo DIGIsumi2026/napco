@@ -78,7 +78,26 @@ export default function CustomCursor() {
       // Highest priority: buttons and links (read label if available)
       const btnOrLink = target.closest('button, a');
       if (btnOrLink) {
-        const label = btnOrLink.getAttribute('data-cursor-label') || '';
+        let label = btnOrLink.getAttribute('data-cursor-label');
+        
+        // If no explicit label, try aria-label or innerText
+        if (!label) {
+          label = btnOrLink.getAttribute('aria-label') || btnOrLink.getAttribute('title') || '';
+          
+          if (!label && btnOrLink.textContent) {
+            const text = btnOrLink.textContent.trim();
+            // Only use text content if it's reasonably short
+            if (text.length > 0 && text.length <= 20) {
+              label = text;
+            }
+          }
+        }
+        
+        // Fallback if still empty
+        if (!label) {
+          label = 'View';
+        }
+
         const explicitType = btnOrLink.getAttribute('data-cursor-type') || 'button';
         setCursorState({ type: explicitType, label });
         return;

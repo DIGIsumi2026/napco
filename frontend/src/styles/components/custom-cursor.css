@@ -97,12 +97,14 @@ body.custom-cursor-active * {
 /* Button & Accordion (Explore/View) */
 .napco-custom-cursor.type-button .napco-cursor-outer,
 .napco-custom-cursor.type-accordion .napco-cursor-outer {
-  width: 70px;
-  height: 70px;
-  top: -35px;
-  left: -35px;
-  background-color: rgba(14, 165, 233, 0.95);
-  border-color: transparent;
+  width: 76px;
+  height: 76px;
+  top: -38px;
+  left: -38px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 .napco-custom-cursor.type-button .napco-cursor-inner,
 .napco-custom-cursor.type-accordion .napco-cursor-inner {
@@ -112,6 +114,7 @@ body.custom-cursor-active * {
 .napco-custom-cursor.type-accordion .napco-cursor-label {
   opacity: 1;
   transform: scale(1);
+  color: #fff;
 }
 
 /* Image (Hero, Vision, Mission) */
