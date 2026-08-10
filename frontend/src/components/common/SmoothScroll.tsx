@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 declare global {
   interface Window {
-    napcoLenis?: Lenis;
+    napcoLenis?: any;
   }
 }
 

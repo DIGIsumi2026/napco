@@ -2647,3 +2647,119 @@
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ─── NEW ABOUT SECTIONS (4 Distinct Sections) ───────────────────────────────── */
+.about-vision-section,
+.about-mission-section,
+.about-napco-section,
+.about-quality-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 6rem 5%;
+  background-color: var(--color-background-primary);
+  z-index: 10;
+}
+
+.about-vision-section__bg,
+.about-mission-section__bg,
+.about-napco-section__bg,
+.about-quality-section__bg {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.about-vision-section__overlay,
+.about-mission-section__overlay,
+.about-napco-section__overlay,
+.about-quality-section__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 7, 17, 0.4) 0%,
+    rgba(2, 7, 17, 0.8) 50%,
+    rgba(2, 7, 17, 1) 100%
+  );
+  z-index: 1;
+}
+
+.about-vision-section__content,
+.about-mission-section__content,
+.about-napco-section__content,
+.about-quality-section__content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.about-section-eyebrow {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: rgba(14, 165, 233, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  border: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.about-vision-section__content h2,
+.about-mission-section__content h2,
+.about-napco-section__content h2,
+.about-quality-section__content h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.12;
+  letter-spacing: 0.02em;
+  margin: 0;
+  max-width: 100%;
+}
+
+.about-vision-section__content p,
+.about-mission-section__content p,
+.about-napco-section__content p,
+.about-quality-section__content p {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .about-vision-section,
+  .about-mission-section,
+  .about-napco-section,
+  .about-quality-section {
+    min-height: 80vh;
+    padding: 4rem 5%;
+  }
+
+  .about-vision-section__content h2,
+  .about-mission-section__content h2,
+  .about-napco-section__content h2,
+  .about-quality-section__content h2 {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+  }
+}

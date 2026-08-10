@@ -66,125 +66,32 @@ function MobileVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLE
 
 // ─── Desktop sub-component ───────────────────────────────────────────────────
 function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      const imageTrack = section.querySelector('.vision-mission__image-track');
-      const image = section.querySelector('.vision-mission__image');
-      const visionContent = section.querySelector('.vision-mission__content--vision');
-      const missionContent = section.querySelector('.vision-mission__content--mission');
-      const progressLine = section.querySelector('.vision-mission__progress-line span');
-
-      if (!imageTrack || !image || !visionContent || !missionContent || !progressLine) return;
-
-      // ── Entrance transition from 3D model section above ───────────────────
-      // Animate the inner sticky wrapper, NOT the root section (which is pinned).
-      const stickyWrapper = section.querySelector('.vision-mission__sticky');
-      if (stickyWrapper) {
-        gsap.fromTo(
-          stickyWrapper,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.0,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      }
-
-      // Initial states
-      gsap.set(visionContent, { autoAlpha: 1, y: 0 });
-      gsap.set(missionContent, { autoAlpha: 0, y: 60 });
-      gsap.set(image, { xPercent: 0, scale: 1.05 });
-      gsap.set(progressLine, { scaleX: 0, transformOrigin: 'left center' });
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=1600',
-          scrub: 0.9,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      // 0.00 to 0.35: keep Vision readable
-      tl.to(progressLine, { scaleX: 0.35, duration: 0.35, ease: 'none' }, 0);
-      
-      // 0.35 to 0.55: fade/slide Vision out
-      tl.to(visionContent, { autoAlpha: 0, y: -40, duration: 0.20, ease: 'power2.inOut' }, 0.35);
-      tl.to(progressLine, { scaleX: 0.55, duration: 0.20, ease: 'none' }, 0.35);
-
-      // 0.35 to 0.75: pan/zoom image to right side.
-      tl.to(image, { xPercent: -4, scale: 1.1, duration: 0.40, ease: 'power2.inOut' }, 0.35);
-      
-      // 0.55 to 0.85: fade/slide Mission in
-      tl.to(missionContent, { autoAlpha: 1, y: 0, duration: 0.30, ease: 'power2.inOut' }, 0.55);
-      tl.to(progressLine, { scaleX: 0.85, duration: 0.30, ease: 'none' }, 0.55);
-
-      // 0.85 to 1.00: hold Mission readable
-      tl.to(progressLine, { scaleX: 1, duration: 0.15, ease: 'none' }, 0.85);
-
-    }, section);
-
-    // Refresh after setup so pin recalculates correct position on fresh mount
-    requestAnimationFrame(() => ScrollTrigger.refresh());
-
-    return () => {
-      ctx.revert();
-      
-      const lenis = (window as unknown as { napcoLenis?: { resize(): void } }).napcoLenis;
-      if (lenis) {
-        lenis.resize();
-      } else {
-        window.dispatchEvent(new Event('resize'));
-      }
-    };
-  }, [sectionRef]);
-
   return (
-    <section className="vision-mission" ref={sectionRef as React.RefObject<HTMLElement>}>
-      <div className="vision-mission__sticky">
-        <div className="vision-mission__media" aria-hidden="true">
-          <div className="vision-mission__image-track">
-            <img
-              src={imageAssets.about.visionMission}
-              alt=""
-              className="vision-mission__image"
-              onLoad={() => ScrollTrigger.refresh()}
-            />
-          </div>
-        </div>
-
-        <div className="vision-mission__overlay" />
-
-        <div className="vision-mission__content vision-mission__content--vision">
-          <span className="vision-mission__eyebrow">Our Vision</span>
-          <h2>Driven by quality, service excellence and innovation.</h2>
-          <p>
+    <>
+      <section className="about-vision-section" ref={sectionRef as React.RefObject<HTMLElement>}>
+        <div className="about-vision-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.about.visionMission})` }} />
+        <div className="about-vision-section__overlay" />
+        <div className="about-vision-section__content">
+          <span className="about-section-eyebrow" data-reveal>Our Vision</span>
+          <h2 data-reveal>Driven by quality, service excellence and innovation.</h2>
+          <p data-reveal>
             To be a key player in the printing industry in the pursuit of quality
             &amp; service excellence while earning our employees &amp; customers
             enthusiasm through continues improvement driven by integrity, team
             work &amp; innovation.
           </p>
         </div>
+      </section>
 
-        <div className="vision-mission__content vision-mission__content--mission">
-          <span className="vision-mission__eyebrow">Our Mission</span>
-          <h2>
+      <section className="about-mission-section">
+        <div className="about-mission-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.about.visionMission})` }} />
+        <div className="about-mission-section__overlay" />
+        <div className="about-mission-section__content">
+          <span className="about-section-eyebrow" data-reveal>Our Mission</span>
+          <h2 data-reveal>
             Comprehensive printing solutions with responsibility and growth.
           </h2>
-          <p>
+          <p data-reveal>
             Committed to provide comprehensive printing solution dedicated to
             excellence in customer service, product quality &amp; its impact
             within the environment, local community &amp; its staff providing the
@@ -192,17 +99,8 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
             &amp; suppliers, as well as ensuring a profitable growth.
           </p>
         </div>
-
-        <div className="vision-mission__progress">
-          <div className="vision-mission__progress-line">
-            <span />
-          </div>
-          <span className="vision-mission__progress-label">
-            Responsibility & Growth
-          </span>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
