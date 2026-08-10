@@ -86,9 +86,6 @@ function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLE
     let trigger: ScrollTrigger | null = null;
     let applyCurrentProgress: (() => void) | null = null;
 
-    // Kill any leftover scroll triggers
-    ScrollTrigger.getAll().forEach((st) => st.kill());
-
     const ctx = gsap.context(() => {
       const firstImage = section.querySelector<HTMLElement>('.company-intro__image--first');
       const secondImage = section.querySelector<HTMLElement>('.company-intro__image--second');
@@ -97,6 +94,26 @@ function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLE
       const progressLine = section.querySelector<HTMLElement>('.company-intro__progress-line span');
 
       if (!firstImage || !secondImage || !firstContent || !secondContent || !progressLine) return;
+
+      // ── Entrance transition from VisionMission section above ──────────────
+      const stickyWrapper = section.querySelector('.company-intro__sticky');
+      if (stickyWrapper) {
+        gsap.fromTo(
+          stickyWrapper,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.0,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
 
       gsap.set(progressLine, {
         scaleX: 0,
@@ -172,7 +189,6 @@ function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLE
       trigger?.kill();
       ctx.revert();
       
-      ScrollTrigger.getAll().forEach((st) => st.kill());
       const lenis = (window as unknown as { napcoLenis?: { resize(): void } }).napcoLenis;
       if (lenis) {
         lenis.resize();

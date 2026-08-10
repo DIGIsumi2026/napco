@@ -225,72 +225,96 @@ export default function AboutHero() {
   return (
     <section className="about-hero" ref={sectionRef}>
       {!isMobile ? (
-        <video
-          ref={videoRef}
-          className="about-hero__video"
-          src={videoAssets.about.hero}
-          muted
-          playsInline
-          preload="auto"
-          onLoadedData={() => ScrollTrigger.refresh()}
-        />
+        <>
+          <video
+            ref={videoRef}
+            className="about-hero__video"
+            src={videoAssets.about.hero}
+            muted
+            playsInline
+            preload="auto"
+            onLoadedData={() => ScrollTrigger.refresh()}
+          />
+
+          <div className="about-hero__video-vignette" />
+
+          <button
+            ref={replayRef}
+            type="button"
+            className="about-hero__replay"
+            onClick={handleReplay}
+            aria-label="Replay video"
+            data-cursor="Replay"
+          >
+            <RotateCcw size={16} />
+            <span>Replay</span>
+          </button>
+
+          <div className="about-hero__scroll" ref={scrollHintRef}>
+            <div className="about-hero__scroll-line">
+              <span />
+            </div>
+
+            <div className="about-hero__scroll-icon">
+              <ArrowDown size={18} />
+            </div>
+
+            <small>Scroll Down</small>
+          </div>
+
+          <div className="about-hero__thumbnail-full" ref={thumbnailRef}>
+            <img
+              ref={thumbnailImageRef}
+              src={imageAssets.about.thubnail}
+              alt="NAPCO printing services with Sri Lankan company staff"
+              onLoad={() => ScrollTrigger.refresh()}
+            />
+
+            <div className="about-hero__thumbnail-overlay" />
+
+            <div className="about-hero__thumbnail-content" ref={thumbnailContentRef}>
+              <span>About NAPCO</span>
+
+              <h1>
+                Printing excellence
+                <br />
+                powered by people
+              </h1>
+
+              <p>
+                NAPCO Printers combines advanced printing technology, skilled Sri
+                Lankan professionals and reliable production standards to deliver
+                newspapers, books, catalogues, labels, calendars, diaries, annual
+                reports and complete commercial printing solutions.
+              </p>
+            </div>
+          </div>
+        </>
       ) : (
-        <div className="about-hero__video" style={{ backgroundImage: `url(${imageAssets.about.thubnail})`, backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.5 }} />
+        /* ── MOBILE: thumbnail + text always visible, no video, no scroll animation ── */
+        <div className="about-hero__mobile-static">
+          <img
+            src={imageAssets.about.thubnail}
+            alt="NAPCO printing services"
+            className="about-hero__mobile-img"
+          />
+          <div className="about-hero__thumbnail-overlay" />
+          <div className="about-hero__mobile-content">
+            <span>About NAPCO</span>
+            <h1>
+              Printing excellence
+              <br />
+              powered by people
+            </h1>
+            <p>
+              NAPCO Printers combines advanced printing technology, skilled Sri
+              Lankan professionals and reliable production standards to deliver
+              newspapers, books, catalogues, labels, calendars, diaries, annual
+              reports and complete commercial printing solutions.
+            </p>
+          </div>
+        </div>
       )}
-
-      <div className="about-hero__video-vignette" />
-
-      <button
-        ref={replayRef}
-        type="button"
-        className="about-hero__replay"
-        onClick={handleReplay}
-        aria-label="Replay video"
-        data-cursor="Replay"
-      >
-        <RotateCcw size={16} />
-        <span>Replay</span>
-      </button>
-
-      <div className="about-hero__scroll" ref={scrollHintRef}>
-        <div className="about-hero__scroll-line">
-          <span />
-        </div>
-
-        <div className="about-hero__scroll-icon">
-          <ArrowDown size={18} />
-        </div>
-
-        <small>Scroll Down</small>
-      </div>
-
-      <div className="about-hero__thumbnail-full" ref={thumbnailRef}>
-        <img
-          ref={thumbnailImageRef}
-          src={imageAssets.about.thubnail}
-          alt="NAPCO printing services with Sri Lankan company staff"
-          onLoad={() => ScrollTrigger.refresh()}
-        />
-
-        <div className="about-hero__thumbnail-overlay" />
-
-        <div className="about-hero__thumbnail-content" ref={thumbnailContentRef}>
-          <span>About NAPCO</span>
-
-          <h1>
-            Printing excellence
-            <br />
-            powered by people
-          </h1>
-
-          <p>
-            NAPCO Printers combines advanced printing technology, skilled Sri
-            Lankan professionals and reliable production standards to deliver
-            newspapers, books, catalogues, labels, calendars, diaries, annual
-            reports and complete commercial printing solutions.
-          </p>
-        </div>
-      </div>
     </section>
   );
 }

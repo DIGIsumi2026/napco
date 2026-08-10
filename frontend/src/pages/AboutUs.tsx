@@ -76,8 +76,8 @@ export default function AboutUs() {
 
       <AboutHero />
       <AboutMachineModel/>
-      <AboutCompanyIntro/>
       <VisionMission />
+      <AboutCompanyIntro/>
       <BoardManagement/>
       <AboutCompanyBanner/>
 
