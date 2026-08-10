@@ -79,8 +79,61 @@ function MobileCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLEl
 
 // ─── Desktop sub-component ───────────────────────────────────────────────────
 function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const ctx = gsap.context(() => {
+      // Pop animation for About Napco Content
+      const napcoContent = container.querySelector('.about-napco-section__content');
+      if (napcoContent) {
+        gsap.fromTo(
+          napcoContent,
+          { autoAlpha: 0, scale: 0.85, y: 40 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            y: 0,
+            duration: 1,
+            ease: 'back.out(1.4)',
+            scrollTrigger: {
+              trigger: '.about-napco-section',
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        );
+      }
+
+      // Pop animation for Printing Quality Content
+      const qualityContent = container.querySelector('.about-quality-section__content');
+      if (qualityContent) {
+        gsap.fromTo(
+          qualityContent,
+          { autoAlpha: 0, scale: 0.85, y: 40 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            y: 0,
+            duration: 1,
+            ease: 'back.out(1.4)',
+            scrollTrigger: {
+              trigger: '.about-quality-section',
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        );
+      }
+    }, container);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <>
+    <div ref={containerRef}>
       <section className="about-napco-section" ref={sectionRef as React.RefObject<HTMLElement>}>
         <div className="about-napco-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.aboutCompanyIntro.companyLogoBg})` }} />
         <div className="about-napco-section__overlay" />
@@ -116,7 +169,7 @@ function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLE
           </p>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 
