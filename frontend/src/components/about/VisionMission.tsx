@@ -10,101 +10,85 @@ gsap.registerPlugin(ScrollTrigger);
 const MOBILE_BP = 1024;
 
 // ─── Mobile sub-component ────────────────────────────────────────────────────
-function MobileVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+function MobileVisionMission() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const items = section.querySelectorAll<HTMLElement>('.vm-mobile-card');
     
-    // Observer for fade-in visibility
+    // Observer for fade-in visibility (pop-up effect)
     const visibilityObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // Apply pop up effect via CSS class
             entry.target.classList.add('vm-mob--visible');
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-    );
-
-    // Observer for auto-expansion when in the middle of the screen
-    const expansionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('vm-mob--expanded');
-          } else {
-            entry.target.classList.remove('vm-mob--expanded');
-          }
-        });
-      },
-      { threshold: 0.4, rootMargin: '-10% 0px -10% 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
     );
 
     items.forEach((el) => {
       visibilityObserver.observe(el);
-      expansionObserver.observe(el);
     });
 
     return () => {
       visibilityObserver.disconnect();
-      expansionObserver.disconnect();
     };
   }, [sectionRef]);
 
   return (
     <section className="vm-mobile-section" ref={sectionRef as React.RefObject<HTMLElement>}>
-      {/* Vision Card */}
-      <div className="vm-mobile-card">
-        <img 
-          src={imageAssets.about.visionMission} 
-          alt="NAPCO Vision" 
-          className="vm-mobile-bg"
-        />
-        <div className="vm-mobile-blur" />
-        <div className="vm-mobile-overlay" />
-        <div className="vm-mobile-content">
-          <div className="vm-mobile-title">
-            <h2>Our Vision</h2>
-            <div className="vm-mobile-icon">
-              <ChevronDown size={20} />
+      <div ref={containerRef} className="vm-mobile-container">
+        {/* Vision Card */}
+        <div className="vm-mobile-card">
+          <img 
+            src={imageAssets.about.visionMission} 
+            alt="NAPCO Vision" 
+            className="vm-mobile-bg"
+          />
+          <div className="vm-mobile-blur" />
+          <div className="vm-mobile-overlay" />
+          <div className="vm-mobile-content">
+            <div className="vm-mobile-title">
+              <h2>Our Vision</h2>
             </div>
-          </div>
-          <div className="vm-mobile-desc">
-            <p>
-              To be a key player in the printing industry in the pursuit of quality
-              &amp; service excellence while earning our employees &amp; customers
-              enthusiasm through continuous improvement driven by integrity, team
-              work &amp; innovation.
-            </p>
+            <div className="vm-mobile-desc">
+              <p>
+                To be a key player in the printing industry in the pursuit of quality
+                &amp; service excellence while earning our employees &amp; customers
+                enthusiasm through continuous improvement driven by integrity, team
+                work &amp; innovation.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Mission Card */}
-      <div className="vm-mobile-card">
-        <img 
-          src={imageAssets.aboutCompanyIntro.serviceQualityBg} 
-          alt="NAPCO Mission" 
-          className="vm-mobile-bg"
-        />
-        <div className="vm-mobile-blur" />
-        <div className="vm-mobile-overlay" />
-        <div className="vm-mobile-content">
-          <div className="vm-mobile-title">
-            <h2>Our Mission</h2>
-            <div className="vm-mobile-icon">
-              <ChevronDown size={20} />
+        {/* Mission Card */}
+        <div className="vm-mobile-card">
+          <img 
+            src={imageAssets.aboutCompanyIntro.serviceQualityBg} 
+            alt="NAPCO Mission" 
+            className="vm-mobile-bg"
+          />
+          <div className="vm-mobile-blur" />
+          <div className="vm-mobile-overlay" />
+          <div className="vm-mobile-content">
+            <div className="vm-mobile-title">
+              <h2>Our Mission</h2>
             </div>
-          </div>
-          <div className="vm-mobile-desc">
-            <p>
-              Committed to provide comprehensive printing solutions dedicated to
-              excellence in customer service, product quality &amp; its impact
-              within the environment, local community &amp; its staff, ensuring profitable growth.
-            </p>
+            <div className="vm-mobile-desc">
+              <p>
+                Committed to provide comprehensive printing solutions dedicated to
+                excellence in customer service, product quality &amp; its impact
+                within the environment, local community &amp; its staff, ensuring profitable growth.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -265,6 +249,6 @@ export default function VisionMission() {
   }, []);
 
   return isMobile
-    ? <MobileVisionMission sectionRef={sectionRef} />
+    ? <MobileVisionMission />
     : <DesktopVisionMission sectionRef={sectionRef} />;
 }

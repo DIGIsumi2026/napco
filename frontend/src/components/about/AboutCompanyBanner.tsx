@@ -1,6 +1,10 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { imageAssets } from '../../data/imageAssets';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const companyLogos = [
   {
@@ -69,6 +73,8 @@ const LOOP_COUNT = 3;
 
 export default function AboutCompanyBanner() {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const bgRef = useRef<HTMLImageElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const pausedRef = useRef(false);
   const draggingRef = useRef(false);
@@ -88,13 +94,61 @@ export default function AboutCompanyBanner() {
     []
   );
 
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth <= 1024
+  );
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 1024);
+    window.addEventListener('resize', check, { passive: true });
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   useEffect(() => {
     const scroller = scrollerRef.current;
-
     if (!scroller) return;
 
     let previousTime = performance.now();
     let isVisible = false;
+
+    // Set up Parallax and text animation if mobile
+    const section = sectionRef.current;
+    let ctx: gsap.Context | null = null;
+    if (section && window.innerWidth <= 1024) {
+      ctx = gsap.context(() => {
+        if (bgRef.current) {
+          gsap.to(bgRef.current, {
+            yPercent: 30,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            }
+          });
+        }
+        const textElements = section.querySelectorAll('.about-company-banner__mobile-header > *');
+        if (textElements.length > 0) {
+          gsap.fromTo(
+            textElements,
+            { autoAlpha: 0, y: 30 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.8,
+              stagger: 0.15,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                once: true,
+              }
+            }
+          );
+        }
+      }, section);
+    }
 
     const getSingleLoopWidth = () => scroller.scrollWidth / LOOP_COUNT;
 
@@ -273,11 +327,26 @@ export default function AboutCompanyBanner() {
       }
 
       stopAutoScroll();
+      if (ctx) ctx.revert();
     };
   }, []);
 
   return (
-    <section className="about-company-banner" aria-label="Our trusted companies">
+    <section className={`about-company-banner ${isMobile ? 'about-company-banner--mobile' : ''}`} ref={sectionRef} aria-label="Our trusted companies">
+      {isMobile && (
+        <>
+          <div className="about-company-banner__bg-wrapper">
+            <img ref={bgRef} src={imageAssets.aboutCompanyIntro.companyLogoBg} alt="" className="about-company-banner__parallax-bg" />
+            <div className="about-company-banner__overlay" />
+          </div>
+          <div className="about-company-banner__mobile-header">
+            <span>Trusted By</span>
+            <h2>Our Corporate Clients</h2>
+            <p>Partnering with industry leaders to deliver exceptional print quality.</p>
+          </div>
+        </>
+      )}
+
       <div className="about-company-banner__fade about-company-banner__fade--left" />
       <div className="about-company-banner__fade about-company-banner__fade--right" />
 

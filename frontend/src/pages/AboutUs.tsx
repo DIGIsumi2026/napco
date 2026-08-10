@@ -12,6 +12,7 @@ import ScrollToTop from '../components/common/ScrollToTop';
 import AboutHero from '../components/about/AboutHero';
 import AboutMachineModel from '../components/about/AboutMachineModel';
 import AboutCompanyIntro from '../components/about/CompanyIntro';
+import MobileQualityMetrics from '../components/about/MobileQualityMetrics';
 import VisionMission from '../components/about/VisionMission';
 import BoardManagement from '../components/about/BoardManagement';
 import AboutCompanyBanner from '../components/about/AboutCompanyBanner';
@@ -78,6 +79,7 @@ export default function AboutUs() {
       <AboutMachineModel/>
       <VisionMission />
       <AboutCompanyIntro/>
+      <MobileQualityMetrics/>
       <BoardManagement/>
       <AboutCompanyBanner/>
 

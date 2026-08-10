@@ -89,7 +89,112 @@ const boardMembers = [
   },
 ];
 
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+// ... existing boardMembers array ...
+
+function MobileBoardManagement({ members }: { members: typeof boardMembers }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (section) {
+      gsap.fromTo(
+        section,
+        { autoAlpha: 0, y: 30 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 85%',
+            once: true,
+          }
+        }
+      );
+    }
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    const cards = container.querySelectorAll<HTMLElement>('.board-management__mobile-card');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-active');
+        } else {
+          entry.target.classList.remove('is-active');
+        }
+      });
+    }, {
+      root: container,
+      threshold: 0.6,
+    });
+
+    cards.forEach(card => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="board-management board-management--mobile" ref={sectionRef}>
+      <div className="board-management__heading">
+        <span>Leadership</span>
+        <h2>Board of Management</h2>
+        <p>
+          Meet the leadership team guiding NAPCO with strategic direction,
+          industry experience and a commitment to long-term growth.
+        </p>
+      </div>
+
+      <div className="board-management__carousel" ref={containerRef}>
+        <div className="board-management__carousel-track">
+          {members.map((member) => (
+            <article className="board-management__mobile-card" key={member.name}>
+              <div className="board-management__image-wrap">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="board-management__image"
+                />
+              </div>
+              <div className="board-management__content">
+                <span className="board-management__role">{member.role}</span>
+                <h3>{member.name}</h3>
+                <p>{member.profile}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function BoardManagement() {
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth <= 1024
+  );
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 1024);
+    window.addEventListener('resize', check, { passive: true });
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  if (isMobile) {
+    return <MobileBoardManagement members={boardMembers} />;
+  }
+
+
   return (
     <section className="board-management">
       <div className="board-management__inner">

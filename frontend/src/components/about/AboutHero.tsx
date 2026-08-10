@@ -17,6 +17,63 @@ type LenisWindow = Window & {
   };
 };
 
+function MobileAboutHero() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      const contentElements = section.querySelectorAll('.about-hero__mobile-content > *');
+      
+      gsap.fromTo(
+        contentElements,
+        { autoAlpha: 0, y: 30 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 80%',
+            once: true,
+          }
+        }
+      );
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div className="about-hero__mobile-static" ref={sectionRef}>
+      <img
+        src={imageAssets.about.thubnail}
+        alt="NAPCO printing services"
+        className="about-hero__mobile-img about-hero__mobile-img--ken-burns"
+      />
+      <div className="about-hero__thumbnail-overlay about-hero__mobile-overlay" />
+      <div className="about-hero__mobile-content">
+        <span>About NAPCO</span>
+        <h1>
+          Printing excellence
+          <br />
+          powered by people
+        </h1>
+        <p>
+          NAPCO Printers combines advanced printing technology, skilled Sri
+          Lankan professionals and reliable production standards to deliver
+          newspapers, books, catalogues, labels, calendars, diaries, annual
+          reports and complete commercial printing solutions.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function AboutHero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -298,29 +355,7 @@ export default function AboutHero() {
           </div>
         </>
       ) : (
-        /* ── MOBILE: thumbnail + text always visible, no video, no scroll animation ── */
-        <div className="about-hero__mobile-static">
-          <img
-            src={imageAssets.about.thubnail}
-            alt="NAPCO printing services"
-            className="about-hero__mobile-img"
-          />
-          <div className="about-hero__thumbnail-overlay" />
-          <div className="about-hero__mobile-content">
-            <span>About NAPCO</span>
-            <h1>
-              Printing excellence
-              <br />
-              powered by people
-            </h1>
-            <p>
-              NAPCO Printers combines advanced printing technology, skilled Sri
-              Lankan professionals and reliable production standards to deliver
-              newspapers, books, catalogues, labels, calendars, diaries, annual
-              reports and complete commercial printing solutions.
-            </p>
-          </div>
-        </div>
+        <MobileAboutHero />
       )}
     </section>
   );

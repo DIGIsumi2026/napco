@@ -14,36 +14,71 @@ const clamp = (value: number, min: number, max: number) => {
 
 // ─── Mobile sub-component ────────────────────────────────────────────────────
 function MobileCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const items = section.querySelectorAll<HTMLElement>('[data-ci-mob-anim]');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('ci-mob--visible');
+    const ctx = gsap.context(() => {
+      // Animate images
+      gsap.utils.toArray<HTMLElement>('.company-intro__mobile-img').forEach((img) => {
+        gsap.fromTo(
+          img,
+          { scale: 0.95, autoAlpha: 0 },
+          {
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: img,
+              start: 'top 85%',
+              once: true,
+            }
           }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-    );
+        );
+      });
 
-    items.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [sectionRef]);
+      // Animate content blocks
+      gsap.utils.toArray<HTMLElement>('.company-intro__content').forEach((content) => {
+        gsap.fromTo(
+          content,
+          { y: 30, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: content,
+              start: 'top 90%',
+              once: true,
+            }
+          }
+        );
+      });
+    }, container);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="company-intro company-intro--mobile" ref={sectionRef as React.RefObject<HTMLElement>}>
+    <section className="company-intro company-intro--mobile" ref={(node) => {
+      // @ts-expect-error: React RefObject is readonly but we need to assign it here
+      containerRef.current = node;
+      if (sectionRef && 'current' in sectionRef) {
+        // @ts-expect-error: Assigning to readonly ref
+        sectionRef.current = node;
+      }
+    }}>
       <div className="company-intro__mobile-item">
         <img 
           src={imageAssets.aboutCompanyIntro.companyLogoBg} 
           alt="Company Logo Background" 
           className="company-intro__mobile-img" 
-          data-ci-mob-anim 
         />
-        <div className="company-intro__content" data-ci-mob-anim>
+        <div className="company-intro__content">
           <span className="company-intro__eyebrow">About NAPCO</span>
           <h2>A Sri Lankan printing partner built on trust, technology and people.</h2>
           <p>
@@ -60,9 +95,8 @@ function MobileCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLEl
           src={imageAssets.aboutCompanyIntro.serviceQualityBg} 
           alt="Service Quality Background" 
           className="company-intro__mobile-img" 
-          data-ci-mob-anim 
         />
-        <div className="company-intro__content" data-ci-mob-anim>
+        <div className="company-intro__content">
           <span className="company-intro__eyebrow">Print Quality</span>
           <h2>Every printed detail is handled with accuracy, care and finishing strength.</h2>
           <p>
