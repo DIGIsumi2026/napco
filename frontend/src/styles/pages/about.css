@@ -2530,36 +2530,247 @@
 }
 
 /* ================================
-   VISION MISSION - MOBILE ANIMATIONS
+   PREMIUM ACCORDION (VISION & MISSION)
 ================================ */
-.vision-mission--mobile .vision-mission__mobile-image {
-  overflow: hidden;
-  border-radius: 20px;
+
+.vm-accordion-section {
+  width: 100%;
+  height: 80vh;
+  min-height: 600px;
+  max-height: 900px;
+  background-color: var(--color-background-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 5%;
 }
 
-.vision-mission--mobile .vision-mission__mobile-image img {
+.vm-accordion-container {
+  display: flex;
   width: 100%;
-  height: auto;
-  display: block;
-  filter: grayscale(100%);
-  transition: filter 3s ease, transform 1s ease;
+  height: 100%;
+  gap: 16px;
+  border-radius: 24px;
+  overflow: hidden;
+  max-width: 1600px;
+}
+
+.vm-accordion-panel {
+  position: relative;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  /* GSAP will control flex-basis, but we add a fallback flex value */
+  flex: 1 1 50%;
+  will-change: flex;
+}
+
+.vm-accordion-bg-wrapper {
+  position: absolute;
+  inset: -5%; /* extra space for parallax & scale */
+  width: 110%;
+  height: 110%;
+  overflow: hidden;
+}
+
+.vm-accordion-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Default blurred and darkened state */
+  filter: blur(8px) brightness(0.75);
+  transform: scale(1);
+  will-change: filter, transform;
+}
+
+.vm-accordion-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(2, 7, 17, 0.95) 0%,
+    rgba(2, 7, 17, 0.4) 40%,
+    transparent 100%
+  );
+  opacity: 0;
+  will-change: opacity;
+}
+
+.vm-accordion-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 40px;
+  color: white;
+  pointer-events: none;
+}
+
+.vm-accordion-title-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  will-change: transform;
+}
+
+.vm-accordion-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.vm-accordion-title-area h2 {
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.vm-accordion-desc {
+  max-width: 600px;
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: transform, opacity;
+}
+
+.vm-accordion-desc p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+/* ================================
+   MOBILE STACKED CARDS (VISION & MISSION)
+================================ */
+
+.vm-mobile-section {
+  padding: 60px 20px;
+  background-color: var(--color-background-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vm-mobile-card {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease, height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.vm-mobile-card.vm-mob--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.vm-mobile-card.vm-mob--expanded {
+  height: 420px;
+}
+
+.vm-mobile-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(4px) brightness(0.6);
+  transition: filter 0.6s ease, transform 0.6s ease;
   transform: scale(1.05);
 }
 
-.vision-mission--mobile .vision-mission__mobile-image.vm-mob--visible img {
-  filter: grayscale(0%);
+.vm-mobile-card.vm-mob--expanded .vm-mobile-bg {
+  filter: blur(0px) brightness(0.85);
   transform: scale(1);
 }
 
-.vision-mission--mobile .vision-mission__content[data-vm-mob-anim] {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+.vm-mobile-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(2, 7, 17, 0.95) 0%, rgba(2, 7, 17, 0.4) 50%, transparent 100%);
+  opacity: 0.6;
+  transition: opacity 0.6s ease;
 }
 
-.vision-mission--mobile .vision-mission__content[data-vm-mob-anim].vm-mob--visible {
+.vm-mobile-card.vm-mob--expanded .vm-mobile-overlay {
   opacity: 1;
-  transform: translateY(0);
+}
+
+.vm-mobile-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  color: white;
+}
+
+.vm-mobile-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0;
+  transition: margin-bottom 0.4s ease;
+}
+
+.vm-mobile-card.vm-mob--expanded .vm-mobile-title {
+  margin-bottom: 16px;
+}
+
+.vm-mobile-title h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.vm-mobile-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+}
+
+.vm-mobile-card.vm-mob--expanded .vm-mobile-icon {
+  transform: rotate(180deg);
+}
+
+.vm-mobile-desc {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+}
+
+.vm-mobile-card.vm-mob--expanded .vm-mobile-desc {
+  max-height: 200px;
+  opacity: 1;
+  transition: max-height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease 0.1s;
+}
+
+.vm-mobile-desc p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
 }
 
 /* ================================

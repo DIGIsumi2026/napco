@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Eye, Target, ChevronDown } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -10,11 +11,13 @@ const MOBILE_BP = 1024;
 
 // ─── Mobile sub-component ────────────────────────────────────────────────────
 function MobileVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    const items = section.querySelectorAll<HTMLElement>('[data-vm-mob-anim]');
+    const items = section.querySelectorAll<HTMLElement>('.vm-mobile-card');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -30,34 +33,66 @@ function MobileVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLE
     return () => observer.disconnect();
   }, [sectionRef]);
 
+  const toggleCard = (index: number) => {
+    setExpandedCard(expandedCard === index ? null : index);
+  };
+
   return (
-    <section className="vision-mission vision-mission--mobile" ref={sectionRef as React.RefObject<HTMLElement>}>
-      <div className="vision-mission__mobile-image" data-vm-mob-anim>
-        <img src={imageAssets.about.visionMission} alt="NAPCO Vision and Mission" />
-      </div>
-      <div className="vision-mission__mobile-list">
-        <div className="vision-mission__content" data-vm-mob-anim>
-          <span className="vision-mission__eyebrow">Our Vision</span>
-          <h2>Driven by quality, service excellence and innovation.</h2>
-          <p>
-            To be a key player in the printing industry in the pursuit of quality
-            &amp; service excellence while earning our employees &amp; customers
-            enthusiasm through continues improvement driven by integrity, team
-            work &amp; innovation.
-          </p>
+    <section className="vm-mobile-section" ref={sectionRef as React.RefObject<HTMLElement>}>
+      {/* Vision Card */}
+      <div 
+        className={`vm-mobile-card ${expandedCard === 0 ? 'vm-mob--expanded' : ''}`}
+        onClick={() => toggleCard(0)}
+      >
+        <img 
+          src={imageAssets.about.visionMission} 
+          alt="NAPCO Vision" 
+          className="vm-mobile-bg"
+        />
+        <div className="vm-mobile-overlay" />
+        <div className="vm-mobile-content">
+          <div className="vm-mobile-title">
+            <h2>Our Vision</h2>
+            <div className="vm-mobile-icon">
+              <ChevronDown size={20} />
+            </div>
+          </div>
+          <div className="vm-mobile-desc">
+            <p>
+              To be a key player in the printing industry in the pursuit of quality
+              &amp; service excellence while earning our employees &amp; customers
+              enthusiasm through continuous improvement driven by integrity, team
+              work &amp; innovation.
+            </p>
+          </div>
         </div>
-        <div className="vision-mission__content" data-vm-mob-anim>
-          <span className="vision-mission__eyebrow">Our Mission</span>
-          <h2>
-            Comprehensive printing solutions with responsibility and growth.
-          </h2>
-          <p>
-            Committed to provide comprehensive printing solution dedicated to
-            excellence in customer service, product quality &amp; its impact
-            within the environment, local community &amp; its staff providing the
-            very best in all that we do for the benefit of our staff, customers
-            &amp; suppliers, as well as ensuring a profitable growth.
-          </p>
+      </div>
+
+      {/* Mission Card */}
+      <div 
+        className={`vm-mobile-card ${expandedCard === 1 ? 'vm-mob--expanded' : ''}`}
+        onClick={() => toggleCard(1)}
+      >
+        <img 
+          src={imageAssets.aboutCompanyIntro.serviceQualityBg} 
+          alt="NAPCO Mission" 
+          className="vm-mobile-bg"
+        />
+        <div className="vm-mobile-overlay" />
+        <div className="vm-mobile-content">
+          <div className="vm-mobile-title">
+            <h2>Our Mission</h2>
+            <div className="vm-mobile-icon">
+              <ChevronDown size={20} />
+            </div>
+          </div>
+          <div className="vm-mobile-desc">
+            <p>
+              Committed to provide comprehensive printing solutions dedicated to
+              excellence in customer service, product quality &amp; its impact
+              within the environment, local community &amp; its staff, ensuring profitable growth.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -66,41 +101,130 @@ function MobileVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLE
 
 // ─── Desktop sub-component ───────────────────────────────────────────────────
 function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
-  return (
-    <>
-      <section className="about-vision-section" ref={sectionRef as React.RefObject<HTMLElement>}>
-        <div className="about-vision-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.about.visionMission})` }} />
-        <div className="about-vision-section__overlay" />
-        <div className="about-vision-section__content">
-          <span className="about-section-eyebrow" data-reveal>Our Vision</span>
-          <h2 data-reveal>Driven by quality, service excellence and innovation.</h2>
-          <p data-reveal>
-            To be a key player in the printing industry in the pursuit of quality
-            &amp; service excellence while earning our employees &amp; customers
-            enthusiasm through continues improvement driven by integrity, team
-            work &amp; innovation.
-          </p>
-        </div>
-      </section>
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-      <section className="about-mission-section">
-        <div className="about-mission-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.about.visionMission})` }} />
-        <div className="about-mission-section__overlay" />
-        <div className="about-mission-section__content">
-          <span className="about-section-eyebrow" data-reveal>Our Mission</span>
-          <h2 data-reveal>
-            Comprehensive printing solutions with responsibility and growth.
-          </h2>
-          <p data-reveal>
-            Committed to provide comprehensive printing solution dedicated to
-            excellence in customer service, product quality &amp; its impact
-            within the environment, local community &amp; its staff providing the
-            very best in all that we do for the benefit of our staff, customers
-            &amp; suppliers, as well as ensuring a profitable growth.
-          </p>
+  // GSAP Hover Logic
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const panels = gsap.utils.toArray<HTMLElement>('.vm-accordion-panel', container);
+    
+    // We use a context to easily clean up GSAP tweens when the component unmounts
+    const ctx = gsap.context(() => {
+      panels.forEach((panel, i) => {
+        const bg = panel.querySelector('.vm-accordion-bg');
+        const overlay = panel.querySelector('.vm-accordion-overlay');
+        const desc = panel.querySelector('.vm-accordion-desc');
+        const titleArea = panel.querySelector('.vm-accordion-title-area');
+
+        // Animate Panel bounds and internals based on hover state
+        if (hoveredIndex === i) {
+          // Hovered state
+          gsap.to(panel, { flex: '1 1 70%', duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(bg, { filter: 'blur(0px) brightness(1)', scale: 1.05, xPercent: -2, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(overlay, { opacity: 1, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(desc, { autoAlpha: 1, y: 0, duration: 0.5, delay: 0.1, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(titleArea, { scale: 1.05, transformOrigin: 'left center', duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+        } else if (hoveredIndex !== null) {
+          // Shrunk state (when something else is hovered)
+          gsap.to(panel, { flex: '1 1 30%', duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(bg, { filter: 'blur(8px) brightness(0.6)', scale: 1, xPercent: 2, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(overlay, { opacity: 0, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(desc, { autoAlpha: 0, y: 20, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+          gsap.to(titleArea, { scale: 0.95, transformOrigin: 'left center', duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+        } else {
+          // Default state (nothing hovered)
+          gsap.to(panel, { flex: '1 1 50%', duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(bg, { filter: 'blur(8px) brightness(0.75)', scale: 1, xPercent: 0, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(overlay, { opacity: 0, duration: 0.7, ease: 'power3.out', overwrite: 'auto' });
+          gsap.to(desc, { autoAlpha: 0, y: 20, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+          gsap.to(titleArea, { scale: 1, transformOrigin: 'left center', duration: 0.5, ease: 'power3.out', overwrite: 'auto' });
+        }
+      });
+    }, container);
+
+    return () => ctx.revert();
+  }, [hoveredIndex]);
+
+  return (
+    <section className="vm-accordion-section" ref={sectionRef as React.RefObject<HTMLElement>}>
+      <div className="vm-accordion-container" ref={containerRef} onMouseLeave={() => setHoveredIndex(null)}>
+        
+        {/* Panel 1: Vision */}
+        <div 
+          className="vm-accordion-panel"
+          onMouseEnter={() => setHoveredIndex(0)}
+          onFocus={() => setHoveredIndex(0)}
+          tabIndex={0}
+          role="button"
+          aria-expanded={hoveredIndex === 0}
+        >
+          <div className="vm-accordion-bg-wrapper">
+            <img 
+              src={imageAssets.about.visionMission} 
+              alt="Our Vision Background" 
+              className="vm-accordion-bg"
+            />
+          </div>
+          <div className="vm-accordion-overlay" />
+          <div className="vm-accordion-content">
+            <div className="vm-accordion-title-area">
+              <div className="vm-accordion-icon">
+                <Eye size={24} color="white" />
+              </div>
+              <h2>Our Vision</h2>
+            </div>
+            <div className="vm-accordion-desc">
+              <p>
+                To be a key player in the printing industry in the pursuit of quality
+                &amp; service excellence while earning our employees &amp; customers
+                enthusiasm through continuous improvement driven by integrity, team
+                work &amp; innovation.
+              </p>
+            </div>
+          </div>
         </div>
-      </section>
-    </>
+
+        {/* Panel 2: Mission */}
+        <div 
+          className="vm-accordion-panel"
+          onMouseEnter={() => setHoveredIndex(1)}
+          onFocus={() => setHoveredIndex(1)}
+          tabIndex={0}
+          role="button"
+          aria-expanded={hoveredIndex === 1}
+        >
+          <div className="vm-accordion-bg-wrapper">
+            <img 
+              src={imageAssets.aboutCompanyIntro.serviceQualityBg} 
+              alt="Our Mission Background" 
+              className="vm-accordion-bg"
+            />
+          </div>
+          <div className="vm-accordion-overlay" />
+          <div className="vm-accordion-content">
+            <div className="vm-accordion-title-area">
+              <div className="vm-accordion-icon">
+                <Target size={24} color="white" />
+              </div>
+              <h2>Our Mission</h2>
+            </div>
+            <div className="vm-accordion-desc">
+              <p>
+                Committed to provide comprehensive printing solutions dedicated to
+                excellence in customer service, product quality &amp; its impact
+                within the environment, local community &amp; its staff providing the
+                very best in all that we do for the benefit of our staff, customers
+                &amp; suppliers, as well as ensuring a profitable growth.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
   );
 }
 
