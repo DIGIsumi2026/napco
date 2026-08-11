@@ -209,7 +209,7 @@ export default function BoardManagement() {
 
           <p>
             Meet the leadership team guiding NAPCO with strategic direction,
-            industry experience and a commitment to long-term growth.
+            industry experience and a commitment to long term growth.
           </p>
         </div>
 

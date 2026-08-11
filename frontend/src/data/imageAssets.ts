@@ -82,6 +82,7 @@ import company12 from "../assets/images/about/companies/company12.png";
 import company13 from "../assets/images/about/companies/company13.png";
 import company14 from "../assets/images/about/companies/company14.png";
 import company15 from "../assets/images/about/companies/company15.png";
+import company16 from "../assets/images/about/companies/company16.webp";
 
 //service page 
 // hero 
@@ -216,6 +217,7 @@ export const imageAssets = {
     company13,
     company14,
     company15,
+    company16
   },
 
   servicesQuality: {

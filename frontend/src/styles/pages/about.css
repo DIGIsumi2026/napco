@@ -2365,7 +2365,7 @@
     270deg,
     #ffffff00 0%,
     rgba(255, 255, 255, 0) 5%,
-    transparent 100%
+    transparent 100%s
   );
 }
 
@@ -2638,7 +2638,7 @@
 
 .vm-accordion-title-area h2 {
   font-size: clamp(1.8rem, 3vw, 2.8rem);
-  font-weight: 700;
+  font-weight: 600;
   margin: 0;
   letter-spacing: 0.02em;
 }
@@ -2651,7 +2651,7 @@
 }
 
 .vm-accordion-desc p {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.85);
   margin: 0;
