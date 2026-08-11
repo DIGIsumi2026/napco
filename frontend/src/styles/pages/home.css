@@ -4572,9 +4572,9 @@ body.is-hovering .cursor-ring {
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(circle at 10% 50%, rgba(0, 174, 239, 0.1), transparent 30%),
+    radial-gradient(circle at 10% 50%, rgba(0, 175, 239, 0), transparent 30%),
     radial-gradient(circle at 88% 50%, rgba(139, 53, 255, 0.1), transparent 30%),
-    linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    linear-gradient(180deg, #ffffff00 0%, #f7fbff00 100%);
 }
 
 .client-logos__scroller {
@@ -4655,8 +4655,8 @@ body.is-hovering .cursor-ring {
   left: 0;
   background: linear-gradient(
     90deg,
-    #ffffff 0%,
-    rgba(255, 255, 255, 0.86) 34%,
+    #ffffff86 0%,
+    rgba(255, 255, 255, 0.527) 34%,
     transparent 100%
   );
 }
@@ -4665,8 +4665,8 @@ body.is-hovering .cursor-ring {
   right: 0;
   background: linear-gradient(
     270deg,
-    #ffffff 0%,
-    rgba(255, 255, 255, 0.86) 34%,
+    #ffffff7e 0%,
+    rgba(255, 255, 255, 0.527) 34%,
     transparent 100%
   );
 }

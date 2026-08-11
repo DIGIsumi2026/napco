@@ -2270,9 +2270,9 @@
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(circle at 10% 50%, rgba(0, 174, 239, 0.1), transparent 30%),
-    radial-gradient(circle at 88% 50%, rgba(139, 53, 255, 0.1), transparent 30%),
-    linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+    radial-gradient(circle at 10% 50%, rgba(0, 175, 239, 0), transparent 30%),
+    radial-gradient(circle at 88% 50%, rgba(141, 53, 255, 0), transparent 30%),
+    linear-gradient(180deg, #ffffff75 0%, #f7fbff88 100%);
 }
 
 .about-company-banner__scroller {
@@ -2353,8 +2353,8 @@
   left: 0;
   background: linear-gradient(
     90deg,
-    #ffffff 0%,
-    rgba(255, 255, 255, 0.86) 34%,
+    #ffffff10 0%,
+    rgba(255, 255, 255, 0) 34%,
     transparent 100%
   );
 }
@@ -2363,8 +2363,8 @@
   right: 0;
   background: linear-gradient(
     270deg,
-    #ffffff 0%,
-    rgba(255, 255, 255, 0.86) 34%,
+    #ffffff00 0%,
+    rgba(255, 255, 255, 0) 5%,
     transparent 100%
   );
 }
@@ -3368,7 +3368,7 @@
 
 /* White Fade for Company Banner */
 .about-company-banner__overlay {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 1) 100%) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.719) 0%, rgba(246, 246, 248, 0.959) 100%) !important;
 }
 
 .about-company-banner__mobile-header {

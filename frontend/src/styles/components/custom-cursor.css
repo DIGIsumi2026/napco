@@ -27,7 +27,7 @@ body.custom-cursor-active * {
   left: -4px;
   width: 8px;
   height: 8px;
-  background-color: var(--color-primary, #0ea5e9);
+  background-color: var(--color-primary, #ab0ee9);
   border-radius: 50%;
   pointer-events: none;
   will-change: transform;
@@ -42,7 +42,7 @@ body.custom-cursor-active * {
   left: -20px;
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(14, 165, 233, 0.4);
+  border: 1px solid #ab0ee9;
   background-color: transparent;
   border-radius: 50%;
   pointer-events: none;
@@ -62,8 +62,8 @@ body.custom-cursor-active * {
 
 /* Floating Label */
 .napco-cursor-label {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 9px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: #fff;
@@ -91,16 +91,16 @@ body.custom-cursor-active * {
   height: 4px;
   top: -2px;
   left: -2px;
-  background-color: rgba(14, 165, 233, 0.5);
+  background-color: #ab0ee9;
 }
 
 /* Button & Accordion (Explore/View) */
 .napco-custom-cursor.type-button .napco-cursor-outer,
 .napco-custom-cursor.type-accordion .napco-cursor-outer {
-  width: 76px;
-  height: 76px;
-  top: -38px;
-  left: -38px;
+  width: 56px;
+  height: 56px;
+  top: -28px;
+  left: -28px;
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(6px);
@@ -119,10 +119,10 @@ body.custom-cursor-active * {
 
 /* Image (Hero, Vision, Mission) */
 .napco-custom-cursor.type-image .napco-cursor-outer {
-  width: 80px;
-  height: 80px;
-  top: -40px;
-  left: -40px;
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  left: -30px;
   background-color: rgba(255, 255, 255, 0.95);
   border-color: transparent;
 }
@@ -179,7 +179,7 @@ body.custom-cursor-active * {
   height: 76px;
   top: -38px;
   left: -38px;
-  background-color: rgba(14, 165, 233, 0.95);
+  background-color: #ab0ee9;
   border-color: transparent;
 }
 .napco-custom-cursor.type-profile .napco-cursor-inner {
@@ -196,7 +196,7 @@ body.custom-cursor-active * {
   height: 24px;
   top: -12px;
   left: -12px;
-  border-color: var(--color-primary, #0ea5e9);
+  border-color: var(--color-primary, #ab0ee9);
   background-color: rgba(14, 165, 233, 0.1);
 }
 .napco-custom-cursor.type-nav .napco-cursor-inner {
