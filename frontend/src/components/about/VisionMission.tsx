@@ -26,7 +26,7 @@ function MobileVisionMission() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // Apply pop up effect via CSS class
-            entry.target.classList.add('vm-mob--visible');
+            entry.target.classList.add('vm-mob--visible', 'vm-mob--expanded');
           }
         });
       },
@@ -99,7 +99,7 @@ function MobileVisionMission() {
 // ─── Desktop sub-component ───────────────────────────────────────────────────
 function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
 
   // GSAP Hover Logic
   useEffect(() => {
@@ -151,7 +151,7 @@ function DesktopVisionMission({ sectionRef }: { sectionRef: React.RefObject<HTML
 
   return (
     <section className="vm-accordion-section" ref={sectionRef as React.RefObject<HTMLElement>}>
-      <div className="vm-accordion-container" ref={containerRef} onMouseLeave={() => setHoveredIndex(null)}>
+      <div className="vm-accordion-container" ref={containerRef} onMouseLeave={() => setHoveredIndex(0)}>
         
         {/* Panel 1: Vision */}
         <div 

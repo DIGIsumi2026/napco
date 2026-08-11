@@ -3340,19 +3340,19 @@
 /* --- REVISIONS --- */
 
 /* Vision/Mission Hover Expand (replacing js state) */
-.vm-mobile-card:hover {
+.vm-mobile-card.vm-mob--expanded {
   flex: 1 1 70%;
 }
-.vm-mobile-card:hover .vm-mobile-blur {
+.vm-mobile-card.vm-mob--expanded .vm-mobile-blur {
   opacity: 0;
 }
-.vm-mobile-card:hover .vm-mobile-overlay {
+.vm-mobile-card.vm-mob--expanded .vm-mobile-overlay {
   opacity: 1;
 }
-.vm-mobile-card:hover .vm-mobile-title {
+.vm-mobile-card.vm-mob--expanded .vm-mobile-title {
   transform: scale(1.05);
 }
-.vm-mobile-card:hover .vm-mobile-desc {
+.vm-mobile-card.vm-mob--expanded .vm-mobile-desc {
   opacity: 1;
   visibility: visible;
   height: 120px;
