@@ -6,10 +6,12 @@ import Services from './pages/Services';
 import Contact from './pages/Contact';
 import RouteScrollManager from './components/common/RouteScrollManager';
 import CustomCursor from './components/common/CustomCursor';
+import Preloader from './components/common/Preloader';
 
 function App() {
   return (
     <>
+      <Preloader />
       <CustomCursor />
       <RouteScrollManager />
       <Routes>
@@ -25,4 +27,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;
