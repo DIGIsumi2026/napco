@@ -118,7 +118,6 @@ export default function AboutPrinting() {
             showContent ? 'napco-about__content--visible' : ''
           }`}
         >
-          <span className="section-pill">About NAPCO</span>
 
           <h2>
             Professional Printing &amp; Publishing Solutions

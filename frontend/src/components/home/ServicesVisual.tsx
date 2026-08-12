@@ -390,7 +390,6 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
                 >
                   See More
                 </Link>
-                <small>{String(index + 1).padStart(2, '0')} / 06</small>
               </div>
             </article>
           ))}

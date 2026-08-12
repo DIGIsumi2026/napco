@@ -199,7 +199,6 @@ export default function BoardManagement() {
     <section className="board-management">
       <div className="board-management__inner">
         <div className="board-management__heading">
-          <span>Leadership</span>
 
           <h2>
             Board of

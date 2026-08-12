@@ -337,7 +337,6 @@ export default function AboutHero() {
             <div className="about-hero__thumbnail-overlay" />
 
             <div className="about-hero__thumbnail-content" ref={thumbnailContentRef}>
-              <span>About NAPCO</span>
 
               <h1>
                 Printing excellence

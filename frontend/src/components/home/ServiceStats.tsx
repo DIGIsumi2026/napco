@@ -209,9 +209,6 @@ export default function ServiceStats() {
 
       <div className="service-stats__inner">
         <div className="service-stats__heading">
-          <span className="service-stats__pill">
-            Premium Printing Solutions
-          </span>
 
           <h2>Services Built for Every Brand Impression</h2>
 

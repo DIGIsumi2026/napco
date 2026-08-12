@@ -117,7 +117,13 @@ export default function CustomCursor() {
           label = '';
         }
 
-        const explicitType = btnOrLink.getAttribute('data-cursor-type') || 'button';
+        let explicitType = btnOrLink.getAttribute('data-cursor-type') || 'button';
+        
+        // If there's no label to show (or it's excluded), use the subtle 'nav' pop effect
+        if (!label || isExcluded) {
+          explicitType = 'nav';
+        }
+
         setCursorState({ type: explicitType, label: label || '' });
         return;
       }
