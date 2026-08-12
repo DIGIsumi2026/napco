@@ -80,26 +80,45 @@ export default function CustomCursor() {
       if (btnOrLink) {
         let label = btnOrLink.getAttribute('data-cursor-label');
         
-        // If no explicit label, try aria-label or innerText
-        if (!label) {
-          label = btnOrLink.getAttribute('aria-label') || btnOrLink.getAttribute('title') || '';
-          
-          if (!label && btnOrLink.textContent) {
-            const text = btnOrLink.textContent.trim();
-            // Only use text content if it's reasonably short
-            if (text.length > 0 && text.length <= 20) {
-              label = text;
-            }
+        // EXCLUSIONS: The user requested no labels for specific areas.
+        // We check if the button/link is inside an excluded container.
+        const isExcluded = btnOrLink.closest(
+          'nav, header, footer, .sidebar, .services-visual, .about-printing, .napco-about, .quality-metrics, .contact-form, .feedback-form, form'
+        );
+
+        // Only apply automatic href mappings if NOT excluded
+        if (!label && !isExcluded && btnOrLink instanceof HTMLAnchorElement) {
+          const href = btnOrLink.getAttribute('href') || '';
+          if (href.startsWith('mailto:')) {
+            label = 'Mail';
+          } else if (href.startsWith('tel:')) {
+            label = 'Call';
+          } else if (href.includes('wa.me') || href.includes('whatsapp')) {
+            label = 'Chat';
+          } else if (href.includes('maps') || href.includes('directions')) {
+            label = 'Map';
+          } else if (href.includes('facebook.com')) {
+            label = 'Facebook';
+          } else if (href.includes('linkedin.com')) {
+            label = 'LinkedIn';
+          } else if (href.includes('twitter.com') || href.includes('x.com')) {
+            label = 'Twitter';
+          } else if (href.includes('instagram.com')) {
+            label = 'Instagram';
           }
         }
+
+        if (!label && !isExcluded && btnOrLink.textContent?.toLowerCase().includes('quote')) {
+          label = 'Quote';
+        }
         
-        // Fallback if still empty
-        if (!label) {
-          label = 'View';
+        // Final sanity check: if it's explicitly excluded, ensure label is empty
+        if (isExcluded) {
+          label = '';
         }
 
         const explicitType = btnOrLink.getAttribute('data-cursor-type') || 'button';
-        setCursorState({ type: explicitType, label });
+        setCursorState({ type: explicitType, label: label || '' });
         return;
       }
 
