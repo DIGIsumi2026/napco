@@ -71,7 +71,6 @@ ${message}
 
       <div className="contact-form-section__inner">
         <div className="contact-form-section__heading" data-reveal>
-          <span>Get in Touch</span>
 
           <h2>
             Send feedback

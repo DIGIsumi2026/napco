@@ -1,0 +1,212 @@
+/* d:\projects\napco\frontend\src\styles\components\custom-cursor.css */
+
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none !important;
+}
+
+.napco-custom-cursor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.napco-custom-cursor.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Inner Dot */
+.napco-cursor-inner {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-primary, #ab0ee9);
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 2;
+  transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+}
+
+/* Outer Ring */
+.napco-cursor-outer {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ab0ee9;
+  background-color: transparent;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              top 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              left 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              border-color 0.4s ease,
+              background-color 0.4s ease,
+              border-radius 0.4s ease;
+}
+
+/* Floating Label */
+.napco-cursor-label {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.3s ease;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ==================================
+   INTERACTIVE STATES
+================================== */
+
+/* Text */
+.napco-custom-cursor.type-text .napco-cursor-outer {
+  width: 50px;
+  height: 50px;
+  top: -25px;
+  left: -25px;
+  border-color: rgba(14, 165, 233, 0.15);
+}
+.napco-custom-cursor.type-text .napco-cursor-inner {
+  width: 4px;
+  height: 4px;
+  top: -2px;
+  left: -2px;
+  background-color: #ab0ee9;
+}
+
+/* Button & Accordion (Explore/View) */
+.napco-custom-cursor.type-button .napco-cursor-outer,
+.napco-custom-cursor.type-accordion .napco-cursor-outer {
+  width: 56px;
+  height: 56px;
+  top: -28px;
+  left: -28px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.napco-custom-cursor.type-button .napco-cursor-inner,
+.napco-custom-cursor.type-accordion .napco-cursor-inner {
+  opacity: 0;
+}
+.napco-custom-cursor.type-button .napco-cursor-label,
+.napco-custom-cursor.type-accordion .napco-cursor-label {
+  opacity: 1;
+  transform: scale(1);
+  color: #fff;
+}
+
+/* Image (Hero, Vision, Mission) */
+.napco-custom-cursor.type-image .napco-cursor-outer {
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  left: -30px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: transparent;
+}
+.napco-custom-cursor.type-image .napco-cursor-inner {
+  opacity: 0;
+}
+.napco-custom-cursor.type-image .napco-cursor-label {
+  opacity: 1;
+  transform: scale(1);
+  color: #07172d;
+}
+
+/* Rotate (3D Model) */
+.napco-custom-cursor.type-rotate .napco-cursor-outer {
+  width: 90px;
+  height: 90px;
+  top: -45px;
+  left: -45px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.napco-custom-cursor.type-rotate .napco-cursor-inner {
+  opacity: 0;
+}
+.napco-custom-cursor.type-rotate .napco-cursor-label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Add pulsing effect manually to avoiding interfering with translate transform in JS */
+/* Pulse effect is difficult to apply directly to the outer ring because JS is updating its transform constantly.
+   Instead, we use a pseudo element for the pulse. */
+.napco-custom-cursor.type-rotate .napco-cursor-outer::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  animation: cursorPulse 2s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes cursorPulse {
+  0% { transform: scale(0.9); opacity: 0; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1.2); opacity: 0; }
+}
+
+/* Profile (Board Cards) */
+.napco-custom-cursor.type-profile .napco-cursor-outer {
+  width: 76px;
+  height: 76px;
+  top: -38px;
+  left: -38px;
+  background-color: #ab0ee9;
+  border-color: transparent;
+}
+.napco-custom-cursor.type-profile .napco-cursor-inner {
+  opacity: 0;
+}
+.napco-custom-cursor.type-profile .napco-cursor-label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Navigation Items */
+.napco-custom-cursor.type-nav .napco-cursor-outer {
+  width: 24px;
+  height: 24px;
+  top: -12px;
+  left: -12px;
+  border-color: var(--color-primary, #ab0ee9);
+  background-color: rgba(14, 165, 233, 0.1);
+}
+.napco-custom-cursor.type-nav .napco-cursor-inner {
+  width: 4px;
+  height: 4px;
+  top: -2px;
+  left: -2px;
+}
+
+.napco-custom-cursor.type-image .napco-cursor-label {
+  text-shadow: none;
+}

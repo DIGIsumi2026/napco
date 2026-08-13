@@ -1,0 +1,79 @@
+/* ==============================================
+   NAPCO PRELOADER
+   ============================================== */
+
+.napco-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000000; /* above everything including custom cursor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Fade-in when mounted */
+  opacity: 1;
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade-out state */
+.napco-preloader--hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Frosted-glass blur backdrop that sits over the page */
+.napco-preloader__blur {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(18px) saturate(0.8) brightness(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(0.8) brightness(1.1);
+  background-color: rgba(255, 255, 255, 0.65);
+}
+
+/* Video stage – centred, raised above the blur layer */
+.napco-preloader__stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Subtle soft glow around the video */
+  filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.5));
+}
+
+/* The video itself */
+.napco-preloader__video {
+  width: auto;
+  height: auto;
+  max-width: min(480px, 70vw);
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+  /* Pop in nicely */
+  animation: preloaderPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+  .napco-preloader__video {
+    max-width: min(400px, 80vw);
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .napco-preloader__video {
+    max-width: min(320px, 90vw);
+  }
+}
+
+@keyframes preloaderPop {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

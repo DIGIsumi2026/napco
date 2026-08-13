@@ -218,8 +218,6 @@ export default function ServiceStatCards() {
 
       <div className="service-stat-cards__inner">
         <div className="service-stat-cards__heading" data-reveal>
-          <span>What We Print</span>
-
           <h2>
             Services crafted
             <br />

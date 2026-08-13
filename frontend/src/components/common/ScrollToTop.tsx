@@ -56,7 +56,7 @@ export default function ScrollToTop() {
     <div className="napco-floating-actions">
       <motion.a
         className="napco-whatsapp-float"
-        href="https://wa.me/94112910015"
+        href="https://wa.me/94716532112"
         target="_blank"
         rel="noreferrer"
         aria-label="Chat with NAPCO on WhatsApp"

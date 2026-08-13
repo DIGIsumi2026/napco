@@ -108,7 +108,7 @@ export default function NavigationBar({
 
             <nav className="napco-nav-links hidden md:flex">
               {navLinks.map(({ label, href }) => (
-                <NavLink key={label} to={href} className="napco-nav-link">
+                <NavLink key={label} to={href} className="napco-nav-link" data-cursor-type="nav">
                   {label}
                 </NavLink>
               ))}
@@ -191,7 +191,7 @@ export default function NavigationBar({
 
               <nav className="napco-pill-links hidden md:flex">
                 {navLinks.map(({ label, href }) => (
-                  <NavLink key={label} to={href} className="napco-pill-link">
+                  <NavLink key={label} to={href} className="napco-pill-link" data-cursor-type="nav">
                     {label}
                   </NavLink>
                 ))}

@@ -1,109 +1,109 @@
 //footer
-import napcoLogo from '../assets/images/nlogo.png';
-import navlogo from "../assets/images/navlogo.png";
+import napcoLogo from '../assets/images/nlogo.webp';
+import navlogo from "../assets/images/navlogo.webp";
 // home page 
 //hero
-import nlogo from '../assets/images/nlogo.png';
-import building1 from '../assets/images/building-1.jpg';
-import building2 from '../assets/images/building-2.jpg';
-import building3 from '../assets/images/building-3.jpg';
-import building4 from '../assets/images/building-4.jpg';
-import building5 from '../assets/images/building-5.jpg';
+import nlogo from '../assets/images/nlogo.webp';
+import building1 from '../assets/images/building-1.webp';
+import building2 from '../assets/images/building-2.webp';
+import building3 from '../assets/images/building-3.webp';
+import building4 from '../assets/images/building-4.webp';
+import building5 from '../assets/images/building-5.webp';
 
 //about us 
-import napcoLogoRevealThumb from "../assets/images/napco-logo-reveal-thumb.png";
+import napcoLogoRevealThumb from "../assets/images/napco-logo-reveal-thumb.webp";
 
 //service stat
-import servicePrinter3d from "../assets/images/service-printer-3d.png";
-import servicePapers3d from "../assets/images/service-papers-3d.png";
-import serviceCartridges3d from "../assets/images/service-cartridges-3d.png";
-import serviceCartridges23d from "../assets/images/service-cartridges2-3d.png";
+import servicePrinter3d from "../assets/images/service-printer-3d.webp";
+import servicePapers3d from "../assets/images/service-papers-3d.webp";
+import serviceCartridges3d from "../assets/images/service-cartridges-3d.webp";
+import serviceCartridges23d from "../assets/images/service-cartridges2-3d.webp";
 
 //visual gallery 
-import  newspaperPrintingWide from "../assets/images/newspaper-printing-wide.png";
-import  booksPublishingWide from "../assets/images/books-publishing-wide.png";
-import  commercialPrintingWide from "../assets/images/commercial-printing-wide.png";
-import  labelsCloseup from "../assets/images/labels-closeup.png";
-import  calendarsDiariesCloseup from "../assets/images/calendars-diaries-closeup.png";
-import  annualReportsCloseup from "../assets/images//annual-reports-closeup.png";
+import  newspaperPrintingWide from "../assets/images/newspaper-printing-wide.webp";
+import  booksPublishingWide from "../assets/images/books-publishing-wide.webp";
+import  commercialPrintingWide from "../assets/images/commercial-printing-wide.webp";
+import  labelsCloseup from "../assets/images/labels-closeup.webp";
+import  calendarsDiariesCloseup from "../assets/images/calendars-diaries-closeup.webp";
+import  annualReportsCloseup from "../assets/images//annual-reports-closeup.webp";
 
 //contact cta
-import  ctaOpenBook from "../assets/images/cta-open-book.png";
-import   ctaTag from "../assets/images/cta-tag.png";
-import   ctaCmykStrip from "../assets/images/cta-cmyk-strip.png";
-import   ctaCalendar from "../assets/images/cta-calendar.png";
-import   ctaBookStack from "../assets/images/cta-book-stack.png";
+import  ctaOpenBook from "../assets/images/cta-open-book.webp";
+import   ctaTag from "../assets/images/cta-tag.webp";
+import   ctaCmykStrip from "../assets/images/cta-cmyk-strip.webp";
+import   ctaCalendar from "../assets/images/cta-calendar.webp";
+import   ctaBookStack from "../assets/images/cta-book-stack.webp";
 
 //clients
-import client1 from "../assets/images/clients/client-1.png";
-import client2 from "../assets/images/clients/client-2.png";
-import client3 from "../assets/images/clients/client-3.png";
-import client4 from "../assets/images/clients/client-4.png";
-import client5 from "../assets/images/clients/client-5.png";
-import client6 from "../assets/images/clients/client-6.png";
-import client7 from "../assets/images/clients/client-7.png";
-import client8 from "../assets/images/clients/client-8.png";
-import client9 from "../assets/images/clients/client-9.png";
-import client10 from "../assets/images/clients/client-10.png";
-import client11 from "../assets/images/clients/client-11.png";
-import client12 from "../assets/images/clients/client-12.png";
-import client13 from "../assets/images/clients/client-13.png";
-import client14 from "../assets/images/clients/client-14.png";
+import client1 from "../assets/images/clients/client-1.webp";
+import client2 from "../assets/images/clients/client-2.webp";
+import client3 from "../assets/images/clients/client-3.webp";
+import client4 from "../assets/images/clients/client-4.webp";
+import client5 from "../assets/images/clients/client-5.webp";
+import client6 from "../assets/images/clients/client-6.webp";
+import client7 from "../assets/images/clients/client-7.webp";
+import client8 from "../assets/images/clients/client-8.webp";
+import client9 from "../assets/images/clients/client-9.webp";
+import client10 from "../assets/images/clients/client-10.webp";
+import client11 from "../assets/images/clients/client-11.webp";
+import client12 from "../assets/images/clients/client-12.webp";
+import client13 from "../assets/images/clients/client-13.webp";
+import client14 from "../assets/images/clients/client-14.webp";
 
 // about us page 
 //hero
-import aboutThumbnail from "../assets/images/about/about-thumbnail.png";
+import aboutThumbnail from "../assets/images/about/about-thumbnail.webp";
 
-import companyLogoBg from "../assets/images/about/company-logo-bg.png";
-import serviceQualityBg from "../assets/images/about/service-quality-bg.png";
-import visionMissionImage from "../assets/images/about/modern_print_studio_in_action.png";
+import companyLogoBg from "../assets/images/about/company-logo-bg.webp";
+import serviceQualityBg from "../assets/images/about/service-quality-bg.webp";
+import visionMissionImage from "../assets/images/about/modern_print_studio_in_action.webp";
 
 //management 
-import boardThilanga from "../assets/images/about/managment/thilanga-sumathipala.png";
-import boardUdhantha from "../assets/images/about/managment/udhantha-sumathipala.png";
-import boardSamadara from "../assets/images/about/managment/samadara-sumathipala.png";
-import boardDulantha from "../assets/images/about/managment/dulantha-sumathipala.png";
-import boardSajantha from "../assets/images/about/managment/sajantha-sumathipala.png";
+import boardThilanga from "../assets/images/about/managment/thilanga-sumathipala.webp";
+import boardUdhantha from "../assets/images/about/managment/udhantha-sumathipala.webp";
+import boardSamadara from "../assets/images/about/managment/samadara-sumathipala.webp";
+import boardDulantha from "../assets/images/about/managment/dulantha-sumathipala.webp";
+import boardSajantha from "../assets/images/about/managment/sajantha-sumathipala.webp";
 
 
 //companies 
-import company1 from "../assets/images/about/companies/company1.png";
-import company2 from "../assets/images/about/companies/company2.png";
-import company3 from "../assets/images/about/companies/company3.png";
-import company4 from "../assets/images/about/companies/company4.png";
-import company5 from "../assets/images/about/companies/company5.png";
-import company6 from "../assets/images/about/companies/company6.png";
-import company7 from "../assets/images/about/companies/company7.png";
-import company8 from "../assets/images/about/companies/company8.png";
-import company9 from "../assets/images/about/companies/company9.png";
-import company10 from "../assets/images/about/companies/company11.png";
-import company11 from "../assets/images/about/companies/company1.png";
-import company12 from "../assets/images/about/companies/company12.png";
-import company13 from "../assets/images/about/companies/company13.png";
-import company14 from "../assets/images/about/companies/company14.png";
-import company15 from "../assets/images/about/companies/company15.png";
+import company1 from "../assets/images/about/companies/company1.webp";
+import company2 from "../assets/images/about/companies/company2.webp";
+import company3 from "../assets/images/about/companies/company3.webp";
+import company4 from "../assets/images/about/companies/company4.webp";
+import company5 from "../assets/images/about/companies/company5.webp";
+import company6 from "../assets/images/about/companies/company6.webp";
+import company7 from "../assets/images/about/companies/company7.webp";
+import company8 from "../assets/images/about/companies/company8.webp";
+import company9 from "../assets/images/about/companies/company9.webp";
+import company10 from "../assets/images/about/companies/company11.webp";
+import company11 from "../assets/images/about/companies/company1.webp";
+import company12 from "../assets/images/about/companies/company12.webp";
+import company13 from "../assets/images/about/companies/company13.webp";
+import company14 from "../assets/images/about/companies/company14.webp";
+import company15 from "../assets/images/about/companies/company15.webp";
 
 //service page 
 // hero 
 import  servicesHeroTeam from "../assets/images/services/services-hero-team.webp";
 
 //service grid 
-import newspaperPrintingCard from "../assets/images/services/newspaper-printing.png";
-import booksPublishingCard from "../assets/images/services/books-publishing.png";
-import brochuresCataloguesCard from "../assets/images/services/brochures-catalogues.png";
-import postersLeafletsCard from "../assets/images/services/posters-leaflets.png";
-import labelsAnnualReportsCard from "../assets/images/services/labels-annual-reports.png";
-import calendarsDiariesCard from "../assets/images/services/calendars-diaries.png";
+import newspaperPrintingCard from "../assets/images/services/newspaper-printing.webp";
+import booksPublishingCard from "../assets/images/services/books-publishing.webp";
+import brochuresCataloguesCard from "../assets/images/services/brochures-catalogues.webp";
+import postersLeafletsCard from "../assets/images/services/posters-leaflets.webp";
+import labelsAnnualReportsCard from "../assets/images/services/labels-annual-reports.webp";
+import calendarsDiariesCard from "../assets/images/services/calendars-diaries.webp";
 
 //service galleary
-import qualityBg from "../assets/images/services/service gallery/quality-bg.png";
-import heidelberg10c from "../assets/images/services/service gallery/heidelberg-10c.jpg";
-import mitsubishiLithopia1 from "../assets/images/services/service gallery/mitsubishi-lithopia-1.jpg";
-import laminationUv from "../assets/images/services/service gallery/lamination-uv.jpg";
-import mitsubishiLithopia2 from "../assets/images/services/service gallery/mitsubishi-lithopia-2.jpg";
+import qualityBg from "../assets/images/services/service gallery/quality-bg.webp";
+import heidelberg10c from "../assets/images/services/service gallery/heidelberg-10c.webp";
+import mitsubishiLithopia1 from "../assets/images/services/service gallery/mitsubishi-lithopia-1.webp";
+import laminationUv from "../assets/images/services/service gallery/lamination-uv.webp";
+import mitsubishiLithopia2 from "../assets/images/services/service gallery/mitsubishi-lithopia-2.webp";
 
 //contact page 
-import contactHero from "../assets/images/contact/contact-hero.png";
+import contactHero from "../assets/images/contact/contact-hero.webp";
 
 
 export const imageAssets = {
@@ -215,7 +215,7 @@ export const imageAssets = {
     company12,
     company13,
     company14,
-    company15,
+    company15
   },
 
   servicesQuality: {

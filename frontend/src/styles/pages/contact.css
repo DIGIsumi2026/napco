@@ -497,6 +497,7 @@ a.contact-info-card:hover {
 .contact-form-card textarea {
   resize: vertical;
   min-height: 150px;
+  max-height: 350px;
 }
 
 .contact-form-card input:focus,

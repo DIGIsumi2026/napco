@@ -14,36 +14,71 @@ const clamp = (value: number, min: number, max: number) => {
 
 // ─── Mobile sub-component ────────────────────────────────────────────────────
 function MobileCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const items = section.querySelectorAll<HTMLElement>('[data-ci-mob-anim]');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('ci-mob--visible');
+    const ctx = gsap.context(() => {
+      // Animate images
+      gsap.utils.toArray<HTMLElement>('.company-intro__mobile-img').forEach((img) => {
+        gsap.fromTo(
+          img,
+          { scale: 0.95, autoAlpha: 0 },
+          {
+            scale: 1,
+            autoAlpha: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: img,
+              start: 'top 85%',
+              once: true,
+            }
           }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-    );
+        );
+      });
 
-    items.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [sectionRef]);
+      // Animate content blocks
+      gsap.utils.toArray<HTMLElement>('.company-intro__content').forEach((content) => {
+        gsap.fromTo(
+          content,
+          { y: 30, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: content,
+              start: 'top 90%',
+              once: true,
+            }
+          }
+        );
+      });
+    }, container);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="company-intro company-intro--mobile" ref={sectionRef as React.RefObject<HTMLElement>}>
+    <section className="company-intro company-intro--mobile" ref={(node) => {
+      // @ts-expect-error: React RefObject is readonly but we need to assign it here
+      containerRef.current = node;
+      if (sectionRef && 'current' in sectionRef) {
+        // @ts-expect-error: Assigning to readonly ref
+        sectionRef.current = node;
+      }
+    }}>
       <div className="company-intro__mobile-item">
         <img 
           src={imageAssets.aboutCompanyIntro.companyLogoBg} 
           alt="Company Logo Background" 
           className="company-intro__mobile-img" 
-          data-ci-mob-anim 
         />
-        <div className="company-intro__content" data-ci-mob-anim>
+        <div className="company-intro__content">
           <span className="company-intro__eyebrow">About NAPCO</span>
           <h2>A Sri Lankan printing partner built on trust, technology and people.</h2>
           <p>
@@ -60,9 +95,8 @@ function MobileCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLEl
           src={imageAssets.aboutCompanyIntro.serviceQualityBg} 
           alt="Service Quality Background" 
           className="company-intro__mobile-img" 
-          data-ci-mob-anim 
         />
-        <div className="company-intro__content" data-ci-mob-anim>
+        <div className="company-intro__content">
           <span className="company-intro__eyebrow">Print Quality</span>
           <h2>Every printed detail is handled with accuracy, care and finishing strength.</h2>
           <p>
@@ -79,151 +113,75 @@ function MobileCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLEl
 
 // ─── Desktop sub-component ───────────────────────────────────────────────────
 function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    let trigger: ScrollTrigger | null = null;
-    let applyCurrentProgress: (() => void) | null = null;
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
     const ctx = gsap.context(() => {
-      const firstImage = section.querySelector<HTMLElement>('.company-intro__image--first');
-      const secondImage = section.querySelector<HTMLElement>('.company-intro__image--second');
-      const firstContent = section.querySelector<HTMLElement>('.company-intro__content--first');
-      const secondContent = section.querySelector<HTMLElement>('.company-intro__content--second');
-      const progressLine = section.querySelector<HTMLElement>('.company-intro__progress-line span');
-
-      if (!firstImage || !secondImage || !firstContent || !secondContent || !progressLine) return;
-
-      // ── Entrance transition from VisionMission section above ──────────────
-      const stickyWrapper = section.querySelector('.company-intro__sticky');
-      if (stickyWrapper) {
+      // Pop animation for About Napco Content
+      const napcoContent = container.querySelector('.about-napco-section__content');
+      if (napcoContent) {
         gsap.fromTo(
-          stickyWrapper,
-          { opacity: 0, y: 50 },
+          napcoContent,
+          { autoAlpha: 0, scale: 0.85, y: 40 },
           {
-            opacity: 1,
+            autoAlpha: 1,
+            scale: 1,
             y: 0,
-            duration: 1.0,
-            ease: 'power3.out',
+            duration: 1,
+            ease: 'back.out(1.4)',
             scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
+              trigger: '.about-napco-section',
+              start: 'top 80%',
+              once: true,
             },
           }
         );
       }
 
-      gsap.set(progressLine, {
-        scaleX: 0,
-        transformOrigin: 'left center',
-      });
-
-      const applyProgress = (progress: number) => {
-        const transition = clamp((progress - 0.28) / 0.42, 0, 1);
-
-        gsap.set(progressLine, { scaleX: progress });
-
-        gsap.set(firstImage, {
-          autoAlpha: 1 - transition,
-          scale: 1 + transition * 0.04,
-        });
-
-        gsap.set(secondImage, {
-          autoAlpha: transition,
-          scale: 1.06 - transition * 0.06,
-          clipPath: `inset(0% 0% 0% ${100 - transition * 100}%)`,
-        });
-
-        gsap.set(firstContent, {
-          autoAlpha: 1 - transition,
-          y: -44 * transition,
-          clipPath: `inset(0% 0% ${transition * 100}% 0%)`,
-        });
-
-        gsap.set(secondContent, {
-          autoAlpha: transition,
-          y: 48 * (1 - transition),
-          clipPath: `inset(${100 - transition * 100}% 0% 0% 0%)`,
-        });
-      };
-
-      applyCurrentProgress = () => {
-        const rect = section.getBoundingClientRect();
-        const scrollDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
-        const progress = clamp(-rect.top / scrollDistance, 0, 1);
-        applyProgress(progress);
-      };
-
-      applyCurrentProgress();
-
-      window.addEventListener('scroll', applyCurrentProgress, { passive: true });
-      window.addEventListener('resize', applyCurrentProgress);
-      gsap.ticker.add(applyCurrentProgress);
-
-      trigger = ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true,
-        invalidateOnRefresh: true,
-        onEnter: () => applyCurrentProgress?.(),
-        onEnterBack: () => applyCurrentProgress?.(),
-        onLeave: () => applyCurrentProgress?.(),
-        onLeaveBack: () => applyCurrentProgress?.(),
-        onUpdate: () => applyCurrentProgress?.(),
-        onRefresh: () => applyCurrentProgress?.(),
-      });
-    }, section);
-
-    // Refresh after setup so pin recalculates correct position on fresh mount
-    requestAnimationFrame(() => ScrollTrigger.refresh());
-
-    return () => {
-      if (applyCurrentProgress) {
-        window.removeEventListener('scroll', applyCurrentProgress);
-        window.removeEventListener('resize', applyCurrentProgress);
-        gsap.ticker.remove(applyCurrentProgress);
+      // Pop animation for Printing Quality Content
+      const qualityContent = container.querySelector('.about-quality-section__content');
+      if (qualityContent) {
+        gsap.fromTo(
+          qualityContent,
+          { autoAlpha: 0, scale: 0.85, y: 40 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            y: 0,
+            duration: 1,
+            ease: 'back.out(1.4)',
+            scrollTrigger: {
+              trigger: '.about-quality-section',
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        );
       }
-      trigger?.kill();
-      ctx.revert();
-      
-      const lenis = (window as unknown as { napcoLenis?: { resize(): void } }).napcoLenis;
-      if (lenis) {
-        lenis.resize();
-      } else {
-        window.dispatchEvent(new Event('resize'));
-      }
-    };
-  }, [sectionRef]);
+    }, container);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="company-intro" ref={sectionRef as React.RefObject<HTMLElement>}>
-      <div className="company-intro__sticky">
-        <div className="company-intro__media" aria-hidden="true">
-          <img
-            src={imageAssets.aboutCompanyIntro.companyLogoBg}
-            alt=""
-            className="company-intro__image company-intro__image--first"
-            onLoad={() => ScrollTrigger.refresh()}
-          />
-          <img
-            src={imageAssets.aboutCompanyIntro.serviceQualityBg}
-            alt=""
-            className="company-intro__image company-intro__image--second"
-            onLoad={() => ScrollTrigger.refresh()}
-          />
-        </div>
-
-        <div className="company-intro__shade" />
-
-        <div className="company-intro__content company-intro__content--first">
-          <span className="company-intro__eyebrow">About NAPCO</span>
-          <h2>
+    <div ref={containerRef}>
+      <section 
+        className="about-napco-section" 
+        ref={sectionRef as React.RefObject<HTMLElement>}
+        data-cursor-type="image"
+        data-cursor-label="View"
+      >
+        <div className="about-napco-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.aboutCompanyIntro.companyLogoBg})` }} />
+        <div className="about-napco-section__overlay" />
+        <div className="about-napco-section__content">
+          <span className="about-section-eyebrow" data-reveal>About NAPCO</span>
+          <h2 data-reveal>
             A Sri Lankan printing partner built on trust, technology and people.
           </h2>
-          <p>
+          <p data-reveal>
             NAPCO has grown as a reliable printing partner for brands,
             institutions and publishers that expect consistent quality. With
             modern machinery, skilled professionals and a strong service culture,
@@ -231,29 +189,30 @@ function DesktopCompanyIntro({ sectionRef }: { sectionRef: React.RefObject<HTMLE
             delivery.
           </p>
         </div>
+      </section>
 
-        <div className="company-intro__content company-intro__content--second">
-          <span className="company-intro__eyebrow">Print Quality</span>
-          <h2>
+      <section 
+        className="about-quality-section"
+        data-cursor-type="image"
+        data-cursor-label="View"
+      >
+        <div className="about-quality-section__bg" data-parallax style={{ backgroundImage: `url(${imageAssets.aboutCompanyIntro.serviceQualityBg})` }} />
+        <div className="about-quality-section__overlay" />
+        <div className="about-quality-section__content">
+          <span className="about-section-eyebrow" data-reveal>Print Quality</span>
+          <h2 data-reveal>
             Every printed detail is handled with accuracy, care and finishing
             strength.
           </h2>
-          <p>
+          <p data-reveal>
             From newspapers, books and commercial print work to labels,
             calendars, diaries, annual reports and stationery, NAPCO focuses on
             sharp detail, colour accuracy, premium paper handling and refined
             finishing to make every impression look professional.
           </p>
         </div>
-
-        <div className="company-intro__progress">
-          <div className="company-intro__progress-line">
-            <span />
-          </div>
-          <span>Company Story</span>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
 

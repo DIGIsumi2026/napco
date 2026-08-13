@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+@import './components/custom-cursor.css';
+@import './components/preloader.css';
 
 :root {
   --text: #0b0b0f;
@@ -118,8 +120,8 @@ img {
   inset: 0;
   z-index: -2;
   background-image:
-    linear-gradient(rgba(7, 23, 45, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(7, 23, 45, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(7, 23, 45, 0) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(7, 23, 45, 0) 1px, transparent 1px);
   background-size: 54px 54px;
   mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 74%);
   -webkit-mask-image: radial-gradient(circle at 50% 40%, black 0%, transparent 74%);
@@ -137,9 +139,9 @@ img {
 .napco-footer__glow--cyan {
   width: 320px;
   height: 320px;
-  left: -90px;
-  top: -80px;
-  background: rgba(0, 174, 239, 0.22);
+  left: -5px;
+  bottom: -80px;
+  background: rgba(0, 175, 239, 0.363);
 }
 
 .napco-footer__glow--purple {
@@ -147,7 +149,7 @@ img {
   height: 340px;
   right: 6%;
   bottom: -120px;
-  background: rgba(124, 58, 237, 0.18);
+  background: rgba(124, 58, 237, 0.432);
 }
 
 .napco-footer__glow--yellow {
@@ -155,7 +157,7 @@ img {
   height: 220px;
   right: -60px;
   top: 18%;
-  background: rgba(255, 224, 0, 0.14);
+  background: rgba(255, 225, 0, 0.384);
 }
 
 .napco-footer__inner {
@@ -398,8 +400,8 @@ body.napco-sidebar-is-open header {
   flex-direction: column;
   border-radius: 34px;
   background:
-    radial-gradient(circle at 18% 10%, rgba(0, 174, 239, 0.14), transparent 34%),
-    radial-gradient(circle at 88% 86%, rgba(124, 58, 237, 0.12), transparent 38%),
+    radial-gradient(circle at 18% 10%, rgba(0, 175, 239, 0), transparent 34%),
+    radial-gradient(circle at 88% 86%, rgba(124, 58, 237, 0.315), transparent 38%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 251, 255, 0.96));
   border: 1px solid rgba(7, 23, 45, 0.08);
   box-shadow:
@@ -432,7 +434,7 @@ body.napco-sidebar-is-open header {
   height: 220px;
   left: -80px;
   top: 12%;
-  background: rgba(0, 174, 239, 0.16);
+  background: rgba(0, 175, 239, 0);
 }
 
 .napco-sidebar__glow--purple {
@@ -440,7 +442,7 @@ body.napco-sidebar-is-open header {
   height: 260px;
   right: -90px;
   bottom: 10%;
-  background: rgba(124, 58, 237, 0.14);
+  background: rgba(124, 58, 237, 0);
 }
 
 .napco-sidebar__top {

@@ -1090,7 +1090,12 @@ function AboutMachineModelDesktop() {
             </div>
           )}
 
-          <div ref={containerRef} className="about-machine-model__canvas" />
+          <div 
+            ref={containerRef} 
+            className="about-machine-model__canvas" 
+            data-cursor-type="rotate"
+            data-cursor-label="Rotate"
+          />
         </div>
       </div>
     </section>

@@ -345,7 +345,8 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
   }, [sectionRef]);
 
   return (
-    <section className="services-visual" ref={sectionRef as React.RefObject<HTMLElement>}>
+    <div className="services-visual-wrapper">
+      <section className="services-visual" ref={sectionRef as React.RefObject<HTMLElement>}>
       <canvas ref={canvasRef} className="services-visual__canvas" />
       <div className="services-visual__noise" />
 
@@ -389,7 +390,6 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
                 >
                   See More
                 </Link>
-                <small>{String(index + 1).padStart(2, '0')} / 06</small>
               </div>
             </article>
           ))}
@@ -402,6 +402,7 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
         </div>
       </div>
     </section>
+    </div>
   );
 }
 
