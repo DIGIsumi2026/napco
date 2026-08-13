@@ -53,24 +53,6 @@ const boardMembers = [
     ],
   },
   {
-    name: 'Mr. Dulantha Sumathipala',
-    role: 'Director',
-    image: imageAssets.aboutBoardManagement.dulantha,
-    profile:
-      'Second son of Mr. Thilanga Sumathipala. Climbed the ranks from Sumathi Printers and NAPCO Pvt Ltd to become a Segment Director, joining the holding company board in 2020.',
-    details: [
-      {
-        label: 'Education',
-        value:
-          'BSc. Hons. in International Management & Business from the University of Plymouth, England.',
-      },
-      {
-        label: 'Alma Mater',
-        value: 'Royal College, Colombo.',
-      },
-    ],
-  },
-  {
     name: 'Mr. Sajantha Sumathipala',
     role: 'Director',
     image: imageAssets.aboutBoardManagement.sajantha,
@@ -87,6 +69,24 @@ const boardMembers = [
       },
     ],
   },
+  {
+    name: 'Mr. Dulantha Sumathipala',
+    role: 'Director',
+    image: imageAssets.aboutBoardManagement.dulantha,
+    profile:
+      'Second son of Mr. Thilanga Sumathipala. Climbed the ranks from Sumathi Printers and NAPCO Pvt Ltd to become a Segment Director, joining the holding company board in 2020.',
+    details: [
+      {
+        label: 'Education',
+        value:
+          'BSc. Hons. in International Management & Business from the University of Plymouth, England.',
+      },
+      {
+        label: 'Alma Mater',
+        value: 'Royal College, Colombo.',
+      },
+    ],
+  }
 ];
 
 import { useEffect, useRef, useState } from 'react';

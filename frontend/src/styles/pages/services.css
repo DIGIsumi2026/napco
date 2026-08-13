@@ -91,7 +91,7 @@
   color: rgba(255, 255, 255, 0.82);
   font-size: clamp(0.85rem, 0.92vw, 1rem);
   line-height: 1.72;
-  font-weight: 650;
+  font-weight: 600;
   text-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
 }
 
@@ -604,6 +604,17 @@
   .service-stat-card {
     min-height: 560px;
     border-radius: 28px;
+  }
+
+  /* Inactive cards are black and white on mobile */
+  .service-stat-card__image {
+    filter: grayscale(1) saturate(0.9) contrast(1.08);
+  }
+
+  /* Active card (in viewport) gets colored */
+  .service-stat-card.is-active .service-stat-card__image {
+    filter: grayscale(0) saturate(1.05) contrast(1.02);
+    transform: scale(1.05);
   }
 
   .service-stat-card__content h3 {
