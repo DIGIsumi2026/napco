@@ -746,6 +746,10 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.004em !important;
 }
 
+p {
+  letter-spacing: 0.025em !important;
+}
+
 
 @media (min-width: 1024px) {
   .napco-hamburger { display: none !important; }
