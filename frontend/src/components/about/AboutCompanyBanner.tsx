@@ -66,6 +66,10 @@ const companyLogos = [
   {
     name: 'Company 15',
     logo: imageAssets.company.company15,
+  },
+  {
+    name: 'Company 16',
+    logo: imageAssets.company.company16,
   }
 ];
 
