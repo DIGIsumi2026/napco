@@ -24,7 +24,7 @@ export default function ScrollToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      setIsVisible(window.scrollY > 200);
+      setIsVisible(window.scrollY > window.innerHeight * 0.8);
     };
 
     const checkMobile = () => {
@@ -62,8 +62,13 @@ export default function ScrollToTop() {
         aria-label="Chat with NAPCO on WhatsApp"
         data-cursor="WhatsApp"
         initial={{ opacity: 0, scale: 0.76, y: 16 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
+        animate={{
+          opacity: (!isMobile || isVisible) ? 1 : 0,
+          scale: (!isMobile || isVisible) ? 1 : 0.76,
+          y: (!isMobile || isVisible) ? 0 : 16,
+        }}
         transition={{ duration: 0.32, ease: 'easeOut' }}
+        style={{ pointerEvents: (!isMobile || isVisible) ? 'auto' : 'none' }}
       >
         <span className="napco-whatsapp-float__glow" />
 

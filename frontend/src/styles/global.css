@@ -680,8 +680,10 @@ body.napco-sidebar-is-open header {
   }
 }
 
+html.napco-sidebar-is-open,
 body.napco-sidebar-is-open {
-  overflow: hidden;
+  overflow: hidden !important;
+  touch-action: none !important;
 }
 
 /* Hide and disable primary/scrolled navigation bars */
