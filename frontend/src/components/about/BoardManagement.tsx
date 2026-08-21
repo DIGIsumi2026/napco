@@ -53,23 +53,6 @@ const boardMembers = [
     ],
   },
   {
-    name: 'Mr. Sajantha Sumathipala',
-    role: 'Director',
-    image: imageAssets.aboutBoardManagement.sajantha,
-    profile: 'Focusing on organizational development, strategic investments, and delivering ultimate client satisfaction.',
-    details: [
-      {
-        label: 'Education',
-        value:
-          "Master's degree in Business Management from foreign universities.",
-      },
-      {
-        label: 'Alma Mater',
-        value: 'Royal College, Colombo.',
-      },
-    ],
-  },
-  {
     name: 'Mr. Dulantha Sumathipala',
     role: 'Director',
     image: imageAssets.aboutBoardManagement.dulantha,
@@ -86,7 +69,25 @@ const boardMembers = [
         value: 'Royal College, Colombo.',
       },
     ],
+  },
+  {
+    name: 'Mr. Sajantha Sumathipala',
+    role: 'Director',
+    image: imageAssets.aboutBoardManagement.sajantha,
+    profile: 'Focusing on organizational development, strategic investments, and delivering ultimate client satisfaction.',
+    details: [
+      {
+        label: 'Education',
+        value:
+          "Master's degree in Business Management from foreign university.",
+      },
+      {
+        label: 'Alma Mater',
+        value: 'Royal College, Colombo.',
+      },
+    ],
   }
+  
 ];
 
 import { useEffect, useRef, useState } from 'react';
