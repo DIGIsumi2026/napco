@@ -24,7 +24,7 @@ export default function ServicesHero() {
 
         <p>
           From newspapers and books to commercial printing, labels, calendars,
-          annual reports and premium finishing, NAPCO delivers complete print
+          annual reports  and premium finishing, NAPCO delivers complete print
           solutions with professional care.
         </p>
 

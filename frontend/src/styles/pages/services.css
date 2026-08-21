@@ -79,9 +79,9 @@
   margin: 0;
   color: #ffffff;
   font-size: clamp(2.63rem, 3.40vw, 6.03rem);
-  line-height: 0.9;
-  letter-spacing: -0.008em;
-  font-weight: 950;
+  line-height: 1.13;
+  letter-spacing: -1.0em;
+  font-weight: 800;
   text-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
 }
 
@@ -91,7 +91,8 @@
   color: rgba(255, 255, 255, 0.82);
   font-size: clamp(0.85rem, 0.92vw, 1rem);
   line-height: 1.72;
-  font-weight: 650;
+  letter-spacing: 0.099em;
+  font-weight: 600;
   text-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
 }
 
@@ -366,9 +367,10 @@
   max-width: 760px;
   margin: 24px auto 0;
   color: #536274;
-  font-size: clamp(0.85rem, 0.92vw, 0.99rem);
+  font-size: clamp(0.85rem, 0.92vw, 1rem);
+  letter-spacing: -0.0019em;
   line-height: 1.75;
-  font-weight: 650;
+  font-weight: 600;
 }
 
 /* Grid */
@@ -604,6 +606,17 @@
   .service-stat-card {
     min-height: 560px;
     border-radius: 28px;
+  }
+
+  /* Inactive cards are black and white on mobile */
+  .service-stat-card__image {
+    filter: grayscale(1) saturate(0.9) contrast(1.08);
+  }
+
+  /* Active card (in viewport) gets colored */
+  .service-stat-card.is-active .service-stat-card__image {
+    filter: grayscale(0) saturate(1.05) contrast(1.02);
+    transform: scale(1.05);
   }
 
   .service-stat-card__content h3 {

@@ -680,8 +680,10 @@ body.napco-sidebar-is-open header {
   }
 }
 
+html.napco-sidebar-is-open,
 body.napco-sidebar-is-open {
-  overflow: hidden;
+  overflow: hidden !important;
+  touch-action: none !important;
 }
 
 /* Hide and disable primary/scrolled navigation bars */
@@ -744,6 +746,10 @@ body.napco-sidebar-is-open [data-navbar] {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600 !important;
   letter-spacing: -0.004em !important;
+}
+
+p {
+  letter-spacing: 0.025em !important;
 }
 
 

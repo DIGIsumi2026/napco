@@ -42,7 +42,12 @@ export default function Footer() {
 
       <div className="napco-footer__inner">
         <div className="napco-footer__brand">
-          <Link to="/" className="napco-footer__logo" aria-label="NAPCO Home">
+          <Link 
+            to="/" 
+            className="napco-footer__logo" 
+            aria-label="NAPCO Home"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <img src={imageAssets.brand.logo} alt="NAPCO" />
           </Link>
 

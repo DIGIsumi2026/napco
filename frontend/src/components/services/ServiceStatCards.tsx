@@ -47,7 +47,7 @@ export default function ServiceStatCards() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => setIsMobile(window.innerWidth <= 1024);
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -55,7 +55,7 @@ export default function ServiceStatCards() {
 
   useEffect(() => {
     if (!isMobile) return;
-    const cards = document.querySelectorAll('.service-stat-cards__card');
+    const cards = document.querySelectorAll('.service-stat-card');
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

@@ -56,10 +56,19 @@ const socialLinks = [
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   useEffect(() => {
+    document.documentElement.classList.toggle('napco-sidebar-is-open', isOpen);
     document.body.classList.toggle('napco-sidebar-is-open', isOpen);
+    
+    // @ts-ignore - access global lenis instance if it exists
+    if (isOpen) window.napcoLenis?.stop();
+    // @ts-ignore
+    else window.napcoLenis?.start();
 
     return () => {
+      document.documentElement.classList.remove('napco-sidebar-is-open');
       document.body.classList.remove('napco-sidebar-is-open');
+      // @ts-ignore
+      window.napcoLenis?.start();
     };
   }, [isOpen]);
 

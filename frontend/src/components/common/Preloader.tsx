@@ -44,10 +44,29 @@ export default function Preloader() {
       setTimeout(dismiss, 1200);
     });
 
-    const onEnded = () => dismiss();
-    video.addEventListener('ended', onEnded, { once: true });
+    let dismissed = false;
+    
+    const triggerDismiss = () => {
+      if (!dismissed) {
+        dismissed = true;
+        dismiss();
+      }
+    };
+
+    const onTimeUpdate = () => {
+      // Dismiss 1 second before the video actually ends to reduce preloader time
+      if (video.duration && video.duration - video.currentTime <= 1) {
+        triggerDismiss();
+        video.removeEventListener('timeupdate', onTimeUpdate);
+      }
+    };
+
+    video.addEventListener('timeupdate', onTimeUpdate);
+    video.addEventListener('ended', triggerDismiss, { once: true });
+    
     return () => {
-      video.removeEventListener('ended', onEnded);
+      video.removeEventListener('timeupdate', onTimeUpdate);
+      video.removeEventListener('ended', triggerDismiss);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, routeKey]);
