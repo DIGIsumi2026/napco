@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
@@ -30,10 +30,21 @@ export default function NavigationBar({
   const [scrolled, setScrolled] = useState(false);
   const [showPillNav, setShowPillNav] = useState(false);
   const [isHoveringCTA, setIsHoveringCTA] = useState(false);
+  
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isHoveringNavRef = useRef(false);
+
+  const startHideTimeout = (duration: number) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      if (!isHoveringNavRef.current) {
+        setShowPillNav(false);
+      }
+    }, duration);
+  };
 
   useEffect(() => {
     let lastScrollY = window.scrollY;
-    let timeoutId: ReturnType<typeof setTimeout>;
 
     const onScroll = () => {
       const currentScrollY = window.scrollY;
@@ -45,20 +56,18 @@ export default function NavigationBar({
         if (currentScrollY < lastScrollY - 2) {
           // Scrolling UP (with a small threshold of 2px to prevent jitter)
           setShowPillNav(true);
-          
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(() => {
-            setShowPillNav(false);
-          }, 3500); // Appear for 3.5 seconds
+          startHideTimeout(3500); // Appear for 3.5 seconds
         } else if (currentScrollY > lastScrollY + 2) {
           // Scrolling DOWN
-          setShowPillNav(false);
-          clearTimeout(timeoutId);
+          if (!isHoveringNavRef.current) {
+            setShowPillNav(false);
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+          }
         }
       } else {
          // Back at top
          setShowPillNav(false);
-         clearTimeout(timeoutId);
+         if (timeoutRef.current) clearTimeout(timeoutRef.current);
       }
       
       lastScrollY = currentScrollY;
@@ -70,9 +79,21 @@ export default function NavigationBar({
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      clearTimeout(timeoutId);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, []);
+
+  const handleNavMouseEnter = () => {
+    isHoveringNavRef.current = true;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  };
+
+  const handleNavMouseLeave = () => {
+    isHoveringNavRef.current = false;
+    if (scrolled) {
+      startHideTimeout(500); // Disappear shortly after hover out
+    }
+  };
 
   const handleHamburgerClick = () => {
     if (isSidebarOpen) return;
@@ -173,6 +194,8 @@ export default function NavigationBar({
           <motion.div
             key="pill-nav"
             className="napco-nav-pill-wrap"
+            onMouseEnter={handleNavMouseEnter}
+            onMouseLeave={handleNavMouseLeave}
             data-navbar-panel
             initial={{ opacity: 0, scale: 0.85, y: -30 }}
             animate={{
