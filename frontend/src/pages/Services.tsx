@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import '../styles/pages/services.css';
 
-import CustomCursor from '../components/common/CustomCursor';
 import NavigationBar from '../components/common/NavigationBar';
 import Sidebar from '../components/common/Sidebar';
 import ScrollToTop from '../components/common/ScrollToTop';
@@ -48,7 +47,6 @@ export default function Services() {
 
   return (
     <main className="services-page">
-      <CustomCursor />
 
       <NavigationBar
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}

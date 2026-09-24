@@ -1,55 +1,75 @@
-import { useEffect, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import '../styles/pages/home.css';
-import CustomCursor from '../components/common/CustomCursor';
 import NavigationBar from '../components/common/NavigationBar';
 import Sidebar from '../components/common/Sidebar';
 import ScrollToTop from '../components/common/ScrollToTop';
 import Hero from '../components/home/Hero';
 import AboutPrinting from '../components/home/AboutPrinting';
 import ServiceStats from '../components/home/ServiceStats';
-import ServicesVisual from '../components/home/ServicesVisual';
 import ContactCta from '../components/home/ContactCta';
 import ClientLogos from '../components/home/ClientLogos';
 
 import Footer from '../components/common/Footer';
+import { shouldUseRichEffects } from '../utils/performance';
 
-gsap.registerPlugin(ScrollTrigger);
+const ServicesVisual = lazy(() => import('../components/home/ServicesVisual'));
+
+function DeferredServicesVisual() {
+  const placeholderRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const placeholder = placeholderRef.current;
+    if (!placeholder) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setReady(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '800px 0px' });
+    observer.observe(placeholder);
+    return () => observer.disconnect();
+  }, [ready]);
+
+  if (!ready) return <div ref={placeholderRef} className="services-visual-placeholder" />;
+  return <Suspense fallback={<div className="services-visual-placeholder" />}><ServicesVisual /></Suspense>;
+}
 
 export default function Home() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const revealSelector = '[data-reveal]';
+    if (!shouldUseRichEffects()) return;
 
-      gsap.set(revealSelector, {
-        y: 40,
-        opacity: 0,
-      });
+    let disposed = false;
+    let cleanup: (() => void) | undefined;
+    void Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([
+      { gsap },
+      { ScrollTrigger },
+    ]) => {
+      if (disposed) return;
+      gsap.registerPlugin(ScrollTrigger);
+      const ctx = gsap.context(() => {
+        const revealSelector = '[data-reveal]';
 
-      ScrollTrigger.batch(revealSelector, {
-        start: 'top 88%',
-        once: true,
-        onEnter: (batch) => {
-          gsap.to(batch, {
-            y: 0,
-            opacity: 1,
-            duration: 0.75,
-            ease: 'power3.out',
-            stagger: 0.08,
-            overwrite: true,
-          });
-        },
-      });
+        gsap.set(revealSelector, { y: 40, opacity: 0 });
+        ScrollTrigger.batch(revealSelector, {
+          start: 'top 88%',
+          once: true,
+          onEnter: (batch) => {
+            gsap.to(batch, {
+              y: 0,
+              opacity: 1,
+              duration: 0.75,
+              ease: 'power3.out',
+              stagger: 0.08,
+              overwrite: true,
+            });
+          },
+        });
 
-      const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
-
-      if (isDesktop) {
         gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((element) => {
           if (element.closest('.contact-cta')) return;
-
           gsap.to(element, {
             yPercent: -5,
             ease: 'none',
@@ -61,16 +81,19 @@ export default function Home() {
             },
           });
         });
-      }
-    });
+      });
 
-    return () => ctx.revert();
+      cleanup = () => ctx.revert();
+    }).catch(() => {});
+
+    return () => {
+      disposed = true;
+      cleanup?.();
+    };
   }, []);
 
   return (
     <main className="home-page">
-      <CustomCursor />
-      
       <NavigationBar 
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
         isSidebarOpen={isSidebarOpen} 
@@ -83,7 +106,7 @@ export default function Home() {
       <Hero />
       <AboutPrinting />
       <ServiceStats/>
-      <ServicesVisual/>
+      <DeferredServicesVisual />
       <ContactCta/>
       <ClientLogos/>
 

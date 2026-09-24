@@ -4136,6 +4136,10 @@ body.is-hovering .cursor-ring {
    HOME - CONTACT CTA SECTION
 ================================ */
 
+.services-visual-placeholder {
+  min-height: 100vh;
+}
+
 .contact-cta {
   position: relative;
   min-height: clamp(646px, 85vh, 833px);
@@ -4625,7 +4629,8 @@ body.is-hovering .cursor-ring {
 }
 
 .client-logos__item img {
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
   max-height: clamp(93.50px, 8.50vw, 140.25px);
   display: block;
   object-fit: contain;
@@ -4677,6 +4682,16 @@ body.is-hovering .cursor-ring {
 
 /* Tablet */
 @media (max-width: 1024px) {
+  .client-logos__scroller--compact {
+    cursor: auto;
+    touch-action: auto;
+    scroll-snap-type: x proximity;
+  }
+
+  .client-logos__scroller--compact .client-logos__item {
+    scroll-snap-align: center;
+  }
+
   .client-logos {
     padding: 24px 0;
   }
@@ -4693,6 +4708,7 @@ body.is-hovering .cursor-ring {
 
   .client-logos__item img {
     max-height: 112px;
+    filter: none;
   }
 }
 
@@ -4703,12 +4719,12 @@ body.is-hovering .cursor-ring {
   }
 
   .client-logos__track {
-    gap: 48px;
+    gap: 24px;
     padding: 0 26px;
   }
 
   .client-logos__item {
-    width: 210px;
+    width: 170px;
     height: 108px;
   }
 

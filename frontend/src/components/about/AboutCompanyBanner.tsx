@@ -1,10 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
 import { imageAssets } from '../../data/imageAssets';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const companyLogos = [
   {
@@ -77,8 +72,6 @@ const LOOP_COUNT = 3;
 
 export default function AboutCompanyBanner() {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
-  const bgRef = useRef<HTMLImageElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
 
   const pausedRef = useRef(false);
   const draggingRef = useRef(false);
@@ -86,17 +79,6 @@ export default function AboutCompanyBanner() {
   const startScrollLeftRef = useRef(0);
   const resumeTimerRef = useRef<number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
-
-  const repeatedLogos = useMemo(
-    () =>
-      Array.from({ length: LOOP_COUNT }).flatMap((_, loopIndex) =>
-        companyLogos.map((company, index) => ({
-          ...company,
-          key: `${company.name}-${loopIndex}-${index}`,
-        }))
-      ),
-    []
-  );
 
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== 'undefined' && window.innerWidth <= 1024
@@ -108,53 +90,28 @@ export default function AboutCompanyBanner() {
     return () => window.removeEventListener('resize', check);
   }, []);
 
+  const repeatedLogos = useMemo(
+    () =>
+      Array.from({ length: isMobile ? 1 : LOOP_COUNT }).flatMap((_, loopIndex) =>
+        companyLogos.map((company, index) => ({
+          ...company,
+          key: `${company.name}-${loopIndex}-${index}`,
+        }))
+      ),
+    [isMobile]
+  );
+
   useEffect(() => {
     const scroller = scrollerRef.current;
-    if (!scroller) return;
+    if (!scroller || isMobile) return;
 
     let previousTime = performance.now();
     let isVisible = false;
 
-    // Set up Parallax and text animation if mobile
-    const section = sectionRef.current;
-    let ctx: gsap.Context | null = null;
-    if (section && window.innerWidth <= 1024) {
-      ctx = gsap.context(() => {
-        if (bgRef.current) {
-          gsap.to(bgRef.current, {
-            yPercent: 30,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            }
-          });
-        }
-        const textElements = section.querySelectorAll('.about-company-banner__mobile-header > *');
-        if (textElements.length > 0) {
-          gsap.fromTo(
-            textElements,
-            { autoAlpha: 0, y: 30 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.8,
-              stagger: 0.15,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 85%',
-                once: true,
-              }
-            }
-          );
-        }
-      }, section);
-    }
-
-    const getSingleLoopWidth = () => scroller.scrollWidth / LOOP_COUNT;
+    const getSingleLoopWidth = () => {
+      const items = scroller.querySelectorAll<HTMLElement>('.about-company-banner__item');
+      return items[companyLogos.length]?.offsetLeft - items[0]?.offsetLeft || 0;
+    };
 
     const normalizeScrollPosition = () => {
       const singleLoopWidth = getSingleLoopWidth();
@@ -281,7 +238,7 @@ export default function AboutCompanyBanner() {
       setInitialPosition();
     };
 
-    const initialTimer = window.setTimeout(setInitialPosition, 150);
+    setInitialPosition();
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -312,8 +269,6 @@ export default function AboutCompanyBanner() {
     observer.observe(scroller);
 
     return () => {
-      window.clearTimeout(initialTimer);
-
       scroller.removeEventListener('pointerdown', handlePointerDown);
       scroller.removeEventListener('pointermove', handlePointerMove);
       scroller.removeEventListener('pointerup', stopDragging);
@@ -331,16 +286,15 @@ export default function AboutCompanyBanner() {
       }
 
       stopAutoScroll();
-      if (ctx) ctx.revert();
     };
-  }, []);
+  }, [isMobile]);
 
   return (
-    <section className={`about-company-banner ${isMobile ? 'about-company-banner--mobile' : ''}`} ref={sectionRef} aria-label="Our trusted companies">
+    <section className={`about-company-banner ${isMobile ? 'about-company-banner--mobile' : ''}`} aria-label="Our trusted companies">
       {isMobile && (
         <>
           <div className="about-company-banner__bg-wrapper">
-            <img ref={bgRef} src={imageAssets.aboutCompanyIntro.companyLogoBg} alt="" className="about-company-banner__parallax-bg" />
+            <img src={imageAssets.aboutCompanyIntro.companyLogoBg} alt="" className="about-company-banner__parallax-bg" loading="lazy" decoding="async" />
             <div className="about-company-banner__overlay" />
           </div>
           <div className="about-company-banner__mobile-header">
@@ -354,7 +308,7 @@ export default function AboutCompanyBanner() {
       <div className="about-company-banner__fade about-company-banner__fade--left" />
       <div className="about-company-banner__fade about-company-banner__fade--right" />
 
-      <div className="about-company-banner__scroller" ref={scrollerRef}>
+      <div className={`about-company-banner__scroller${isMobile ? ' about-company-banner__scroller--compact' : ''}`} ref={scrollerRef}>
         <div className="about-company-banner__track">
           {repeatedLogos.map((company) => (
             <div
@@ -362,7 +316,7 @@ export default function AboutCompanyBanner() {
               key={company.key}
               data-cursor={company.name}
             >
-              <img src={company.logo} alt={company.name} draggable="false" />
+              <img src={company.logo} alt={company.name} draggable="false" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>

@@ -48,6 +48,9 @@ export default function HeroCarousel() {
                   src={imageSource}
                   alt={`Napco slide ${i + 1}`}
                   className="hero-slide-img"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  {...{ fetchpriority: i === 0 ? 'high' : 'low' }}
+                  decoding="async"
                 />
               </div>
             </SwiperSlide>

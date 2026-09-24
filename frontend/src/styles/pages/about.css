@@ -2365,7 +2365,7 @@
     270deg,
     #ffffff00 0%,
     rgba(255, 255, 255, 0) 5%,
-    transparent 100%s
+    transparent 100%
   );
 }
 
@@ -2373,6 +2373,16 @@
 @media (max-width: 1024px) {
   .about-company-banner {
     padding: 24px 0;
+  }
+
+  .about-company-banner__scroller--compact {
+    cursor: auto;
+    touch-action: auto;
+    scroll-snap-type: x proximity;
+  }
+
+  .about-company-banner__scroller--compact .about-company-banner__item {
+    scroll-snap-align: center;
   }
 
   .about-company-banner__track {
@@ -2842,7 +2852,6 @@
   z-index: 3;
   padding: 0 24px 48px;
   color: #fff;
-  animation: mobileHeroFadeIn 0.9s ease both;
 }
 
 .about-hero__mobile-content span {
@@ -2872,11 +2881,6 @@
   color: rgba(255, 255, 255, 0.8);
   max-width: 480px;
   margin: 0;
-}
-
-@keyframes mobileHeroFadeIn {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── NEW ABOUT SECTIONS (4 Distinct Sections) ───────────────────────────────── */
@@ -3018,14 +3022,13 @@
 
 
 /* --- MOBILE HERO ENHANCEMENTS --- */
-@keyframes kenBurnsMobile {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.08); }
+.about-hero__mobile-img--ken-burns {
+  transform: none;
 }
 
-.about-hero__mobile-img--ken-burns {
-  animation: kenBurnsMobile 18s alternate infinite cubic-bezier(0.45, 0, 0.55, 1);
-  will-change: transform;
+.about-machine-placeholder {
+  min-height: 120svh;
+  background: #e8eef5;
 }
 
 
@@ -3392,19 +3395,23 @@
 .about-company-banner--mobile .about-company-banner__track {
   display: flex;
   width: max-content;
-  padding: 0;
-  gap: 0;
+  padding: 0 24px;
+  gap: 24px;
 }
 .about-company-banner--mobile .about-company-banner__item {
-  /* Desktop item styles for mobile */
-  width: 140px;
-  margin: 0 16px;
+  width: 170px;
+  margin: 0;
   flex-shrink: 0;
-  opacity: 0.6;
-  filter: grayscale(100%);
+  opacity: 1;
+  filter: none;
   background: none;
   padding: 0;
   border-radius: 0;
+}
+.about-company-banner--mobile .about-company-banner__item img {
+  width: 100%;
+  height: 100%;
+  filter: none;
 }
 .about-company-banner--mobile .about-company-banner__item:hover {
   opacity: 1;

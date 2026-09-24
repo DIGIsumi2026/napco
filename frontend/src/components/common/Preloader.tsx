@@ -7,6 +7,14 @@ const PRELOADER_VIDEO = '/assets/videos/pre-loader.webm';
 export default function Preloader() {
   const location = useLocation();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fallbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
+    if (fallbackTimeoutRef.current) clearTimeout(fallbackTimeoutRef.current);
+    document.body.style.overflow = '';
+  }, []);
 
   // `active` = overlay is mounted and visible
   const [active, setActive] = useState(true);
@@ -34,14 +42,15 @@ export default function Preloader() {
     if (!active) return;
     const video = videoRef.current;
     if (!video) return;
+    let cancelled = false;
 
     // Prevent body scroll while preloader is up
     document.body.style.overflow = 'hidden';
 
     video.currentTime = 0;
     video.play().catch(() => {
-      // Auto-play blocked – still dismiss after a short delay
-      setTimeout(dismiss, 1200);
+      // Auto-play blocked: still dismiss after a short delay.
+      if (!cancelled) fallbackTimeoutRef.current = setTimeout(dismiss, 1200);
     });
 
     let dismissed = false;
@@ -65,6 +74,7 @@ export default function Preloader() {
     video.addEventListener('ended', triggerDismiss, { once: true });
     
     return () => {
+      cancelled = true;
       video.removeEventListener('timeupdate', onTimeUpdate);
       video.removeEventListener('ended', triggerDismiss);
     };
@@ -74,7 +84,7 @@ export default function Preloader() {
   function dismiss() {
     setHiding(true);
     // Wait for the fade-out transition, then remove the overlay
-    setTimeout(() => {
+    dismissTimeoutRef.current = setTimeout(() => {
       setActive(false);
       document.body.style.overflow = '';
     }, 600);

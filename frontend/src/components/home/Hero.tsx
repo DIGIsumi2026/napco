@@ -1,11 +1,10 @@
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import HeroCarousel from './HeroCarousel';
 
 export default function Hero() {
   return (
-    <section className="napco-hero" id="hero" data-reveal>
+    <section className="napco-hero" id="hero">
 
       {/* ── Background carousel ── */}
       <HeroCarousel />
@@ -14,52 +13,32 @@ export default function Hero() {
       <div className="napco-hero-overlay">
         <div className="napco-hero-content">
 
-          <motion.h1
-            className="napco-hero-heading"
-            initial={{ opacity: 0, y: 36 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.22 }}
-          >
+          <h1 className="napco-hero-heading">
             Your Impression is
             <br />
             <span className="napco-hero-accent">Our Responsibility</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            className="napco-hero-desc"
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 0.36 }}
-          >
+          <p className="napco-hero-desc">
             From business cards to large format prints, Napco delivers precision,
             speed, and unmatched quality. Every project is crafted to leave a
             lasting impression.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="napco-hero-actions"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
+          <div className="napco-hero-actions">
             <a href="#about" className="napco-btn-primary">
               Learn More <ArrowRight size={17} />
             </a>
             <Link to="/contact#contact-form" className="napco-btn-outline">
               Contact Us
             </Link>
-          </motion.div>
+          </div>
         </div>
 
         {/* Scroll hint */}
-        <motion.div
-          className="napco-scroll-hint"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.6 }}
-        >
+        <div className="napco-scroll-hint">
           <ChevronDown size={22} />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

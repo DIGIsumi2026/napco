@@ -1,30 +1,46 @@
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Home from './pages/Home';
-import AboutUs from './pages/AboutUs';
-import Services from './pages/Services';
-import Contact from './pages/Contact';
 import RouteScrollManager from './components/common/RouteScrollManager';
 import CustomCursor from './components/common/CustomCursor';
 import Preloader from './components/common/Preloader';
+import { shouldUseRichEffects } from './utils/performance';
+
+const AboutUs = lazy(() => import('./pages/AboutUs'));
+const Services = lazy(() => import('./pages/Services'));
+const Contact = lazy(() => import('./pages/Contact'));
 
 function App() {
+  const [showPreloader, setShowPreloader] = useState(
+    shouldUseRichEffects
+  );
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1025px)');
+    const updatePreloader = () => setShowPreloader(shouldUseRichEffects());
+    desktop.addEventListener('change', updatePreloader);
+    return () => desktop.removeEventListener('change', updatePreloader);
+  }, []);
+
   return (
     <>
-      <Preloader />
+      {showPreloader && <Preloader />}
       <CustomCursor />
       <RouteScrollManager />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
+      <Suspense fallback={<div className="route-placeholder" />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
 
-        {/* fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+          {/* fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </>
   );
 }
 
-export default App;
+export default App;

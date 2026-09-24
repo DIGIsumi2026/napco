@@ -2,13 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import * as THREE from 'three';
 
 import { imageAssets } from '../../data/imageAssets';
+import { shouldUseRichEffects } from '../../utils/performance';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const MOBILE_BP = 1024;
 
 const visualServices = [
   {
@@ -99,6 +97,8 @@ function MobileServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTML
                 src={service.image}
                 alt={service.title}
                 className="sv-mob__image"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="sv-mob__copy">
@@ -136,6 +136,11 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
       canvas.hidden = true;
       return;
     }
+
+    let disposed = false;
+    let cleanup: (() => void) | undefined;
+    import('three').then((THREE) => {
+      if (disposed) return;
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     const scene = new THREE.Scene();
@@ -218,7 +223,7 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
     vis.observe(section);
     window.addEventListener('resize', resize, { passive: true });
 
-    return () => {
+    cleanup = () => {
       window.removeEventListener('resize', resize);
       vis.disconnect();
       stop();
@@ -226,15 +231,20 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
       material.dispose();
       renderer.dispose();
     };
+    }).catch(() => {
+      canvas.hidden = true;
+    });
+
+    return () => {
+      disposed = true;
+      cleanup?.();
+    };
   }, [sectionRef]);
 
   // GSAP scroll-driven animation
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-
-    // Kill any leftover scroll triggers before setting up new ones
-    ScrollTrigger.getAll().forEach((st) => st.kill());
 
     const ctx = gsap.context(() => {
       const intro       = section.querySelector<HTMLElement>('.services-visual__intro');
@@ -331,8 +341,6 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
 
     return () => {
       ctx.revert();
-      // Kill every scroll trigger so pin styles + spacers are fully removed
-      ScrollTrigger.getAll().forEach((st) => st.kill());
       // Re-sync Lenis smooth scroll (if active) or force a native resize event
       // so the scroll engine recalculates page height after the pin-spacer is gone
       const lenis = (window as unknown as { napcoLenis?: { resize(): void } }).napcoLenis;
@@ -367,7 +375,7 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
               className={`services-visual__tile services-visual__tile--${index + 1}`}
               key={service.title}
             >
-              <img src={service.image} alt={service.title} />
+              <img src={service.image} alt={service.title} loading="lazy" decoding="async" />
             </article>
           ))}
         </div>
@@ -376,7 +384,7 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
           {visualServices.map((service, index) => (
             <article className="services-visual__detail" key={service.title}>
               <div className="services-visual__detail-image">
-                <img src={service.image} alt={service.title} />
+                <img src={service.image} alt={service.title} loading="lazy" decoding="async" />
               </div>
               <div className="services-visual__detail-copy">
                 <span>{service.type}</span>
@@ -410,12 +418,12 @@ function DesktopServicesVisual({ sectionRef }: { sectionRef: React.RefObject<HTM
 export default function ServicesVisual() {
   // Initialise with current value to avoid first-render flash
   const [isMobile, setIsMobile] = useState<boolean>(
-    () => typeof window !== 'undefined' && window.innerWidth <= MOBILE_BP
+    () => typeof window !== 'undefined' && !shouldUseRichEffects()
   );
   const sectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= MOBILE_BP);
+    const handleResize = () => setIsMobile(!shouldUseRichEffects());
     window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
   }, []);

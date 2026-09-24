@@ -28,7 +28,9 @@ export default function AboutPrinting() {
 
   const [showContent, setShowContent] = useState(false);
   const [showThumbnail, setShowThumbnail] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth <= 1024
+  );
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 1024);
@@ -47,6 +49,20 @@ export default function AboutPrinting() {
     }, 2200);
 
     return () => window.clearTimeout(contentTimer);
+  }, [isMobile]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || isMobile) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        video.play().catch(() => {});
+        observer.disconnect();
+      }
+    }, { rootMargin: '300px 0px' });
+    observer.observe(video);
+    return () => observer.disconnect();
   }, [isMobile]);
 
   const handleVideoEnded = () => {
@@ -77,10 +93,9 @@ export default function AboutPrinting() {
             className="napco-about__video"
             src={videoAssets.about.logoReveal}
             poster={imageAssets.about.logoRevealThumbnail}
-            autoPlay
             muted
             playsInline
-            preload="auto"
+            preload="none"
             onEnded={handleVideoEnded}
           />
 
@@ -99,6 +114,8 @@ export default function AboutPrinting() {
               <img
                 src={imageAssets.about.logoRevealThumbnail}
                 alt="NAPCO logo reveal preview"
+                loading="lazy"
+                decoding="async"
               />
 
               <span className="napco-about__thumbnail-play">

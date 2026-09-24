@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 
 import { imageAssets } from '../../data/imageAssets';
+import { shouldUseRichEffects } from '../../utils/performance';
 
 const services = [
   {
@@ -51,7 +52,9 @@ const services = [
 
 export default function ServiceStats() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && !shouldUseRichEffects()
+  );
 
 
   useEffect(() => {
@@ -73,7 +76,7 @@ export default function ServiceStats() {
   }, [isMobile]);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 1024);
+    const handleResize = () => setIsMobile(!shouldUseRichEffects());
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -85,9 +88,7 @@ export default function ServiceStats() {
 
     if (!section) return;
 
-    const shouldFloat =
-      window.matchMedia('(min-width: 1024px)').matches &&
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const shouldFloat = shouldUseRichEffects();
 
     if (!shouldFloat) return;
 
@@ -169,6 +170,8 @@ export default function ServiceStats() {
           <img
             src={imageAssets.services.floating.printer}
             alt=""
+            loading="lazy"
+            decoding="async"
             aria-hidden="true" /></div></div>}
 
       {!isMobile && <div className="service-stats__float service-stats__float--papers"
@@ -181,6 +184,8 @@ export default function ServiceStats() {
           <img
             src={imageAssets.services.floating.papers}
             alt=""
+            loading="lazy"
+            decoding="async"
             aria-hidden="true" /></div></div>}
 
       {!isMobile && <div className="service-stats__float service-stats__float--cartridges"
@@ -193,6 +198,8 @@ export default function ServiceStats() {
           <img
             src={imageAssets.services.floating.cartridges}
             alt=""
+            loading="lazy"
+            decoding="async"
             aria-hidden="true" /></div></div>}
 
       {!isMobile && <div className="service-stats__float service-stats__float--cartridges-secondary"
@@ -205,6 +212,8 @@ export default function ServiceStats() {
           <img
             src={imageAssets.services.floating.cartridges2}
             alt=""
+            loading="lazy"
+            decoding="async"
             aria-hidden="true" /></div></div>}
 
       <div className="service-stats__inner">

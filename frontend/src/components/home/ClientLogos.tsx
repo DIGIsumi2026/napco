@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { imageAssets } from '../../data/imageAssets';
 
@@ -65,6 +65,9 @@ const LOOP_COUNT = 3;
 
 export default function ClientLogos() {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const [isCompact, setIsCompact] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth <= 1024
+  );
 
   const pausedRef = useRef(false);
   const draggingRef = useRef(false);
@@ -73,26 +76,35 @@ export default function ClientLogos() {
   const resumeTimerRef = useRef<number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
+  useEffect(() => {
+    const update = () => setIsCompact(window.innerWidth <= 1024);
+    window.addEventListener('resize', update, { passive: true });
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   const repeatedLogos = useMemo(
     () =>
-      Array.from({ length: LOOP_COUNT }).flatMap((_, loopIndex) =>
+      Array.from({ length: isCompact ? 1 : LOOP_COUNT }).flatMap((_, loopIndex) =>
         clientLogos.map((client, index) => ({
           ...client,
           key: `${client.name}-${loopIndex}-${index}`,
         }))
       ),
-    []
+    [isCompact]
   );
 
   useEffect(() => {
     const scroller = scrollerRef.current;
 
-    if (!scroller) return;
+    if (!scroller || isCompact) return;
 
     let previousTime = performance.now();
     let isVisible = false;
 
-    const getSingleLoopWidth = () => scroller.scrollWidth / LOOP_COUNT;
+    const getSingleLoopWidth = () => {
+      const items = scroller.querySelectorAll<HTMLElement>('.client-logos__item');
+      return items[clientLogos.length]?.offsetLeft - items[0]?.offsetLeft || 0;
+    };
 
     const normalizeScrollPosition = () => {
       const singleLoopWidth = getSingleLoopWidth();
@@ -217,7 +229,7 @@ export default function ClientLogos() {
       setInitialPosition();
     };
 
-    const initialTimer = window.setTimeout(setInitialPosition, 150);
+    setInitialPosition();
     const observer = new IntersectionObserver(
       ([entry]) => {
         isVisible = entry.isIntersecting;
@@ -247,8 +259,6 @@ export default function ClientLogos() {
     observer.observe(scroller);
 
     return () => {
-      window.clearTimeout(initialTimer);
-
       scroller.removeEventListener('pointerdown', handlePointerDown);
       scroller.removeEventListener('pointermove', handlePointerMove);
       scroller.removeEventListener('pointerup', stopDragging);
@@ -266,14 +276,14 @@ export default function ClientLogos() {
 
       stopAutoScroll();
     };
-  }, []);
+  }, [isCompact]);
 
   return (
     <section className="client-logos" aria-label="Our clients">
       <div className="client-logos__fade client-logos__fade--left" />
       <div className="client-logos__fade client-logos__fade--right" />
 
-      <div className="client-logos__scroller" ref={scrollerRef}>
+      <div className={`client-logos__scroller${isCompact ? ' client-logos__scroller--compact' : ''}`} ref={scrollerRef}>
         <div className="client-logos__track">
           {repeatedLogos.map((client) => (
             <div
@@ -281,7 +291,7 @@ export default function ClientLogos() {
               key={client.key}
               data-cursor={client.name}
             >
-              <img src={client.logo} alt={client.name} draggable="false" />
+              <img src={client.logo} alt={client.name} draggable="false" loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
