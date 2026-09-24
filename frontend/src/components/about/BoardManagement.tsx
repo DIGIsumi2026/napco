@@ -79,7 +79,7 @@ const boardMembers = [
       {
         label: 'Education',
         value:
-          "Master's degree in Business Management from foreign university.",
+          "Master's degree in Business Management from a foreign university.",
       },
       {
         label: 'Alma Mater',

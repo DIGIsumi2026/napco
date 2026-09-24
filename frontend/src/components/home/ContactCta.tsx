@@ -486,7 +486,7 @@ export default function ContactCta() {
           </Link>
 
           <a
-            href="https://wa.me/94112910015"
+            href="https://wa.me/94716532112"
             target="_blank"
             rel="noreferrer"
             className="contact-cta__button contact-cta__button--secondary"
