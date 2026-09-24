@@ -71,8 +71,9 @@ export default function ContactCta() {
     let sectionRect = section.getBoundingClientRect();
 
     const getParticleCount = () => {
-      if (window.innerWidth <= 1280) return 320;
-      return 460;
+      if (window.innerWidth <= 768) return 140;
+      if (window.innerWidth <= 1280) return 180;
+      return 220; // Reduced significantly for PC mode performance
     };
 
     const createParticles = () => {
