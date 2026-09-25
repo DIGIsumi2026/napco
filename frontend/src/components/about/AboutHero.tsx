@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { imageAssets } from '../../data/imageAssets';
 import { videoAssets } from '../../data/videoAssets';
+import { shouldUseRichEffects } from '../../utils/performance';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,42 +19,14 @@ type LenisWindow = Window & {
 };
 
 function MobileAboutHero() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      const contentElements = section.querySelectorAll('.about-hero__mobile-content > *');
-      
-      gsap.fromTo(
-        contentElements,
-        { autoAlpha: 0, y: 30 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 80%',
-            once: true,
-          }
-        }
-      );
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <div className="about-hero__mobile-static" ref={sectionRef}>
+    <div className="about-hero__mobile-static">
       <img
         src={imageAssets.about.thubnail}
         alt="NAPCO printing services"
         className="about-hero__mobile-img about-hero__mobile-img--ken-burns"
+        loading="eager"
+        decoding="async"
       />
       <div className="about-hero__thumbnail-overlay about-hero__mobile-overlay" />
       <div className="about-hero__mobile-content">
@@ -83,10 +56,12 @@ export default function AboutHero() {
   const scrollHintRef = useRef<HTMLDivElement | null>(null);
   const replayRef = useRef<HTMLButtonElement | null>(null);
 
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && !shouldUseRichEffects()
+  );
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 1024);
+    const checkMobile = () => setIsMobile(!shouldUseRichEffects());
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -130,8 +105,8 @@ export default function AboutHero() {
   };
 
   useEffect(() => {
-    playVideo();
-  }, []);
+    if (!isMobile) playVideo();
+  }, [isMobile]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -289,7 +264,8 @@ export default function AboutHero() {
             src={videoAssets.about.hero}
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
+            poster={imageAssets.about.thubnail}
             onLoadedData={() => ScrollTrigger.refresh()}
             data-cursor-type="image"
             data-cursor-label="View"

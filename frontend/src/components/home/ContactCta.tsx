@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MessageCircle, Send } from 'lucide-react';
 
 import { imageAssets } from '../../data/imageAssets';
+import { shouldUseRichEffects } from '../../utils/performance';
 
 type Particle = {
   x: number;
@@ -26,7 +27,9 @@ const particleColors = ['#00aeef', '#ec008c', '#fff200', '#8b35ff', '#ffffff'];
 export default function ContactCta() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth <= 768
+  );
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -52,11 +55,7 @@ export default function ContactCta() {
 
     if (!section || !canvas) return;
 
-    const shouldAnimateParticles =
-      window.matchMedia('(min-width: 1024px)').matches &&
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (!shouldAnimateParticles) {
+    if (!shouldUseRichEffects()) {
       canvas.hidden = true;
       return;
     }
@@ -72,8 +71,9 @@ export default function ContactCta() {
     let sectionRect = section.getBoundingClientRect();
 
     const getParticleCount = () => {
-      if (window.innerWidth <= 1280) return 320;
-      return 460;
+      if (window.innerWidth <= 768) return 140;
+      if (window.innerWidth <= 1280) return 180;
+      return 220; // Reduced significantly for PC mode performance
     };
 
     const createParticles = () => {
@@ -371,6 +371,7 @@ export default function ContactCta() {
         isVisible = entry.isIntersecting;
 
         if (isVisible) {
+          if (!width) resize();
           startDrawing();
         } else {
           cursorRef.current.active = false;
@@ -383,16 +384,19 @@ export default function ContactCta() {
       }
     );
 
-    resize();
+    const handleResize = () => {
+      if (isVisible) resize();
+    };
+
     observer.observe(section);
 
-    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
     section.addEventListener('pointerenter', handlePointerEnter, { passive: true });
     section.addEventListener('pointermove', handlePointerMove, { passive: true });
     section.addEventListener('pointerleave', handlePointerLeave, { passive: true });
 
     return () => {
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
       section.removeEventListener('pointerenter', handlePointerEnter);
       section.removeEventListener('pointermove', handlePointerMove);
       section.removeEventListener('pointerleave', handlePointerLeave);
@@ -415,6 +419,8 @@ export default function ContactCta() {
         src={imageAssets.contactCta.openBook}
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
       />
 
       <img
@@ -422,6 +428,8 @@ export default function ContactCta() {
         src={imageAssets.contactCta.tag}
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
       />
 
       <img
@@ -429,6 +437,8 @@ export default function ContactCta() {
         src={imageAssets.contactCta.cmykStrip}
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
       />
 
       <img
@@ -436,6 +446,8 @@ export default function ContactCta() {
         src={imageAssets.contactCta.calendar}
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
       />
 
       <img
@@ -443,6 +455,8 @@ export default function ContactCta() {
         src={imageAssets.contactCta.bookStack}
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
       />
 
       <div className="contact-cta__content">
@@ -473,7 +487,7 @@ export default function ContactCta() {
           </Link>
 
           <a
-            href="https://wa.me/94112910015"
+            href="https://wa.me/94716532112"
             target="_blank"
             rel="noreferrer"
             className="contact-cta__button contact-cta__button--secondary"

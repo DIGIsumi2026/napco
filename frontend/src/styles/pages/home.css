@@ -4136,6 +4136,10 @@ body.is-hovering .cursor-ring {
    HOME - CONTACT CTA SECTION
 ================================ */
 
+.services-visual-placeholder {
+  min-height: 100vh;
+}
+
 .contact-cta {
   position: relative;
   min-height: clamp(646px, 85vh, 833px);
@@ -4361,27 +4365,15 @@ body.is-hovering .cursor-ring {
   display: block;
   height: auto;
   user-select: none;
-  pointer-events: auto;
-  cursor: pointer;
+  pointer-events: none;
   filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.22));
   animation: contactCtaFloat 7s ease-in-out infinite;
-  transition:
-    transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.38s ease;
-}
-
-.contact-cta__float:hover {
-  transform: translateY(-12px) scale(1.08) rotate(var(--hover-rotate, 0deg));
-  filter:
-    drop-shadow(0 24px 34px rgba(0, 0, 0, 0.3))
-    drop-shadow(0 0 18px rgba(0, 174, 239, 0.2));
 }
 
 .contact-cta__float--book {
   left: clamp(20.40px, 4.25vw, 81.60px);
   top: clamp(73.10px, 9.35vw, 127.50px);
   width: clamp(148.75px, 17vw, 289px);
-  --hover-rotate: -4deg;
 }
 
 .contact-cta__float--tag {
@@ -4389,7 +4381,6 @@ body.is-hovering .cursor-ring {
   top: clamp(95.20px, 11.05vw, 151.30px);
   width: clamp(74.80px, 6.80vw, 119px);
   animation-delay: -1.2s;
-  --hover-rotate: 7deg;
 }
 
 .contact-cta__float--strip {
@@ -4398,7 +4389,6 @@ body.is-hovering .cursor-ring {
   width: clamp(110.50px, 11.05vw, 178.50px);
   transform: translateX(-50%) rotate(3deg);
   animation-delay: -2.1s;
-  --hover-rotate: 5deg;
 }
 
 .contact-cta__float--calendar {
@@ -4406,7 +4396,6 @@ body.is-hovering .cursor-ring {
   bottom: clamp(32.30px, 5.95vw, 76.50px);
   width: clamp(140.25px, 14.45vw, 242.25px);
   animation-delay: -2.8s;
-  --hover-rotate: 3deg;
 }
 
 .contact-cta__float--stack {
@@ -4414,7 +4403,6 @@ body.is-hovering .cursor-ring {
   bottom: clamp(28.90px, 5.10vw, 68px);
   width: clamp(148.75px, 16.15vw, 263.50px);
   animation-delay: -3.5s;
-  --hover-rotate: -3deg;
 }
 
 @keyframes contactCtaFloat {
@@ -4625,7 +4613,8 @@ body.is-hovering .cursor-ring {
 }
 
 .client-logos__item img {
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
   max-height: clamp(93.50px, 8.50vw, 140.25px);
   display: block;
   object-fit: contain;
@@ -4677,6 +4666,16 @@ body.is-hovering .cursor-ring {
 
 /* Tablet */
 @media (max-width: 1024px) {
+  .client-logos__scroller--compact {
+    cursor: auto;
+    touch-action: auto;
+    scroll-snap-type: x proximity;
+  }
+
+  .client-logos__scroller--compact .client-logos__item {
+    scroll-snap-align: center;
+  }
+
   .client-logos {
     padding: 24px 0;
   }
@@ -4693,6 +4692,7 @@ body.is-hovering .cursor-ring {
 
   .client-logos__item img {
     max-height: 112px;
+    filter: none;
   }
 }
 
@@ -4703,12 +4703,12 @@ body.is-hovering .cursor-ring {
   }
 
   .client-logos__track {
-    gap: 48px;
+    gap: 24px;
     padding: 0 26px;
   }
 
   .client-logos__item {
-    width: 210px;
+    width: 170px;
     height: 108px;
   }
 

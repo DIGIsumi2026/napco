@@ -3,10 +3,20 @@ import { useLocation } from 'react-router-dom';
 
 // The video is served from the /public folder
 const PRELOADER_VIDEO = '/assets/videos/pre-loader.webm';
+const MAX_VISIBLE_MS = 1200;
+const FADE_MS = 180;
 
 export default function Preloader() {
   const location = useLocation();
   const videoRef = useRef<HTMLVideoElement>(null);
+  const dismissTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const maxTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
+    if (maxTimeoutRef.current) clearTimeout(maxTimeoutRef.current);
+    document.body.style.overflow = '';
+  }, []);
 
   // `active` = overlay is mounted and visible
   const [active, setActive] = useState(true);
@@ -24,6 +34,7 @@ export default function Preloader() {
       return;
     }
     // New route → bring the preloader back
+    if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
     setHiding(false);
     setActive(true);
     setRouteKey(location.pathname);
@@ -34,28 +45,30 @@ export default function Preloader() {
     if (!active) return;
     const video = videoRef.current;
     if (!video) return;
+    let cancelled = false;
 
     // Prevent body scroll while preloader is up
     document.body.style.overflow = 'hidden';
 
-    video.currentTime = 0;
-    video.play().catch(() => {
-      // Auto-play blocked – still dismiss after a short delay
-      setTimeout(dismiss, 1200);
-    });
-
     let dismissed = false;
-    
     const triggerDismiss = () => {
-      if (!dismissed) {
-        dismissed = true;
-        dismiss();
-      }
+      if (dismissed || cancelled) return;
+      dismissed = true;
+      if (maxTimeoutRef.current) clearTimeout(maxTimeoutRef.current);
+      setHiding(true);
+      document.body.style.overflow = '';
+      dismissTimeoutRef.current = setTimeout(() => setActive(false), FADE_MS);
     };
 
+    video.currentTime = 0;
+    video.playbackRate = 1.5;
+    maxTimeoutRef.current = setTimeout(triggerDismiss, MAX_VISIBLE_MS);
+    video.play().catch(() => {
+      triggerDismiss();
+    });
+
     const onTimeUpdate = () => {
-      // Dismiss 1 second before the video actually ends to reduce preloader time
-      if (video.duration && video.duration - video.currentTime <= 1) {
+      if (video.duration && video.duration - video.currentTime <= 0.35) {
         triggerDismiss();
         video.removeEventListener('timeupdate', onTimeUpdate);
       }
@@ -65,20 +78,13 @@ export default function Preloader() {
     video.addEventListener('ended', triggerDismiss, { once: true });
     
     return () => {
+      cancelled = true;
+      if (maxTimeoutRef.current) clearTimeout(maxTimeoutRef.current);
+      video.pause();
       video.removeEventListener('timeupdate', onTimeUpdate);
       video.removeEventListener('ended', triggerDismiss);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active, routeKey]);
-
-  function dismiss() {
-    setHiding(true);
-    // Wait for the fade-out transition, then remove the overlay
-    setTimeout(() => {
-      setActive(false);
-      document.body.style.overflow = '';
-    }, 600);
-  }
 
   if (!active) return null;
 
