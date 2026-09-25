@@ -1,11 +1,9 @@
-# Presvila Clone - React + Vite + TypeScript
-
-This project is structured with separate frontend and backend folders.
+# NAPCO official web page 
 
 ## Folder structure
 
 ```txt
-presvila-clone/
+napco/
 ├─ frontend/
 │  ├─ public/
 │  │  └─ assets/
@@ -68,15 +66,6 @@ Frontend runs on:
 ```txt
 http://localhost:5173
 ```
-
-## Main frontend rules
-
-- `src/pages/` contains only main page files such as `Home.tsx`.
-- `src/components/home/` contains Home page section components.
-- `src/components/common/` contains reusable common components such as navigation, footer, custom cursor, logo, drawer, and floating buttons.
-- `src/styles/` contains all CSS.
-- `src/styles/pages/home.css` contains the Home page styling.
-- `src/styles/global.css` contains global resets, fonts, variables, body styles, and scrollbar styles.
 
 ## Included libraries
 
