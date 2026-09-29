@@ -1,68 +1,59 @@
-import { FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { Mail, MapPin, Phone, Send, Star } from 'lucide-react';
 
 const COMPANY_EMAIL = 'info@napco.lk';
 const COMPANY_PHONE = '+94112910015';
+const SUBMISSION_ERROR = "We couldn't send your message. Please try again.";
 
-function buildMailto(subject: string, body: string) {
-  return `mailto:${COMPANY_EMAIL}?subject=${encodeURIComponent(
-    subject
-  )}&body=${encodeURIComponent(body)}`;
-}
+type FormType = 'feedback' | 'enquiry';
+type SubmissionStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 export default function ContactFormSection() {
-  const handleFeedbackSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [feedbackStatus, setFeedbackStatus] = useState<SubmissionStatus>('idle');
+  const [enquiryStatus, setEnquiryStatus] = useState<SubmissionStatus>('idle');
+  const feedbackInFlight = useRef(false);
+  const enquiryInFlight = useRef(false);
+
+  const submitForm = async (
+    event: FormEvent<HTMLFormElement>,
+    formType: FormType,
+    inFlight: { current: boolean },
+    setStatus: (status: SubmissionStatus) => void
+  ) => {
     event.preventDefault();
+    if (inFlight.current) return;
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    formData.set('formType', formType);
+    inFlight.current = true;
+    setStatus('submitting');
 
-    const name = String(formData.get('feedbackName') || '');
-    const email = String(formData.get('feedbackEmail') || '');
-    const rating = String(formData.get('feedbackRating') || 'Not selected');
-    const message = String(formData.get('feedbackMessage') || '');
+    try {
+      const response = await fetch('/contact.php', {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      });
+      const result: unknown = await response.json();
 
-    const subject = `NAPCO Website Feedback - ${rating} Stars`;
+      if (
+        !response.ok ||
+        !result ||
+        typeof result !== 'object' ||
+        !('success' in result) ||
+        result.success !== true
+      ) {
+        throw new Error('Contact submission failed');
+      }
 
-    const body = `
-Feedback Submission
-
-Name: ${name}
-Email: ${email}
-Rating: ${rating} Stars
-
-Message:
-${message}
-    `.trim();
-
-    window.location.href = buildMailto(subject, body);
-  };
-
-  const handleEnquirySubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-
-    const name = String(formData.get('enquiryName') || '');
-    const email = String(formData.get('enquiryEmail') || '');
-    const phone = String(formData.get('enquiryPhone') || '');
-    const service = String(formData.get('enquiryService') || '');
-    const message = String(formData.get('enquiryMessage') || '');
-
-    const subject = `NAPCO Website Enquiry - ${service || 'General Enquiry'}`;
-
-    const body = `
-Enquiry Submission
-
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
-Service Interested In: ${service}
-
-Message:
-${message}
-    `.trim();
-
-    window.location.href = buildMailto(subject, body);
+      form.reset();
+      setStatus('success');
+    } catch {
+      setStatus('error');
+    } finally {
+      inFlight.current = false;
+    }
   };
 
   return (
@@ -130,7 +121,8 @@ ${message}
         <div className="contact-forms-grid">
           <form
             className="contact-form-card"
-            onSubmit={handleFeedbackSubmit}
+            onSubmit={(event) => void submitForm(event, 'feedback', feedbackInFlight, setFeedbackStatus)}
+            aria-busy={feedbackStatus === 'submitting'}
             data-reveal
           >
             <div className="contact-form-card__top">
@@ -190,17 +182,29 @@ ${message}
                   required
                 />
               </label>
+              <input
+                className="contact-form-card__honeypot"
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
             </div>
 
-            <button type="submit" className="contact-form-card__button">
-              Send Feedback
+            <button type="submit" className="contact-form-card__button" disabled={feedbackStatus === 'submitting'}>
+              {feedbackStatus === 'submitting' ? 'Sending Feedback...' : 'Send Feedback'}
               <Send size={18} />
             </button>
+            <p className={`contact-form-card__status contact-form-card__status--${feedbackStatus}`} role="status" aria-live="polite">
+              {feedbackStatus === 'success' ? 'Thank you. Your feedback has been sent successfully.' : feedbackStatus === 'error' ? SUBMISSION_ERROR : ''}
+            </p>
           </form>
 
           <form
             className="contact-form-card contact-form-card--enquiry"
-            onSubmit={handleEnquirySubmit}
+            onSubmit={(event) => void submitForm(event, 'enquiry', enquiryInFlight, setEnquiryStatus)}
+            aria-busy={enquiryStatus === 'submitting'}
             data-reveal
           >
             <div className="contact-form-card__top">
@@ -286,12 +290,23 @@ ${message}
                   required
                 />
               </label>
+              <input
+                className="contact-form-card__honeypot"
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
             </div>
 
-            <button type="submit" className="contact-form-card__button">
-              Send Enquiry
+            <button type="submit" className="contact-form-card__button" disabled={enquiryStatus === 'submitting'}>
+              {enquiryStatus === 'submitting' ? 'Sending Enquiry...' : 'Send Enquiry'}
               <Send size={18} />
             </button>
+            <p className={`contact-form-card__status contact-form-card__status--${enquiryStatus}`} role="status" aria-live="polite">
+              {enquiryStatus === 'success' ? 'Thank you. Your enquiry has been sent successfully.' : enquiryStatus === 'error' ? SUBMISSION_ERROR : ''}
+            </p>
           </form>
         </div>
       </div>

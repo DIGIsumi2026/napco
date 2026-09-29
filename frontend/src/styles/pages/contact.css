@@ -544,6 +544,10 @@ a.contact-info-card:hover {
 
 .contact-rating__stars input {
   position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
   opacity: 0;
   pointer-events: none;
 }
@@ -602,6 +606,43 @@ a.contact-info-card:hover {
   box-shadow:
     0 24px 54px rgba(7, 23, 45, 0.26),
     0 0 44px rgba(0, 174, 239, 0.22);
+}
+
+.contact-form-card__button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  transform: none;
+}
+
+.contact-form-card .contact-form-card__honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.contact-form-card__status {
+  margin: 14px 0 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.contact-form-card__status--idle,
+.contact-form-card__status--submitting {
+  display: none;
+}
+
+.contact-form-card__status--success {
+  color: #176b42;
+}
+
+.contact-form-card__status--error {
+  color: #a52a34;
 }
 
 /* Tablet */
