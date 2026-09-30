@@ -1996,16 +1996,16 @@ body.is-hovering .cursor-ring {
 
 .hero-pagination-controls {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 8px;
-  margin-top: 16px;
 }
 
-.napco-hero-action-stack {
+.hero-pagination-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: max-content;
-  max-width: 100%;
+  gap: 10px;
 }
 
 .hero-pagination-control {

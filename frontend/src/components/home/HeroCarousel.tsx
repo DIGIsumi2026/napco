@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useCallback } from 'react';
-import type { MutableRefObject } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { imageAssets } from '../../data/imageAssets';
 // @ts-ignore: TS doesn't resolve swiper CSS modules automatically
 import 'swiper/css';
@@ -16,9 +16,10 @@ const AUTOPLAY_DELAY = 4500;
 
 const heroImages = Object.values(imageAssets.hero) as any[];
 
-export default function HeroCarousel({ swiperRef }: { swiperRef: MutableRefObject<SwiperType | null> }) {
+export default function HeroCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
+  const swiperRef = useRef<SwiperType | null>(null);
 
   const handleSlideChange = useCallback((swiper: SwiperType) => {
     setActiveIndex(swiper.realIndex);
@@ -67,27 +68,50 @@ export default function HeroCarousel({ swiperRef }: { swiperRef: MutableRefObjec
           const isActive = i === activeIndex;
 
           return (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Go to slide ${i + 1}`}
-              className={`hero-pagination-pill${isActive ? ' active' : ' inactive'}`}
-              onClick={() => swiperRef.current?.slideToLoop(i)}
-            >
-              {isActive && (
-                <motion.div
-                  key={progressKey}
-                  className="hero-pagination-fill"
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{
-                    duration: AUTOPLAY_DELAY / 1000,
-                    ease: 'linear',
-                  }}
-                  style={{ originY: 0 }}
-                />
+            <div key={i} className="hero-pagination-item">
+              <button
+                type="button"
+                aria-label={`Go to slide ${i + 1}`}
+                className={`hero-pagination-pill${isActive ? ' active' : ' inactive'}`}
+                onClick={() => swiperRef.current?.slideToLoop(i)}
+              >
+                {isActive && (
+                  <motion.div
+                    key={progressKey}
+                    className="hero-pagination-fill"
+                    initial={{ scaleY: 0 }}
+                    animate={{ scaleY: 1 }}
+                    transition={{
+                      duration: AUTOPLAY_DELAY / 1000,
+                      ease: 'linear',
+                    }}
+                    style={{ originY: 0 }}
+                  />
+                )}
+              </button>
+              {i === 1 && (
+                <div className="hero-pagination-controls">
+                  <button
+                    type="button"
+                    className="hero-pagination-control"
+                    aria-label="Previous hero image"
+                    title="Previous image"
+                    onClick={() => swiperRef.current?.slidePrev()}
+                  >
+                    <ChevronUp size={19} aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    className="hero-pagination-control"
+                    aria-label="Next hero image"
+                    title="Next image"
+                    onClick={() => swiperRef.current?.slideNext()}
+                  >
+                    <ChevronDown size={19} aria-hidden="true" />
+                  </button>
+                </div>
               )}
-            </button>
+            </div>
           );
         })}
       </div>
