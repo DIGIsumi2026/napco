@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import type { MutableRefObject } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectFade } from 'swiper/modules';
@@ -15,10 +16,9 @@ const AUTOPLAY_DELAY = 4500;
 
 const heroImages = Object.values(imageAssets.hero) as any[];
 
-export default function HeroCarousel() {
+export default function HeroCarousel({ swiperRef }: { swiperRef: MutableRefObject<SwiperType | null> }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
-  const swiperRef = useRef<SwiperType | null>(null);
 
   const handleSlideChange = useCallback((swiper: SwiperType) => {
     setActiveIndex(swiper.realIndex);
