@@ -1,38 +1,14 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 
 import { imageAssets } from '../../data/imageAssets';
+import { contactDetails, navigationLinks, socialLinks } from '../../data/siteNavigation';
 
 const GOOGLE_MAP_URL =
   'https://maps.app.goo.gl/PXiEnqfrvEZk2avT9';
 
 const MAP_EMBED_URL =
   'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.2796431904044!2d79.9315029699449!3d6.9762959776077835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae257e678132525%3A0xc407c14242fd00e4!2sNapco!5e0!3m2!1sen!2slk!4v1783397316195!5m2!1sen!2slk'
-const quickLinks = [
-  { label: 'Home', path: '/' },
-  { label: 'About Us', path: '/about' },
-  { label: 'Services', path: '/services' },
-  { label: 'Contact', path: '/contact' },
-];
-
-const socialLinks = [
-  {
-    label: 'Facebook',
-    href: 'https://www.facebook.com/share/1EmKKmMVfr/?mibextid=wwXIfr',
-    icon: Facebook,
-  },
-  {
-    label: 'Instagram',
-    href: 'https://www.instagram.com/napcolk?igsh=MWk0ajNrdDFxODB5ZA==',
-    icon: Instagram,
-  },
-  {
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/napcopvtltd/',
-    icon: Linkedin,
-  },
-];
-
 export default function Footer() {
   return (
     <footer className="napco-footer">
@@ -58,7 +34,7 @@ export default function Footer() {
           </p>
 
           <div className="napco-footer__socials">
-            {socialLinks.map(({ label, href, icon: Icon }) => (
+            {socialLinks.map(({ label, href, Icon }) => (
               <a
                 key={label}
                 href={href}
@@ -77,9 +53,9 @@ export default function Footer() {
           <h3>Quick Links</h3>
 
           <nav aria-label="Footer navigation">
-            {quickLinks.map((link) => (
-              <Link key={link.path} to={link.path}>
-                {link.label}
+            {navigationLinks.map((link) => (
+              <Link key={link.href} to={link.href}>
+                {link.footerLabel ?? link.label}
               </Link>
             ))}
           </nav>
@@ -108,7 +84,7 @@ export default function Footer() {
                 <Phone size={19} />
               </span>
 
-              <a href="tel:+94112910015">+94 11 2910015</a>
+              <a href={contactDetails.phone.href}>{contactDetails.phone.label}</a>
             </li>
 
             <li>
@@ -116,7 +92,7 @@ export default function Footer() {
                 <Mail size={19} />
               </span>
 
-              <a href="mailto:info@napco.lk">info@napco.lk</a>
+              <a href={contactDetails.email.href}>{contactDetails.email.label}</a>
             </li>
           </ul>
         </div>
