@@ -1,7 +1,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { Mail, MapPin, Phone, Send, Star } from 'lucide-react';
+import { contactDetails } from '../../data/siteNavigation';
 
-const COMPANY_EMAIL = 'info@napco.lk';
 const COMPANY_PHONE = '+94112910015';
 const SUBMISSION_ERROR = "We couldn't send your message. Please try again.";
 
@@ -87,14 +87,14 @@ export default function ContactFormSection() {
             </div>
           </a>
 
-          <a href={`mailto:${COMPANY_EMAIL}`} className="contact-info-card">
+          <a href={contactDetails.email.href} className="contact-info-card">
             <span>
               <Mail size={24} />
             </span>
 
             <div>
               <small>Email</small>
-              <strong>info@napco.lk</strong>
+              <strong>{contactDetails.email.label}</strong>
             </div>
           </a>
 

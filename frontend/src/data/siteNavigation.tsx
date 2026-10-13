@@ -17,7 +17,7 @@ export const navigationLinks: NavigationLink[] = [
 ];
 
 export const contactDetails = {
-  email: { label: 'info@napco.lk', href: 'mailto:info@napco.lk' },
+  email: { label: 'admin@napco.lk', href: 'mailto:admin@napco.lk' },
   phone: { label: '+94 11 2910015', href: 'tel:+94112910015' },
 };
 
